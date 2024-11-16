@@ -6,7 +6,13 @@
     "@typescript-eslint/no-unused-vars": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-require-imports": "off",
+    "no-unused-vars": "warn",
     "tailwindcss/classnames-order": "warn",
     "tailwindcss/no-contradicting-classname": "warn"
+  },
+  "settings": {
+    "tailwindcss": {
+      "config": "./tailwind.config.js"
+    }
   }
 }
