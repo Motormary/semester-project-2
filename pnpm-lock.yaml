@@ -38,6 +38,9 @@ dependencies:
   '@radix-ui/react-slot':
     specifier: ^1.1.0
     version: 1.1.0(@types/react@18.3.12)(react@18.3.1)
+  '@radix-ui/react-tooltip':
+    specifier: ^1.1.4
+    version: 1.1.4(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1)
   class-variance-authority:
     specifier: ^0.7.0
     version: 0.7.0
@@ -47,6 +50,9 @@ dependencies:
   cmdk:
     specifier: 1.0.0
     version: 1.0.0(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1)
+  embla-carousel-react:
+    specifier: ^8.4.0
+    version: 8.4.0(react@18.3.1)
   lucide-react:
     specifier: ^0.459.0
     version: 0.459.0(react@18.3.1)
@@ -1375,6 +1381,37 @@ packages:
       react: 18.3.1
     dev: false
 
+  /@radix-ui/react-tooltip@1.1.4(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-QpObUH/ZlpaO4YgHSaYzrLO2VuO+ZBFFgGzjMUPwtiYnAzzNNDPJeEGRrT7qNOrWm/Jr08M1vlp+vTHtnSQ0Uw==}
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+      react-dom: ^16.8 || ^17.0 || ^18.0 || ^19.0 || ^19.0.0-rc
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+    dependencies:
+      '@radix-ui/primitive': 1.1.0
+      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.3.12)(react@18.3.1)
+      '@radix-ui/react-context': 1.1.1(@types/react@18.3.12)(react@18.3.1)
+      '@radix-ui/react-dismissable-layer': 1.1.1(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1)
+      '@radix-ui/react-id': 1.1.0(@types/react@18.3.12)(react@18.3.1)
+      '@radix-ui/react-popper': 1.2.0(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1)
+      '@radix-ui/react-portal': 1.1.2(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1)
+      '@radix-ui/react-presence': 1.1.1(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1)
+      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1)
+      '@radix-ui/react-slot': 1.1.0(@types/react@18.3.12)(react@18.3.1)
+      '@radix-ui/react-use-controllable-state': 1.1.0(@types/react@18.3.12)(react@18.3.1)
+      '@radix-ui/react-visually-hidden': 1.1.0(@types/react-dom@18.3.1)(@types/react@18.3.12)(react-dom@18.3.1)(react@18.3.1)
+      '@types/react': 18.3.12
+      '@types/react-dom': 18.3.1
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+    dev: false
+
   /@radix-ui/react-use-callback-ref@1.0.1(@types/react@18.3.12)(react@18.3.1):
     resolution: {integrity: sha512-D94LjX4Sp0xJFVaoQOd3OO9k7tpBYNOXdVhkltUbGv2Qb9OXdrg/CpsjlZv7ia14Sylv398LswWBVVu5nqKzAQ==}
     peerDependencies:
@@ -2214,6 +2251,28 @@ packages:
 
   /eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
+
+  /embla-carousel-react@8.4.0(react@18.3.1):
+    resolution: {integrity: sha512-r5UszqLnIIhfXfGzTlfEAYZ310H4gIiLvBsNQ9dnHY6T2ooMsZs+k5vpJAYjkFtUSaQJ1xZxSGwIV6+IoA8QEw==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.1 || ^18.0.0 || ^19.0.0 || ^19.0.0-rc
+    dependencies:
+      embla-carousel: 8.4.0
+      embla-carousel-reactive-utils: 8.4.0(embla-carousel@8.4.0)
+      react: 18.3.1
+    dev: false
+
+  /embla-carousel-reactive-utils@8.4.0(embla-carousel@8.4.0):
+    resolution: {integrity: sha512-yi/2paSYQqMGgh983Sj8G4+zt4bhABC1pzN4P4Vmc7UhSxqo9I7r15tR7s3/zS0JEl3orRSw7TxX92IZqj5NXA==}
+    peerDependencies:
+      embla-carousel: 8.4.0
+    dependencies:
+      embla-carousel: 8.4.0
+    dev: false
+
+  /embla-carousel@8.4.0:
+    resolution: {integrity: sha512-sUzm4DGGsdZCom7LEO38Uu6C7oQoFfPorKDf/f7j2EeRCMhHSOt3CvF+pHCaI6N+x5Y8/tfLueJ0WZlgUREnew==}
+    dev: false
 
   /emoji-regex@10.4.0:
     resolution: {integrity: sha512-EC+0oUMY1Rqm4O6LLrgjtYDvcVYTy7chDnM4Q7030tP4Kwj3u/pR6gP9ygnp2CJMK5Gq+9Q2oqmrFJAz01DXjw==}

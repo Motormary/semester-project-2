@@ -1,4 +1,5 @@
 import InteractiveListing from "@/components/listing/interactive-listing"
+import PageWrapper from "@/components/page-wrapper"
 
 export default async function ListingPage({
   params,
@@ -7,9 +8,8 @@ export default async function ListingPage({
 }) {
   const id = (await params).id
   return (
-    <div>
-      listing id: {id}
+    <PageWrapper title={`Listing ${id}`}>
       <InteractiveListing />
-    </div>
+    </PageWrapper>
   )
 }

@@ -21,7 +21,7 @@ export default async function Listing({id}: {
         <Badge>Trading Cards</Badge>
         <p className="text-pretty">Official pokemon cards</p>
         <p className="text-2xl">10 Ω</p>
-        <p className="flex items-center text-pretty text-sm">
+        <p className="flex items-center text-pretty text-sm text-muted-foreground">
           11 bids{" "}
           <Dot stroke="rgb(34 197 94)" fill="rgb(34 197 94)" strokeWidth="3" />
           2d 7h
