@@ -17,6 +17,7 @@ import {
 import { Button } from "../ui/button"
 import { useState } from "react"
 import { cn } from "@/lib/utils"
+import { useMediaQuery } from "@/hooks/use-media-query"
 
 const tags = [
   {
@@ -76,10 +77,11 @@ const tags = [
 export default function SearchBar() {
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState("")
+  const isMobile = useMediaQuery("(max-width: 480px)")
 
   return (
     <div className="flex justify-center gap-2">
-      <label className="group flex h-10 w-1/3 items-center rounded-md border border-input bg-background pl-3 text-base focus-within:outline-none focus-within:ring-2 focus-within:ring-ring md:text-sm">
+      <label className="group flex h-10 md:w-1/3 items-center rounded-md border border-input bg-background pl-3 text-base focus-within:outline-none focus-within:ring-2 focus-within:ring-ring md:text-sm">
         <label htmlFor="search">
           <Search className="size-5 text-muted-foreground group-focus-within:text-secondary-foreground" />
         </label>
@@ -92,26 +94,33 @@ export default function SearchBar() {
       </label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            role="combobox"
-            aria-expanded={open}
-            className="justify-between sm:w-[200px]"
-          >
-            {value
-              ? tags.find((framework) => framework.value === value)?.label
-              : "Select category"}
-            <ChevronsUpDown className="opacity-50" />
-          </Button>
+          {isMobile ? (
+            <Button variant="outline" size="icon">
+              <Plus />
+            </Button>
+          ) : (
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={open}
+              className="justify-between sm:w-[200px]"
+            >
+              {value
+                ? tags.find((framework) => framework.value === value)?.label
+                : "Select category"}
+              <ChevronsUpDown className="opacity-50" />
+            </Button>
+          )}
         </PopoverTrigger>
-        <PopoverContent className="p-0 sm:w-[200px]">
+        <PopoverContent className="w-screen p-0 sm:w-[200px]">
           <Command>
             <CommandInput placeholder="Search category" />
             <CommandList style={{ scrollbarWidth: "thin" }}>
-              <CommandEmpty>No framework found.</CommandEmpty>
+              <CommandEmpty>No results</CommandEmpty>
               <CommandGroup>
                 {tags.map((framework) => (
                   <CommandItem
+                    className="py-3 text-xl sm:py-1.5 sm:text-sm"
                     key={framework.value}
                     value={framework.value}
                     onSelect={(currentValue) => {
@@ -133,9 +142,6 @@ export default function SearchBar() {
           </Command>
         </PopoverContent>
       </Popover>
-      <Button variant="outline" className="rounded-full" size="icon">
-        <Plus />
-      </Button>
     </div>
   )
 }

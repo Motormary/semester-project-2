@@ -2,10 +2,14 @@ import { Dot } from "lucide-react"
 import { Badge } from "../ui/badge"
 import { Card } from "../ui/card"
 import image from "assets/images/pokemon.png"
+import Link from "next/link"
 
-export default async function MobileListing() {
+export default async function Listing({id}: {
+  id: string
+}) {
   return (
-    <Card className="flex w-full flex-col gap-4 overflow-hidden border-none p-4">
+    <Card id={id} className="relative flex w-full flex-col gap-4 overflow-hidden border-none p-4">
+      <Link className="absolute inset-0" href={`/${id}`}></Link>
       <picture className="flex aspect-[16/9] max-h-52 overflow-hidden rounded-md border bg-muted">
         <img
           src={image.src}
