@@ -100,13 +100,13 @@ export default function SearchBar() {
           >
             {value
               ? tags.find((framework) => framework.value === value)?.label
-              : "Select tag"}
+              : "Select category"}
             <ChevronsUpDown className="opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="p-0 sm:w-[200px]">
           <Command>
-            <CommandInput placeholder="Search tag" />
+            <CommandInput placeholder="Search category" />
             <CommandList style={{ scrollbarWidth: "thin" }}>
               <CommandEmpty>No framework found.</CommandEmpty>
               <CommandGroup>

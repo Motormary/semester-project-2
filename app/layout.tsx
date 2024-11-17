@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} flex h-screen w-screen flex-col items-center antialiased bg-muted`}
+        className={`${geistSans.variable} ${geistMono.variable} flex h-screen w-screen flex-col items-center bg-muted antialiased dark:bg-background`}
       >
         <ThemeProvider
           attribute="class"
@@ -38,7 +38,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <TopNav />
-          <main className="max-w-content relative flex h-screen w-full border px-4">
+          <main className="relative flex h-screen w-full max-w-content px-4">
             {children}
           </main>
           <ModeToggle />

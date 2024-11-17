@@ -9,15 +9,14 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu"
-import { Input } from "../ui/input"
 import SearchBar from "./search-bar"
-import { Box, BoxIcon, Menu } from "lucide-react"
+import { Box, Menu } from "lucide-react"
 
 export default async function TopNav() {
   return (
     <div className="mb-4 flex flex-col gap-4">
-      <div className="flex h-[64px] w-screen justify-center bg-background shadow-sm">
-        <nav className="max-w-content flex w-full items-center justify-between bg-background px-4">
+      <div className="flex h-[64px] w-screen justify-center bg-background shadow-sm dark:border-b">
+        <nav className="flex w-full max-w-content items-center justify-between bg-background px-4">
           <Link href="/">
             <picture>
               <img
@@ -33,12 +32,12 @@ export default async function TopNav() {
             <Button
               size="icon"
               variant="outline"
-              className="rounded-full"
+              className="rounded-full md:hidden"
               asChild
             >
               <Link href="/listing">
                 <Box
-                  className="text-gray-700"
+                  className="text-primary"
                   strokeWidth={1.5}
                   style={{ width: "24px", height: "24px" }}
                 />
@@ -47,25 +46,25 @@ export default async function TopNav() {
             <Button
               size="icon"
               variant="outline"
-              className="rounded-full"
+              className="rounded-full md:hidden"
             >
               <Menu
-                className="text-gray-700"
+                className="text-secondary-foreground"
                 strokeWidth={1.5}
                 style={{ width: "24px", height: "24px" }}
               />
             </Button>
-            <Button variant="outline" asChild>
+            <Button className="hidden md:block" asChild>
               <Link href="/listing">New Listing</Link>
             </Button>
-            <Button variant="ghost" asChild>
+            <Button className="hidden md:block" variant="ghost" asChild>
               <Link href="/home">Home</Link>
             </Button>
-            <Button variant="ghost" asChild>
+            <Button className="hidden md:block" variant="ghost" asChild>
               <Link href="/users">Users</Link>
             </Button>
             <DropdownMenu>
-              <DropdownMenuTrigger className="rounded-full focus-within:outline-none focus-visible:outline-secondary-foreground">
+              <DropdownMenuTrigger className="hidden rounded-full focus-within:outline-none focus-visible:outline-secondary-foreground md:block">
                 <Avatar className="max-h-8 max-w-8">
                   <AvatarImage
                     height={32}
@@ -86,7 +85,7 @@ export default async function TopNav() {
           </div>
         </nav>
       </div>
-      <div className="max-w-content mx-auto w-full">
+      <div className="mx-auto w-full max-w-content">
         <SearchBar />
       </div>
     </div>
