@@ -4,6 +4,7 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ModeToggle } from "@/components/theme-toggle-button"
 import TopNav from "@/components/nav/top-nav"
+import Footer from "@/components/footer"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -29,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} flex h-screen w-screen flex-col items-center bg-muted antialiased dark:bg-background`}
+        className={`${geistSans.variable} ${geistMono.variable} flex min-h-svh w-screen flex-col items-center bg-muted antialiased dark:bg-background`}
       >
         <ThemeProvider
           attribute="class"
@@ -38,9 +39,10 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <TopNav />
-          <main className="relative flex h-screen w-full max-w-content px-4">
+          <main className="relative flex min-h-svh w-full max-w-content px-4 overflow-hidden">
             {children}
           </main>
+          <Footer/>
           <ModeToggle />
         </ThemeProvider>
       </body>

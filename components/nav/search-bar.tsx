@@ -77,11 +77,10 @@ const tags = [
 export default function SearchBar() {
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState("")
-  const isMobile = useMediaQuery("(max-width: 480px)")
 
   return (
     <div className="flex justify-center gap-2">
-      <label className="group flex h-10 md:w-1/3 items-center rounded-md border border-input bg-background pl-3 text-base focus-within:outline-none focus-within:ring-2 focus-within:ring-ring md:text-sm">
+      <label className="group flex h-10 items-center rounded-md border border-input bg-background pl-3 text-base focus-within:outline-none focus-within:ring-2 focus-within:ring-ring md:w-1/3 md:text-sm">
         <label htmlFor="search">
           <Search className="size-5 text-muted-foreground group-focus-within:text-secondary-foreground" />
         </label>
@@ -94,23 +93,22 @@ export default function SearchBar() {
       </label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          {isMobile ? (
-            <Button variant="outline" size="icon">
-              <Plus />
-            </Button>
-          ) : (
-            <Button
-              variant="outline"
-              role="combobox"
-              aria-expanded={open}
-              className="justify-between sm:w-[200px]"
-            >
-              {value
-                ? tags.find((framework) => framework.value === value)?.label
-                : "Select category"}
-              <ChevronsUpDown className="opacity-50" />
-            </Button>
-          )}
+          <Button className="xs:hidden" variant="outline" size="icon">
+            <Plus />
+          </Button>
+        </PopoverTrigger>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            className="justify-between max-xs:hidden sm:w-[180px]"
+          >
+            {value
+              ? tags.find((framework) => framework.value === value)?.label
+              : "Select category"}
+            <ChevronsUpDown className="opacity-50" />
+          </Button>
         </PopoverTrigger>
         <PopoverContent className="w-screen p-0 sm:w-[200px]">
           <Command>
