@@ -77,6 +77,7 @@ const tags = [
 export default function SearchBar() {
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState("")
+  const isMobile = useMediaQuery("(max-width: 480px)")
 
   return (
     <div className="flex justify-center gap-2">
@@ -93,23 +94,32 @@ export default function SearchBar() {
       </label>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button className="xs:hidden" variant="outline" size="icon">
+          <Button
+            role="combobox"
+            aria-expanded={open}
+            className="xs:hidden"
+            variant="outline"
+            size="icon"
+          >
             <Plus />
           </Button>
         </PopoverTrigger>
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            role="combobox"
-            aria-expanded={open}
-            className="justify-between max-xs:hidden sm:w-[180px]"
-          >
-            {value
-              ? tags.find((framework) => framework.value === value)?.label
-              : "Select category"}
-            <ChevronsUpDown className="opacity-50" />
-          </Button>
-        </PopoverTrigger>
+        {/* Statecheck prevents popover content misalignment as it tries to align to the last trigger, hidden prevents layout shift. Warn: Trigger only takes a single child, conditionally rendering them inside will create a layout shift */}
+        {isMobile ? null : (
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={open}
+              className="justify-between max-xs:hidden sm:w-[180px]"
+            >
+              {value
+                ? tags.find((framework) => framework.value === value)?.label
+                : "Select category"}
+              <ChevronsUpDown className="opacity-50" />
+            </Button>
+          </PopoverTrigger>
+        )}
         <PopoverContent className="w-screen p-0 sm:w-[200px]">
           <Command>
             <CommandInput placeholder="Search category" />

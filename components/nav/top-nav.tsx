@@ -14,8 +14,8 @@ import { Box, Menu } from "lucide-react"
 
 export default async function TopNav() {
   return (
-    <div className="mb-4 flex flex-col gap-4">
-      <div className="flex h-[64px] w-screen justify-center bg-background shadow-sm dark:border-b">
+    <div className="mb-4 flex flex-col w-full gap-4">
+      <div className="flex h-[64px] justify-center bg-background shadow-sm dark:border-b">
         <nav className="flex w-full max-w-content items-center justify-between bg-background px-4">
           <Link href="/">
             <picture>
