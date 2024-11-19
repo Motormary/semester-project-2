@@ -8,7 +8,7 @@ export default async function SimilarListing() {
       <div className="flex gap-4 w-full shrink-1 max-w-[1400px] overflow-x-auto">
         {Array.from({ length: 10 }).map((_, index) => (
           <div key={index} className="basis-72 flex shrink-0">
-            <Listing key={index} id={index.toString()} />
+            <Listing key={index} classname="shadow-none" id={index.toString()} />
           </div>
         ))}
       </div>
