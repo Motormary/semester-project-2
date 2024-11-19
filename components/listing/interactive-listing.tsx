@@ -11,14 +11,14 @@ import { ListingCarousel } from "./listing-carousel"
 import { Badge } from "../ui/badge"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
-import { Card, CardTitle } from "../ui/card"
+import { CardTitle } from "../ui/card"
 
 export default function InteractiveListing({ id }: { id: string }) {
   console.log(id)
   return (
-    <Card className="group space-y-4 p-4 pb-8">
+    <div className="space-y-4">
       {/* Username */}
-      <div className="flex w-full items-center justify-between">
+      <div className="flex w-full items-center justify-between lg:max-w-[790px]">
         <div className="flex items-center gap-2">
           <Avatar className="max-h-7 max-w-7">
             <AvatarImage src="https://github.com/shadcn.png" alt="Avatar" />
@@ -35,9 +35,9 @@ export default function InteractiveListing({ id }: { id: string }) {
           </Tooltip>
         </TooltipProvider>
       </div>
-      <div className="space-y-4 md:flex">
+      <div className="space-y-4 md:flex gap-6">
         <ListingCarousel />
-        <div className="w-full max-w-72 space-y-4">
+        <div className="w-full lg:min-w-[300px] space-y-4">
           <CardTitle className="max-h-32 overflow-hidden text-wrap break-words">
             Pokémon TCG: Scarlet & Violet - Surging Sparks Elite Trainer Box
           </CardTitle>
@@ -76,7 +76,7 @@ export default function InteractiveListing({ id }: { id: string }) {
         </div>
       </div>
       {/* 3 */}
-      <div>
+      <div className="max-w-[790px]">
         <p className="font-semibold">Description</p>
         <p className="text-pretty text-sm">
           The most anticipated set of 2023 is finally here, Scarlet & Violet
@@ -84,7 +84,7 @@ export default function InteractiveListing({ id }: { id: string }) {
           Kanto. The set is packed with absolute classics including the infamous
           Charizard, Blastoise & Venusaur! Complete your collection today!
         </p>
-        <p>
+        <p className="text-pretty text-sm">
           The Pokémon TCG: Scarlet & Violet—Surging Sparks Elite Trainer Box
           includes 9 Pokémon TCG: Scarlet & Violet—Surging Sparks booster packs,
           1 full-art foil promo card featuring Magneton, and 65 card sleeves.
@@ -97,6 +97,6 @@ export default function InteractiveListing({ id }: { id: string }) {
           Pokémon Trading Card Game Live.
         </p>
       </div>
-    </Card>
+    </div>
   )
 }

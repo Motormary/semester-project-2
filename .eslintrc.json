@@ -6,7 +6,7 @@
     "@typescript-eslint/no-unused-vars": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-require-imports": "off",
-    "no-unused-vars": "warn",
+    "no-unused-vars": ["warn", { "vars": "all", "varsIgnorePattern": "^_", "args": "after-used", "argsIgnorePattern": "^_" }],
     "tailwindcss/no-contradicting-classname": "warn"
   }
 }

@@ -9,7 +9,7 @@ export default async function Listing({id}: {
 }) {
   return (
     <Card id={id} className="relative flex w-full flex-col gap-4 overflow-hidden border-none p-4">
-      <Link className="absolute inset-0" href={`/${id}`}></Link>
+      <Link className="absolute inset-0" href={`/listing/${id}`}></Link>
       <picture className="flex aspect-[16/9] max-h-52 overflow-hidden rounded-md border bg-muted">
         <img
           src={image.src}

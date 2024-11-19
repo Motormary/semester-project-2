@@ -29,6 +29,7 @@ export default async function TopNav() {
             </picture>
           </Link>
           <div className="flex items-center gap-5">
+            {/* Mobile */}
             <Button
               size="icon"
               variant="outline"
@@ -54,14 +55,18 @@ export default async function TopNav() {
                 style={{ width: "24px", height: "24px" }}
               />
             </Button>
+            {/* Desktop */}
             <Button className="hidden md:block" asChild>
               <Link href="/listing">New Listing</Link>
             </Button>
             <Button className="hidden md:block" variant="ghost" asChild>
-              <Link href="/home">Home</Link>
+              <Link href="/">Home</Link>
             </Button>
             <Button className="hidden md:block" variant="ghost" asChild>
-              <Link href="/users">Users</Link>
+              <Link href="/vendors">Vendors</Link>
+            </Button>
+            <Button className="hidden md:block" variant="ghost" asChild>
+              Vendors
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger className="hidden rounded-full focus-within:outline-none focus-visible:outline-secondary-foreground md:block">
@@ -77,7 +82,7 @@ export default async function TopNav() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" alignOffset={-15}>
                 <DropdownMenuItem asChild>
-                  <Link href="/profile">My Profile</Link>
+                  <Link href="/vendors/currentUser">My Page</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>Log out</DropdownMenuItem>
               </DropdownMenuContent>

@@ -1,4 +1,4 @@
-export default async function UserPage({
+export default async function SelectedVendor({
     params,
   }: {
     params: Promise<{ id: string }>
