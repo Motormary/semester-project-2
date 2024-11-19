@@ -18,7 +18,7 @@ export default function InteractiveListing({ id }: { id: string }) {
   return (
     <div className="space-y-4">
       {/* Username */}
-      <div className="flex w-full items-center justify-between lg:max-w-[790px]">
+      <div className="flex w-full items-center justify-between xl:max-w-[790px]">
         <div className="flex items-center gap-2">
           <Avatar className="max-h-7 max-w-7">
             <AvatarImage src="https://github.com/shadcn.png" alt="Avatar" />

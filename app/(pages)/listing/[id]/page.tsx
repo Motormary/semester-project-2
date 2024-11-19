@@ -1,5 +1,6 @@
 import InteractiveListing from "@/components/listing/interactive-listing"
 import OtherListings from "@/components/listing/other-listings"
+import SimilarListing from "@/components/listing/similar-listings"
 import { Card } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 
@@ -10,10 +11,13 @@ export default async function ListingPage({
 }) {
   const id = (await params).id
   return (
-    <Card className="p-4 pb-8 flex flex-col xl:flex-row gap-y-6">
-      <InteractiveListing id={id} />
-      <Separator className="xl:hidden" />
-      <OtherListings id={id} />
-    </Card>
+    <div className="space-y-4">
+      <Card className="flex flex-col gap-y-6 p-6 pb-8 xl:flex-row">
+        <InteractiveListing id={id} />
+        <Separator className="xl:hidden" />
+        <OtherListings id={id} />
+      </Card>
+      <SimilarListing />
+    </div>
   )
 }
