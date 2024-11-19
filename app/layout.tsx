@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { ModeToggle } from "@/components/theme-toggle-button"
 import TopNav from "@/components/nav/top-nav"
 import Footer from "@/components/footer"
+import { Toaster } from "sonner"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -43,7 +44,8 @@ export default function RootLayout({
             {children}
           </main>
           <Footer/>
-          <ModeToggle />
+          <ModeToggle /> 
+          <Toaster richColors />
         </ThemeProvider>
       </body>
     </html>

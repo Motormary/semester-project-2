@@ -19,6 +19,13 @@ const listingSchema = z.object({
   }),
 })
 
+export const newListingSchema = z.object({
+  title: z.string().min(4, {message: "Minimum 4 characters required"}),
+  description: z.string().optional(),
+  media: z.array(mediaSchema).optional(),
+  tags: z.array(z.string()).optional(),
+})
+
 const metaSchema = z.object({
   isFirstPage: z.boolean(),
   isLastPage: z.boolean(),
@@ -61,7 +68,14 @@ const responseSchema = <T>(dataSchema: z.ZodType<T, any, any>) =>
 
 const getProfileSchema = responseSchema(profileSchema)
 
+// -------------------------------------------------
+
 export type ResponseType<T> = z.infer<ReturnType<typeof responseSchema<T>>>
+
+// Listings
+
+
+// Profile
 
 export type GETProfile = z.infer<typeof getProfileSchema>
 

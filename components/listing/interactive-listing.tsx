@@ -56,7 +56,7 @@ export default function InteractiveListing({ id }: { id: string }) {
           </div>
           <div className="space-y-4">
             <label htmlFor="bid">
-              Bid
+              Amount
               <Input
                 id="bid"
                 min={0}

@@ -11,10 +11,12 @@ import {
 } from "../ui/dropdown-menu"
 import SearchBar from "./search-bar"
 import { Box, Menu } from "lucide-react"
+import NewListing from "../listing/new-listing"
+import { Fragment } from "react"
 
 export default async function TopNav() {
   return (
-    <div className="mb-4 flex flex-col w-full gap-4">
+    <div className="mb-4 flex w-full flex-col gap-4">
       <div className="flex h-[64px] justify-center bg-background shadow-sm dark:border-b">
         <nav className="flex w-full max-w-content items-center justify-between bg-background px-4">
           <Link href="/">
@@ -29,21 +31,30 @@ export default async function TopNav() {
             </picture>
           </Link>
           <div className="flex items-center gap-5">
-            {/* Mobile */}
-            <Button
-              size="icon"
-              variant="outline"
-              className="rounded-full md:hidden"
-              asChild
-            >
-              <Link href="/listing">
+            {/* Desktop */}
+            <NewListing>
+              <Button className="relative max-md:rounded-full max-md:p-0 max-md:size-10">
+                <span className="hidden md:block">
+                New Listing
+                </span>
                 <Box
-                  className="text-primary"
+                  className="text-background md:hidden"
                   strokeWidth={1.5}
                   style={{ width: "24px", height: "24px" }}
                 />
-              </Link>
+              </Button>
+            </NewListing>
+            <Button className="hidden md:block" variant="ghost" asChild>
+              <Link href="/">Home</Link>
             </Button>
+            <Button className="hidden md:block" variant="ghost" asChild>
+              <Link href="/vendors">Vendors</Link>
+            </Button>
+            <Button className="hidden md:block" variant="ghost" asChild>
+              Vendors
+            </Button>
+            {/* Mobile */}
+
             <Button
               size="icon"
               variant="outline"
@@ -54,19 +65,6 @@ export default async function TopNav() {
                 strokeWidth={1.5}
                 style={{ width: "24px", height: "24px" }}
               />
-            </Button>
-            {/* Desktop */}
-            <Button className="hidden md:block" asChild>
-              <Link href="/listing">New Listing</Link>
-            </Button>
-            <Button className="hidden md:block" variant="ghost" asChild>
-              <Link href="/">Home</Link>
-            </Button>
-            <Button className="hidden md:block" variant="ghost" asChild>
-              <Link href="/vendors">Vendors</Link>
-            </Button>
-            <Button className="hidden md:block" variant="ghost" asChild>
-              Vendors
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger className="hidden rounded-full focus-within:outline-none focus-visible:outline-secondary-foreground md:block">
