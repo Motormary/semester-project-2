@@ -20,9 +20,9 @@ export default async function OtherListings({ id }: { id: string }) {
         {Array.from({ length: 5 }).map((_, index) => (
           <Fragment key={index}>
             <div
-              className="relative hidden w-full items-center gap-4 overflow-hidden border-none p-4 xl:flex"
+              className="relative hidden w-full items-center gap-4 overflow-hidden border-b hover:bg-muted rounded-md p-4 xl:flex"
             >
-              <Link className="absolute inset-0" href={`/${id}`}></Link>
+              <Link className="absolute inset-0" href={`/listing/${id}`}></Link>
               <picture className="flex aspect-square size-20 overflow-hidden rounded-md border bg-muted">
                 <img
                   src={image.src}

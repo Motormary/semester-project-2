@@ -11,7 +11,7 @@ type props = {
 
 export default async function Listing({id, classname}: props) {
   return (
-    <Card id={id} className={`${classname} relative flex w-full flex-col gap-4 overflow-hidden border-none p-4`}>
+    <Card id={id} className={`${classname} relative flex w-full flex-col gap-4 overflow-hidden border-none hover:shadow-lg p-4`}>
       <Link className="absolute inset-0" href={`/listing/${id}`}></Link>
       <picture className="flex aspect-[16/9] max-h-52 overflow-hidden rounded-md border bg-muted">
         <img
