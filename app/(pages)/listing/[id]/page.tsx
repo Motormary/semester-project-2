@@ -12,7 +12,7 @@ export default async function ListingPage({
   const id = (await params).id
   return (
     <div className="space-y-4">
-      <Card className="flex flex-col gap-y-6 p-6 pb-8 xl:flex-row">
+      <Card className="flex flex-col gap-y-6 p-[5%] md:p-6 pb-8 xl:flex-row">
         <InteractiveListing id={id} />
         <Separator className="xl:hidden" />
         <OtherListings id={id} />
