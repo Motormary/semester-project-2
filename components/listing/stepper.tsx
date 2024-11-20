@@ -1,6 +1,4 @@
-"use client"
-
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Check } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -16,9 +14,10 @@ const steps = [
 type props = {
   children: React.ReactNode
   isDesktop: boolean
+  form: any
 }
 
-export default function Stepper({ children, isDesktop }: props) {
+export default function Stepper({ children, isDesktop, form }: props) {
   const [currentStep, setCurrentStep] = useState(1)
 
   const nextStep = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -34,6 +33,14 @@ export default function Stepper({ children, isDesktop }: props) {
       setCurrentStep(currentStep - 1)
     }
   }
+
+  useEffect(() => {
+    const errors = Object.entries(form.formState.errors)
+    if (errors?.length) {
+      const errorKey = errors[0][0]
+      if (errorKey === "title") setCurrentStep(1)
+    }
+  }, [form.formState.errors])
 
   return (
     <div
@@ -113,9 +120,11 @@ export default function Stepper({ children, isDesktop }: props) {
       ) : (
         <DrawerFooter className="px-0">
           <DrawerTrigger asChild>
-            <Button className="mb-4" variant="outline">Close</Button>
+            <Button className="mb-4" variant="outline">
+              Close
+            </Button>
           </DrawerTrigger>
-          <div className="flex flex-col w-full gap-2">
+          <div className="flex w-full flex-col gap-2">
             <Button
               onClick={prevStep}
               disabled={currentStep === 1}

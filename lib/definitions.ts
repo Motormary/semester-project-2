@@ -24,6 +24,8 @@ export const newListingSchema = z.object({
   description: z.string().optional(),
   media: z.array(mediaSchema).optional(),
   tags: z.array(z.string()).optional(),
+  endsAt: z.date({required_error: "A date and time is required."
+  })
 })
 
 const metaSchema = z.object({
