@@ -45,7 +45,7 @@ export default function NewListing({ children }: props) {
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>{children}</DrawerTrigger>
       <DrawerContent>
-        <ScrollArea className="h-svh">
+        <ScrollArea className="h-[90svh]">
           <DrawerHeader className="text-left">
             <DrawerTitle>New listing</DrawerTitle>
             <DrawerDescription>

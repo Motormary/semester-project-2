@@ -1,4 +1,3 @@
-"use client"
 import { Dot, Edit } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import {
@@ -12,13 +11,14 @@ import { Badge } from "../ui/badge"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import { CardTitle } from "../ui/card"
+import BidListDialog from "./bid-list"
 
 export default function InteractiveListing({ id }: { id: string }) {
   console.log(id)
   return (
     <div className="space-y-4">
       {/* Username */}
-      <div className="flex w-full items-center justify-between xl:max-w-[790px]">
+      <div className="flex w-full items-center justify-between">
         <div className="flex items-center gap-2">
           <Avatar className="max-h-7 max-w-7">
             <AvatarImage src="https://github.com/shadcn.png" alt="Avatar" />
@@ -35,24 +35,35 @@ export default function InteractiveListing({ id }: { id: string }) {
           </Tooltip>
         </TooltipProvider>
       </div>
-      <div className="space-y-4 md:flex gap-6">
+      <div className="gap-6 space-y-4 md:flex">
         <ListingCarousel />
-        <div className="w-full lg:min-w-[300px] space-y-4">
+        <div className="w-full space-y-4 lg:min-w-[300px]">
           <CardTitle className="max-h-32 overflow-hidden text-wrap break-words">
             Pokémon TCG: Scarlet & Violet - Surging Sparks Elite Trainer Box
           </CardTitle>
           <Badge>Trading Cards</Badge>
           <div>
             <p className="text-2xl">10 Ω</p>
-            <p className="flex items-center text-sm text-muted-foreground">
-              11 bids{" "}
-              <Dot
-                stroke="rgb(34 197 94)"
-                fill="rgb(34 197 94)"
-                strokeWidth="3"
-              />
-              2d 7h
-            </p>
+            <div className="flex">
+              <BidListDialog
+              postId={id}
+              >
+              <Button
+                variant="link"
+                className="px-0 text-muted-foreground underline hover:text-secondary-foreground"
+              >
+                11 bids
+              </Button>
+              </BidListDialog>
+              <p className="flex items-center text-sm text-muted-foreground">
+                <Dot
+                  stroke="rgb(34 197 94)"
+                  fill="rgb(34 197 94)"
+                  strokeWidth="3"
+                />
+                2d 7h
+              </p>
+            </div>
           </div>
           <div className="space-y-4">
             <label htmlFor="bid">
@@ -61,11 +72,11 @@ export default function InteractiveListing({ id }: { id: string }) {
                 id="bid"
                 min={0}
                 placeholder="Ω"
-                onInput={(event) => {
+                /*        onInput={(event) => {
                   // Forces integer value
                   const input = event.currentTarget
                   input.value = input.value.replace(/[^0-9]/g, "")
-                }}
+                }} */
               />
             </label>
             <Button className="w-full">Bid</Button>
