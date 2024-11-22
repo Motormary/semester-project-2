@@ -40,7 +40,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <TopNav />
-          <main className="relative flex min-h-svh w-full max-w-content px-4 overflow-hidden">
+          <main className="relative flex min-h-svh w-full max-w-content px-4">
             {children}
           </main>
           <Footer/>

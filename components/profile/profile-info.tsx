@@ -5,15 +5,16 @@ import { Button } from "../ui/button"
 import { Card } from "../ui/card"
 
 type props = {
-  id: string
+  name: string
 }
 
-export default async function ProfileInfo({ id }: props) {
-  console.log(id)
+export default async function ProfileInfo({ name }: props) {
+  console.log(name)
   return (
-    <Card className="max-w-[274px] space-y-6 overflow-hidden p-4 py-5">
-      <Avatar className="h-full w-full">
+    <Card className="max-w-[274px] space-y-6 overflow-hidden p-4 py-5 h-fit">
+      <Avatar className="h-full w-full max-h-[274px]">
         <AvatarImage
+        className="aspect-square"
           src="https://github.com/shadcn.png"
           alt="Avatar"
         />

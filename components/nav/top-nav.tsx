@@ -1,8 +1,9 @@
-/* eslint-disable tailwindcss/classnames-order */
 import logo from "assets/images/logo_filled.png"
-import { Button } from "../ui/button"
+import { Box, Menu } from "lucide-react"
 import Link from "next/link"
+import NewListing from "../listing/new-listing"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
+import { Button } from "../ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,9 +11,6 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu"
 import SearchBar from "./search-bar"
-import { Box, Menu } from "lucide-react"
-import NewListing from "../listing/new-listing"
-import { Fragment } from "react"
 
 export default async function TopNav() {
   return (
