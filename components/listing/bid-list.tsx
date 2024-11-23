@@ -22,15 +22,12 @@ import {
 } from "../ui/drawer"
 import { Button } from "../ui/button"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
-import { UserProfile } from "@/lib/definitions"
 import {
   Table,
-  TableBody,
-  TableCaption,
-  TableCell,
+  TableBody, TableCell,
   TableHead,
   TableHeader,
-  TableRow,
+  TableRow
 } from "../ui/table"
 import Link from "next/link"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
