@@ -1,4 +1,4 @@
-import { SidebarNav } from "@/components/profile/sidebar-nav"
+import { ProfileNav } from "@/components/profile/profile-nav"
 
 
 
@@ -9,11 +9,11 @@ type props = {
 
 export default function Layout({ children, listings }: props) {
   return (
-    <div className="sm:flex w-full gap-4 pb-8">
+    <div className="sm:flex space-y-4 w-full gap-4 pb-8">
       {children}
       <div className="w-full">
         <aside>
-          <SidebarNav />
+          <ProfileNav />
         </aside>
         {listings}
       </div>

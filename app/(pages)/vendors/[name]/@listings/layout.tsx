@@ -1,8 +1,9 @@
+import { Card } from "@/components/ui/card"
 
 type props = {
   children: React.ReactNode
 }
 
 export default async function Page({ children }: props) {
-  return <div className="w-full h-full p-4 bg-card rounded-tr-md rounded-b-md">{children}</div>
+  return <Card className="w-full rounded-tl-none h-full p-4">{children}</Card>
 }

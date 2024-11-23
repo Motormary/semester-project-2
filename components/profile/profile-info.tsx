@@ -11,8 +11,8 @@ type props = {
 export default async function ProfileInfo({ name }: props) {
   console.log(name)
   return (
-    <Card className="max-w-[274px] space-y-6 overflow-hidden p-4 py-5 h-fit">
-      <Avatar className="h-full w-full max-h-[274px]">
+    <Card className="sm:max-w-[274px] mx-auto space-y-6 overflow-hidden p-4 py-5 h-fit">
+      <Avatar className="h-full w-full max-h-[274px] max-w-[274px] mx-auto">
         <AvatarImage
         className="aspect-square"
           src="https://github.com/shadcn.png"
