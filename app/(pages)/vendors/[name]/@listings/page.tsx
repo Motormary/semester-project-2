@@ -1,3 +1,5 @@
+import Listing from "@/components/listing/listing"
+
 export default async function ProfileListings({
   params,
 }: {
@@ -5,5 +7,12 @@ export default async function ProfileListings({
 }) {
   const name = (await params).name
   console.log("listings ~~~~~~~~~~", name)
-  return <div>Listings</div>
+  return (
+    <div className="flex flex-wrap listings">
+      <Listing classname="basis-1/2" id="1" />
+      <Listing classname="basis-1/2" id="1" />
+      <Listing classname="basis-1/2" id="1" />
+      <Listing classname="basis-1/2" id="1" />
+    </div>
+  )
 }

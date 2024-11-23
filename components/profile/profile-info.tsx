@@ -11,7 +11,7 @@ type props = {
 export default async function ProfileInfo({ name }: props) {
   console.log(name)
   return (
-    <Card className="sm:max-w-[274px] mx-auto space-y-6 overflow-hidden p-4 py-5 h-fit">
+    <Card className="sm:max-w-[274px] mx-auto space-y-6 overflow-hidden p-4 py-5 h-fit sm:mt-[2rem]">
       <Avatar className="h-full w-full max-h-[274px] max-w-[274px] mx-auto">
         <AvatarImage
         className="aspect-square"

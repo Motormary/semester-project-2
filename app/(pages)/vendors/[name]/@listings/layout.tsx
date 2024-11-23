@@ -5,5 +5,5 @@ type props = {
 }
 
 export default async function Page({ children }: props) {
-  return <Card className="w-full rounded-tl-none h-full p-4">{children}</Card>
+  return <Card className="w-full h-full p-4 xs:has-[.listings]:rounded-tl-none">{children}</Card>
 }
