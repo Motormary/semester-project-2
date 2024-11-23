@@ -89,7 +89,7 @@ export default function SearchBar() {
           name="search"
           id="search"
           className="ml-3 h-full border-none p-0 focus-visible:ring-0 focus-visible:ring-offset-0"
-          placeholder="Search listings"
+          placeholder="Search all listings"
         />
       </label>
       <Popover open={open} onOpenChange={setOpen}>
