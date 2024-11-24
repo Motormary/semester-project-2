@@ -1,4 +1,6 @@
 import { ProfileNav } from "@/components/profile/profile-nav"
+import { Suspense } from "react"
+import Loading from "./_loading"
 
 
 
@@ -9,8 +11,10 @@ type props = {
 
 export default function Layout({ children, listings }: props) {
   return (
-    <div className="sm:flex max-sm:space-y-4 w-full gap-4 pb-8">
+    <div className="flex max-sm:flex-col w-full gap-4 pb-8">
+      <Suspense fallback={<Loading />}>
       {children}
+      </Suspense>
       <div className="w-full">
         <aside>
           <ProfileNav />

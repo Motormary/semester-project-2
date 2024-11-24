@@ -1,20 +1,20 @@
 import Listing from "@/components/listing/listing"
+import wait from "@/lib/wait"
 
 export default async function ProfileListings({
   params,
 }: {
   params: Promise<{ name: string }>
 }) {
+  await wait(2000)
   const name = (await params).name
-  console.log("listings ~~~~~~~~~~", name)
   return (
     <>
-      <div className="listings flex flex-wrap">
-        <Listing classname="basis-1/2 shadow-none" id="1" />
-        <Listing classname="basis-1/2 shadow-none" id="1" />
-        <Listing classname="basis-1/2 shadow-none" id="1" />
-        <Listing classname="basis-1/2 shadow-none" id="1" />
-      </div>
+      <h1 className="sr-only">My Listings</h1>
+      <Listing classname="md:basis-1/2 xl:basis-1/3 shadow-none" id="1" />
+      <Listing classname="md:basis-1/2 xl:basis-1/3 shadow-none" id="1" />
+      <Listing classname="md:basis-1/2 xl:basis-1/3 shadow-none" id="1" />
+      <Listing classname="md:basis-1/2 xl:basis-1/3 shadow-none" id="1" />
     </>
   )
 }

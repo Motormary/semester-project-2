@@ -10,6 +10,8 @@ import {
   PaginationLast,
 } from "@/components/ui/pagination"
 import ProfileListingSearch from "@/components/ui/search-bar"
+import { Suspense } from "react"
+import { LoadingList } from "../_loading"
 
 type props = {
   children: React.ReactNode
@@ -17,9 +19,11 @@ type props = {
 
 export default async function Page({ children }: props) {
   return (
-    <Card className="h-full w-full space-y-4 p-4 xs:has-[.listings]:rounded-tl-none">
+    <Card className="h-full w-full space-y-4 p-4 outline-red-500 xs:has-[.listings]:rounded-tl-none [&>.listings]:has-[[data-pending]]:animate-pulse">
       <ProfileListingSearch />
-      {children}
+      <div className="listings flex flex-wrap">
+        <Suspense fallback={<LoadingList />}>{children}</Suspense>
+      </div>
       <Pagination>
         <PaginationContent>
           <PaginationItem>
