@@ -35,16 +35,16 @@ export default function RootLayout({
       >
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
           <TopNav />
           <main className="relative flex min-h-svh w-full max-w-content px-4">
             {children}
+            <ModeToggle />
           </main>
-          <Footer/>
-          <ModeToggle /> 
+          <Footer />
           <Toaster richColors />
         </ThemeProvider>
       </body>
