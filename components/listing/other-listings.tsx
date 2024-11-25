@@ -11,7 +11,6 @@ const containerStyles = {
 }
 
 export default async function OtherListings({ id }: { id: string }) {
-  console.log(id)
   return (
     <div className="w-full space-y-4 max-md:grid">
       <h3 className="text-sm font-semibold xl:text-center">

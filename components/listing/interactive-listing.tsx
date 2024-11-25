@@ -14,7 +14,6 @@ import { CardTitle } from "../ui/card"
 import BidListDialog from "./bid-list"
 
 export default function InteractiveListing({ id }: { id: string }) {
-  console.log(id)
   return (
     <div className="space-y-4">
       {/* Username */}

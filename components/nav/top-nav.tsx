@@ -1,5 +1,5 @@
 import logo from "assets/images/logo_filled.png"
-import { Box, Menu } from "lucide-react"
+import { Box, User } from "lucide-react"
 import Link from "next/link"
 import NewListing from "../listing/new-listing"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu"
 import SearchBar from "./search-bar"
+import NavMenu from "./sidebar"
 
 export default async function TopNav() {
   return (
@@ -29,12 +30,9 @@ export default async function TopNav() {
             </picture>
           </Link>
           <div className="flex items-center gap-5">
-            {/* Desktop */}
             <NewListing>
-              <Button className="relative max-md:rounded-full max-md:p-0 max-md:size-10">
-                <span className="hidden md:block">
-                New Listing
-                </span>
+              <Button className="relative max-md:size-10 max-md:rounded-full max-md:p-0">
+                <span className="hidden md:block">New Listing</span>
                 <Box
                   className="text-background md:hidden"
                   strokeWidth={1.5}
@@ -51,19 +49,7 @@ export default async function TopNav() {
             <Button className="hidden md:block" variant="ghost" asChild>
               Vendors
             </Button>
-            {/* Mobile */}
-
-            <Button
-              size="icon"
-              variant="outline"
-              className="rounded-full md:hidden"
-            >
-              <Menu
-                className="text-secondary-foreground"
-                strokeWidth={1.5}
-                style={{ width: "24px", height: "24px" }}
-              />
-            </Button>
+            <NavMenu />
             <DropdownMenu>
               <DropdownMenuTrigger className="hidden rounded-full focus-within:outline-none focus-visible:outline-secondary-foreground md:block">
                 <Avatar className="max-h-8 max-w-8">
@@ -73,7 +59,7 @@ export default async function TopNav() {
                     src="https://github.com/shadcn.png"
                     alt="Avatar"
                   />
-                  <AvatarFallback>CN</AvatarFallback>
+                  <AvatarFallback><User/></AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" alignOffset={-15}>

@@ -38,7 +38,6 @@ type props = {
 }
 
 function List(bids: any) {
-  console.log(bids)
   return (
     <ScrollArea className="h-[30rem] sm:h-96 relative mt-8 pr-2">
     <Table>
@@ -83,7 +82,6 @@ function List(bids: any) {
 
 export default function BidListDialog({ postId, children }: props) {
   const [open, setOpen] = useState(false)
-  console.log(postId)
   // get bids
   const isDesktop = useMediaQuery("(min-width: 768px)")
   if (isDesktop) {
