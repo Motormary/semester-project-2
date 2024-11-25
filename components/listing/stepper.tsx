@@ -44,7 +44,7 @@ export default function Stepper({ children, isDesktop, form }: props) {
 
   return (
     <div
-      className={`group mx-auto w-full max-w-3xl px-4 py-8`}
+      className={`group mx-auto w-full max-w-3xl sm:px-4 py-8`}
       data-state={currentStep}
     >
       <div className="mb-8">
