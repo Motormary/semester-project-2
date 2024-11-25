@@ -29,7 +29,7 @@ export function ProfileNav() {
   ]
 
   return (
-    <nav className={cn("flex w-fit max-sm:flex-wrap max-xs:mb-1")}>
+    <nav className={cn("flex w-fit max-sm:flex-wrap max-xs:mb-1 max-xs:gap-1")}>
       {items.map((item, index) => (
         <button
           tabIndex={-1}

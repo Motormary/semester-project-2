@@ -1,18 +1,18 @@
-import { User } from "lucide-react"
+import { Home, User } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Button } from "../ui/button"
 import { Separator } from "../ui/separator"
-import { SheetClose, SheetFooter } from "../ui/sheet"
+import { SheetClose, SheetFooter, SheetTrigger } from "../ui/sheet"
+import Link from "next/link"
 
 type props = {
   params?: string
 }
 
 export default function SidebarContent({ params }: props) {
-
   return (
     <>
-      <div className="flex flex-col gap-2 my-2">
+      <div className="my-2 flex flex-col gap-2">
         <div className="flex items-center gap-4 text-left sm:self-center">
           <Avatar className="max-h-10 max-w-10">
             <AvatarImage
@@ -25,17 +25,39 @@ export default function SidebarContent({ params }: props) {
               <User />
             </AvatarFallback>
           </Avatar>
-          <div className="overflow-hidden whitespace-nowrap">
+          <Link
+            href="/vendors/user"
+            className="overflow-hidden whitespace-nowrap"
+          >
             <p className="text-sm font-semibold">Username</p>
             <p className="truncate text-sm">myusername@stud.noroff.no</p>
             <p className="text-sm text-muted-foreground">
               Total credits: 1000 Ω
             </p>
-          </div>
+          </Link>
         </div>
         <Separator />
       </div>
-      <div>content</div>
+      <div className="flex flex-col items-center gap-6 py-4 [&>a]:flex [&>a]:w-full [&>a]:justify-between">
+        <SheetTrigger asChild>
+          <Link href={"/"}>
+            <p>Home</p>
+            <Home className="size-5" />
+          </Link>
+        </SheetTrigger>
+        <SheetTrigger asChild>
+          <Link href={"/vendors/user"}>
+            <p>My listings</p>
+            <span className="p-0.5 text-sm text-muted-foreground">48</span>
+          </Link>
+        </SheetTrigger>
+        <SheetTrigger asChild>
+          <Link href={"/vendors/user/bids"}>
+            <p>My bids</p>
+            <span className="p-0.5 text-sm text-muted-foreground">10</span>
+          </Link>
+        </SheetTrigger>
+      </div>
       <SheetFooter>
         <SheetClose asChild>
           <Button>Save changes</Button>

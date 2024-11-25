@@ -40,7 +40,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <TopNav />
-          <main className="relative flex min-h-svh w-full max-w-content px-4">
+          <main className="relative flex min-h-svh w-full max-w-content px-4 pb-10 h-full">
             {children}
             <ModeToggle />
           </main>

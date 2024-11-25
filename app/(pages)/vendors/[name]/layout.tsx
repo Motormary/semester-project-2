@@ -11,7 +11,7 @@ type props = {
 
 export default function Layout({ children, listings }: props) {
   return (
-    <div className="flex max-sm:flex-col w-full gap-4 pb-8">
+    <div className="flex max-sm:flex-col w-full gap-4 h-full">
       <Suspense fallback={<Loading />}>
       {children}
       </Suspense>

@@ -1,12 +1,10 @@
 import Listing from "@/components/listing/listing"
-import wait from "@/lib/wait"
 
 export default async function ProfileListings({
   params,
 }: {
   params: Promise<{ name: string }>
 }) {
-  await wait(2000)
   const name = (await params).name
   return (
     <>
