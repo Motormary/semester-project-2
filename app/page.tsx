@@ -16,11 +16,11 @@ export default function Home() {
       <Separator />
       <h1 className="text-2xl font-semibold">All listings</h1>
       <div className="grid grid-cols-[repeat(auto-fill,minmax(290px,1fr))] gap-4">
-        <Listing classname="hover:shadow-md" id={"1"} />
-        <Listing classname="hover:shadow-md" id={"2"} />
-        <Listing classname="hover:shadow-md" id={"3"} />
-        <Listing classname="hover:shadow-md" id={"4"} />
-        <Listing classname="hover:shadow-md" id={"5"} />
+        <Listing classname="hover:shadow-md focus-within:outline outline-2 outline-primary border" id={"1"} />
+        <Listing classname="hover:shadow-md focus-within:outline outline-2 outline-primary border" id={"2"} />
+        <Listing classname="hover:shadow-md focus-within:outline outline-2 outline-primary border" id={"3"} />
+        <Listing classname="hover:shadow-md focus-within:outline outline-2 outline-primary border" id={"4"} />
+        <Listing classname="hover:shadow-md focus-within:outline outline-2 outline-primary border" id={"5"} />
       </div>
       <Pagination>
         <PaginationContent>

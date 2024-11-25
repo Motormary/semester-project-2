@@ -1,17 +1,19 @@
-import { Dot } from "lucide-react"
-import { Badge } from "../ui/badge"
-import { Card } from "../ui/card"
 import image from "assets/images/pokemon.png"
+import { Dot } from "lucide-react"
 import Link from "next/link"
+import { Badge } from "../ui/badge"
 
 type props = {
-  id: string,
+  id: string
   classname?: string
 }
 
-export default async function Listing({id, classname}: props) {
+export default async function Listing({ id, classname }: props) {
   return (
-    <Card id={id} className={`${classname} relative flex w-full flex-col gap-4 overflow-hidden border-none p-4`}>
+    <div
+      id={id}
+      className={`${classname} relative flex w-full flex-col gap-4 overflow-hidden rounded-lg bg-card p-4 shadow-sm`}
+    >
       <Link className="absolute inset-0" href={`/listing/${id}`}></Link>
       <picture className="flex aspect-[16/9] max-h-52 overflow-hidden rounded-md border bg-muted">
         <img
@@ -30,6 +32,6 @@ export default async function Listing({id, classname}: props) {
           2d 7h
         </p>
       </div>
-    </Card>
+    </div>
   )
 }
