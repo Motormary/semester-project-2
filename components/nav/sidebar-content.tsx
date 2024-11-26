@@ -40,27 +40,27 @@ export default function SidebarContent({ params }: props) {
       </div>
       <div className="flex flex-col items-center gap-6 py-4 [&>a]:flex [&>a]:w-full [&>a]:justify-between">
         <SheetTrigger asChild>
-          <Link href={"/"}>
+          <Link className="py-2" href={"/"}>
             <p>Home</p>
-            <Home className="size-5" />
+            <Home strokeWidth={1.5} className="size-5" />
           </Link>
         </SheetTrigger>
         <SheetTrigger asChild>
-          <Link href={"/vendors/user"}>
+          <Link className="py-2" href={"/vendors/user#listings"}>
             <p>My listings</p>
             <span className="p-0.5 text-sm text-muted-foreground">48</span>
           </Link>
         </SheetTrigger>
         <SheetTrigger asChild>
-          <Link href={"/vendors/user/bids"}>
+          <Link className="py-2" href={"/vendors/user/bids"}>
             <p>My bids</p>
             <span className="p-0.5 text-sm text-muted-foreground">10</span>
           </Link>
         </SheetTrigger>
       </div>
-      <SheetFooter>
+      <SheetFooter className="absolute bottom-5 w-full left-0 px-5">
         <SheetClose asChild>
-          <Button>Save changes</Button>
+          <Button variant="outline">Close</Button>
         </SheetClose>
       </SheetFooter>
     </>

@@ -21,7 +21,7 @@ export default async function Page({ children }: props) {
   return (
     <Card className="h-full w-full space-y-4 p-4 xs:has-[.listings]:rounded-tl-none [&>.listings]:has-[[data-pending]]:animate-pulse">
       <ProfileListingSearch />
-      <div className="listings flex flex-wrap">
+      <div id="listings" className="listings flex flex-wrap">
         <Suspense fallback={<LoadingList />}>{children}</Suspense>
       </div>
       <Pagination>
