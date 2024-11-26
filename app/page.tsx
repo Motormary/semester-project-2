@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <div className="w-full space-y-4">
       <Separator />
-      <h1 className="text-2xl font-semibold">All listings</h1>
+      <h1>All listings</h1>
       <div className="grid grid-cols-[repeat(auto-fill,minmax(290px,1fr))] gap-4">
         <Listing classname="hover:shadow-md focus-within:outline outline-2 outline-primary border" id={"1"} />
         <Listing classname="hover:shadow-md focus-within:outline outline-2 outline-primary border" id={"2"} />
