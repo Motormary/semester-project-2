@@ -182,7 +182,7 @@ export default function RegisterCard() {
             </Button>
             <CardDescription>
               Not registered yet?{" "}
-              <Link className="font-semibold hover:text-primary" href="/register">
+              <Link className="font-semibold hover:text-primary" href="/login">
                 Sign in!
               </Link>
             </CardDescription>

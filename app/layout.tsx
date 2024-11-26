@@ -31,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} flex min-h-svh flex-col items-center bg-muted antialiased dark:bg-background`}
+        className={`${geistSans.variable} ${geistMono.variable} relative min-h-svh flex flex-col items-center bg-muted antialiased dark:bg-background`}
       >
         <ThemeProvider
           attribute="class"
@@ -40,12 +40,12 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <TopNav />
-          <main className="relative flex min-h-svh w-full max-w-content px-4 pb-10 h-full">
+          <main className="relative h-full flex w-full max-w-content px-4 mb-[15rem]">
             {children}
             <ModeToggle />
           </main>
-          <Footer />
           <Toaster richColors />
+          <Footer />
         </ThemeProvider>
       </body>
     </html>
