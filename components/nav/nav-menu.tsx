@@ -9,14 +9,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { cn } from "@/lib/utils"
-import {
-  Box,
-  Home,
-  LogOut,
-  Menu,
-  User,
-  Users
-} from "lucide-react"
+import { Box, Home, LogOut, Menu, User, Users } from "lucide-react"
 import Link from "next/link"
 import NewListing from "../listing/new-listing"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
@@ -29,6 +22,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu"
 import { Separator } from "../ui/separator"
+import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu"
 
 export default async function NavMenu() {
   const session = true
@@ -62,56 +56,81 @@ export default async function NavMenu() {
         Vendors
       </Button> */}
       {/* Desktop menu */}
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <div className="hidden md:flex">
-            <Button
-              variant="ghost"
-              className="group px-0 hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
-            >
-              <span className="max-w-36 truncate">Username</span>
-              <Avatar className="max-h-8 max-w-8 outline-primary ring-primary ring-offset-2 group-focus:ring">
-                <AvatarImage
-                  height={32}
-                  width={32}
-                  src="https://github.com/shadcn.png"
-                  alt="Avatar"
-                />
-                <AvatarFallback>
-                  <User />
-                </AvatarFallback>
-              </Avatar>
-            </Button>
-          </div>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent
-          align="end"
-          sideOffset={12}
-          className="w-56 max-md:hidden"
-        >
-          <DropdownMenuLabel>Account</DropdownMenuLabel>
-          <DropdownMenuItem disabled>
-            <p className="text-sm">Total credits: 1000 Ω</p>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link className="flex justify-between" href="/vendors/user">
-              My page <User />
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link className="flex justify-between" href="/vendors/user/bids">
-              Bids <span className="text-xs p-0.5">48</span>
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link className="flex justify-between" href="/vendors/user/wins">
-              Wins <span className="text-xs p-0.5">10</span>
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>Log out</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      {session ? (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <div className="hidden md:flex">
+              <Button
+                variant="ghost"
+                className="group px-0 hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+              >
+                <span className="max-w-36 truncate">Username</span>
+                <Avatar className="max-h-8 max-w-8 outline-primary ring-primary ring-offset-2 group-focus:ring">
+                  <AvatarImage
+                    height={32}
+                    width={32}
+                    src="https://github.com/shadcn.png"
+                    alt="Avatar"
+                  />
+                  <AvatarFallback>
+                    <User />
+                  </AvatarFallback>
+                </Avatar>
+              </Button>
+            </div>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align="end"
+            sideOffset={12}
+            className="w-56 max-md:hidden"
+          >
+            <DropdownMenuGroup>
+              <DropdownMenuLabel>Account</DropdownMenuLabel>
+              <DropdownMenuItem disabled>
+                <p className="text-sm">Total credits: 1000 Ω</p>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link className="flex justify-between" href="/vendors/user">
+                  My page <User />
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link
+                  className="flex justify-between"
+                  href="/vendors/user/bids"
+                >
+                  Bids <span className="p-0.5 text-xs">48</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link
+                  className="flex justify-between"
+                  href="/vendors/user/wins"
+                >
+                  Wins <span className="p-0.5 text-xs">10</span>
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>Log out</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ) : (
+        <>
+          <Link
+            className={cn(buttonVariants({ variant: "outline" }), "hidden md:block")}
+            href="/login"
+          >
+            Login
+          </Link>
+          <Link
+            className={cn(buttonVariants({ variant: "default" }), "hidden md:block")}
+            href="/register"
+          >
+            Sign up
+          </Link>
+        </>
+      )}
       {/* Mobile menu */}
       <Sheet>
         <SheetTrigger asChild>
@@ -133,45 +152,56 @@ export default async function NavMenu() {
           </SheetHeader>
           <div className="my-2 flex flex-col gap-2">
             {session ? (
-              <div className="flex items-center gap-4 py-2 text-left sm:self-center">
-                <Avatar className="max-h-10 max-w-10">
-                  <AvatarImage
-                    height={40}
-                    width={40}
-                    src="https://github.com/shadcn.png"
-                    alt="Avatar"
-                  />
-                  <AvatarFallback>
-                    <User />
-                  </AvatarFallback>
-                </Avatar>
-                <Link href="/vendors/user" className="whitespace-nowrap">
-                  <p className="text-sm font-semibold">Username</p>
-                  <p className="truncate text-sm">myusername@stud.noroff.no</p>
-                  <p className="text-sm text-muted-foreground">
-                    Total credits: 1000 Ω
-                  </p>
+              <SheetTrigger asChild>
+                <Link
+                  href={"/vendors/user "}
+                  className="flex items-center gap-4 py-2 text-left sm:self-center"
+                >
+                  <Avatar className="max-h-10 max-w-10">
+                    <AvatarImage
+                      height={40}
+                      width={40}
+                      src="https://github.com/shadcn.png"
+                      alt="Avatar"
+                    />
+                    <AvatarFallback>
+                      <User />
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="whitespace-nowrap">
+                    <p className="text-sm font-semibold">Username</p>
+                    <p className="truncate text-sm">
+                      myusername@stud.noroff.no
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Total credits: 1000 Ω
+                    </p>
+                  </div>
                 </Link>
-              </div>
+              </SheetTrigger>
             ) : (
-              <div className="flex flex-col gap-6 py-4">
-                <Link
-                  href="/register"
-                  className={cn(buttonVariants({ variant: "default" }))}
-                >
-                  Sign up
-                </Link>
-                <Link
-                  href="/login"
-                  className={cn(buttonVariants({ variant: "outline" }))}
-                >
-                  Sign in
-                </Link>
+              <div className="flex flex-col gap-6 py-4 w-full sm:w-1/2 mx-auto">
+                <SheetTrigger asChild>
+                  <Link
+                    href="/register"
+                    className={cn(buttonVariants({ variant: "default" }))}
+                  >
+                    Sign up
+                  </Link>
+                </SheetTrigger>
+                <SheetTrigger asChild>
+                  <Link
+                    href="/login"
+                    className={cn(buttonVariants({ variant: "outline" }))}
+                  >
+                    Sign in
+                  </Link>
+                </SheetTrigger>
               </div>
             )}
           </div>
           <Separator />
-          <div className="flex flex-col items-center gap-6 py-4 [&>a]:flex [&>a]:w-full [&>a]:justify-between">
+          <div className="flex flex-col items-center gap-6 py-4 [&>a]:flex [&>a]:sm:w-1/2 [&>a]:max-sm:w-full [&>a]:justify-between">
             <SheetTrigger asChild>
               <Link className="py-2" href={"/"}>
                 <p>Home</p>
@@ -202,7 +232,7 @@ export default async function NavMenu() {
                 <SheetTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="w-full justify-between px-0 py-2"
+                    className="max-sm:w-full sm:w-1/2 justify-between px-0 py-2"
                   >
                     <p className="text-base">Log out</p>
                     <span>
@@ -213,7 +243,7 @@ export default async function NavMenu() {
               </>
             ) : null}
           </div>
-          <SheetFooter className="absolute bottom-5 left-1/2 w-full max-w-96 -translate-x-1/2 px-5">
+          <SheetFooter className="absolute bottom-5 left-1/2 w-[95%] sm:w-1/2 -translate-x-1/2 px-5">
             <SheetClose asChild>
               <Button variant="outline">Close</Button>
             </SheetClose>

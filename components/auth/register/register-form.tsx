@@ -92,7 +92,7 @@ export default function RegisterCard() {
   }
 
   return (
-    <Card className="mx-auto flex flex-col justify-center md:w-1/3">
+    <Card className="mx-auto flex flex-col justify-center sm:w-1/2 lg:w-1/3">
       <CardHeader>
         <CardTitle className="flex items-center gap-4 justify-center">
           <h1>Register</h1>

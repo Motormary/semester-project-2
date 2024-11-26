@@ -55,10 +55,10 @@ export default function LoginCard() {
   }
 
   return (
-    <Card className="mx-auto flex flex-col justify-center md:w-1/3">
+    <Card className="mx-auto flex flex-col justify-center sm:w-1/2 lg:w-1/3">
       <CardHeader>
         <CardTitle className="flex items-center justify-center gap-4">
-          <h1>Log in</h1> <Image src={logo} alt="Logo" height="50" />
+          <h1>Log in</h1> <Image src={logo} alt="Logo" height="50" className="dark:invert" />
         </CardTitle>
       </CardHeader>
       <Form {...form}>
