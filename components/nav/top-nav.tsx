@@ -1,7 +1,7 @@
 import logo from "assets/images/logo_filled.png"
 import Link from "next/link"
 import SearchBar from "./search-bar"
-import NavMenu from "./sidebar"
+import NavMenu from "./nav-menu"
 import { Suspense } from "react"
 import { Skeleton } from "../ui/skeleton"
 
