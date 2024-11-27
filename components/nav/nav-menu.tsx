@@ -25,7 +25,7 @@ import { Separator } from "../ui/separator"
 import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu"
 
 export default async function NavMenu() {
-  const session = true
+  const session = false
   return (
     <>
       {session ? (

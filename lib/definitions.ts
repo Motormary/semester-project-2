@@ -1,5 +1,7 @@
 import { z } from "zod"
 
+
+
 const mediaSchema = z.object({
   url: z.string().url(),
   alt: z.string(),
@@ -24,8 +26,7 @@ export const newListingSchema = z.object({
   description: z.string().optional(),
   media: z.array(mediaSchema).optional(),
   tags: z.array(z.string()).optional(),
-  endsAt: z.date({required_error: "A date and time is required."
-  })
+  endsAt: z.date({ required_error: "A date and time is required." }),
 })
 
 const metaSchema = z.object({
@@ -38,6 +39,9 @@ const metaSchema = z.object({
   totalCount: z.number().int().nonnegative(),
 })
 
+/**
+ * User schemas
+ */
 const profileSchema = z.object({
   name: z.string(),
   email: z.string().email(),
@@ -51,7 +55,63 @@ const profileSchema = z.object({
     listings: z.number(),
     wins: z.number(),
   }),
+  accessToken: z.string().optional()
 })
+
+// Export it for the zodresolver in the register-form
+export const RegisterUserSchema = z
+  .object({
+    name: z
+      .string()
+      .min(2, {
+        message: "Name must be at least 2 characters.",
+      })
+      .max(20, {
+        message: "Name cannot contain more than 20 characters.",
+      }),
+    avatar: z.object({
+      url: z.string(),
+      alt: z.string().optional(),
+    }),
+    email: z
+      .string()
+      .refine(
+        (val) => val.includes("@stud.noroff.no") || val.includes("@noroff.no"),
+        {
+          message: "Email must be a valid Noroff email.",
+        },
+      ),
+    password: z.string().min(8, {
+      message: "Password must be at least 8 characters.",
+    }),
+    confirm: z.string().min(8, {
+      message: "Password must be at least 8 characters.",
+    }),
+  })
+  .refine((data) => data.password === data.confirm, {
+    message: "Passwords must match.",
+    path: ["confirm"],
+  })
+
+  export const LoginUserSchema = z.object({
+    email: z
+      .string()
+      .refine(
+        (val) => val.includes("@stud.noroff.no") || val.includes("@noroff.no"),
+        {
+          message: "Email must be a valid Noroff email",
+        },
+      ),
+    password: z.string().min(8, {
+      message: "Password must be at least 8 characters.",
+    }),
+  })
+// ----------------------------
+
+/**
+ * 
+ */
+
 
 const errorSchema = z.object({
   code: z.string().optional(),
@@ -71,25 +131,28 @@ const responseSchema = <T>(dataSchema: z.ZodType<T, any, any>) =>
 
 const getProfileSchema = responseSchema(profileSchema)
 
-
 /**
  *
  *
- * Undefined data type / takes a zod schema as <T> 
- * 
- * 
+ * Undefined data type / takes a zod schema as <T>
+ *
+ *
  * */
 export type ResponseType<T> = z.infer<ReturnType<typeof responseSchema<T>>>
 /**
  *
- * 
+ *
  *  Pre-defined types
- * 
- * 
- *  Profile
- * 
- * 
+ *
+ *
+ *  User
+ *
+ *
  * */
 export type GETProfile = z.infer<typeof getProfileSchema>
 
 export type UserProfile = z.infer<typeof profileSchema>
+
+export type UserRegister = z.infer<typeof RegisterUserSchema>
+
+export type UserLogin = z.infer<typeof LoginUserSchema>

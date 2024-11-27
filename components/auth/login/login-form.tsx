@@ -1,8 +1,5 @@
 "use client"
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useRouter } from "next/navigation"
-import { useForm } from "react-hook-form"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -21,36 +18,27 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { LoginUserSchema, UserLogin } from "@/lib/definitions"
+import { zodResolver } from "@hookform/resolvers/zod"
 import logo from "assets/images/logo_filled.png"
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { useForm } from "react-hook-form"
 
-const FormSchema = z.object({
-  email: z
-    .string()
-    .refine(
-      (val) => val.includes("@stud.noroff.no") || val.includes("@noroff.no"),
-      {
-        message: "Email must be a valid Noroff email",
-      },
-    ),
-  password: z.string().min(8, {
-    message: "Password must be at least 8 characters.",
-  }),
-})
+
 
 export default function LoginCard() {
   const router = useRouter()
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<UserLogin>({
+    resolver: zodResolver(LoginUserSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   })
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
+  async function onSubmit(data: UserLogin) {
     console.log(data)
   }
 

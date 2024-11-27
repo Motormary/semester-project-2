@@ -1,6 +1,11 @@
 "use client"
-import { z } from "zod"
+import { RegisterUserSchema, UserRegister } from "@/lib/definitions"
+import { user } from "@/lib/user-class"
 import { zodResolver } from "@hookform/resolvers/zod"
+import logo from "assets/images/logo_filled.png"
+import Image from "next/image"
+import Link from "next/link"
+import { useForm } from "react-hook-form"
 import { Button } from "../../ui/button"
 import {
   Card,
@@ -20,49 +25,10 @@ import {
   FormMessage,
 } from "../../ui/form"
 import { Input } from "../../ui/input"
-import { toast } from "sonner"
-import { useForm } from "react-hook-form"
-import Image from "next/image"
-import logo from "assets/images/logo_filled.png"
-import Link from "next/link"
-
-const FormSchema = z
-  .object({
-    name: z
-      .string()
-      .min(2, {
-        message: "Name must be at least 2 characters.",
-      })
-      .max(20, {
-        message: "Name cannot contain more than 20 characters.",
-      }),
-    avatar: z.object({
-      url: z.string(),
-      alt: z.string().optional(),
-    }),
-    email: z
-      .string()
-      .refine(
-        (val) => val.includes("@stud.noroff.no") || val.includes("@noroff.no"),
-        {
-          message: "Email must be a valid Noroff email.",
-        },
-      ),
-    password: z.string().min(8, {
-      message: "Password must be at least 8 characters.",
-    }),
-    confirm: z.string().min(8, {
-      message: "Password must be at least 8 characters.",
-    }),
-  })
-  .refine((data) => data.password === data.confirm, {
-    message: "Passwords must match.",
-    path: ["confirm"],
-  })
 
 export default function RegisterCard() {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<UserRegister>({
+    resolver: zodResolver(RegisterUserSchema),
     defaultValues: {
       name: "",
       avatar: {
@@ -75,8 +41,10 @@ export default function RegisterCard() {
     },
   })
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
-    if (data) {
+  async function onSubmit(data: UserRegister) {
+    const res = await user.register(data)
+
+    /*   if (data) {
       form.reset()
       toast.success("Welcome! 🎉", {
         description: (
@@ -88,20 +56,20 @@ export default function RegisterCard() {
       })
     } else {
       //   handleApiErrors(response.data, form)
-    }
+    } */
   }
 
   return (
     <Card className="mx-auto flex flex-col justify-center sm:w-1/2 lg:w-1/3">
       <CardHeader>
-        <CardTitle className="flex items-center gap-4 justify-center">
+        <CardTitle className="flex items-center justify-center gap-4">
           <h1>Register</h1>
           <Image
             src={logo}
             alt="Logo"
             height="50"
             className="place-self-center dark:invert"
-          /> 
+          />
         </CardTitle>
       </CardHeader>
       <Form {...form}>
