@@ -19,6 +19,15 @@ const listingSchema = z.object({
   }),
 })
 
+export const newListingSchema = z.object({
+  title: z.string().min(4, { message: "Minimum 4 characters required" }),
+  description: z.string().optional(),
+  media: z.array(mediaSchema).optional(),
+  tags: z.array(z.string()).optional(),
+  endsAt: z.date({required_error: "A date and time is required."
+  })
+})
+
 const metaSchema = z.object({
   isFirstPage: z.boolean(),
   isLastPage: z.boolean(),
@@ -50,6 +59,7 @@ const errorSchema = z.object({
   path: z.array(z.string()).optional(),
 })
 
+// Dynamic zod schema, takes a zod schema as params and uses it as the type for data.
 const responseSchema = <T>(dataSchema: z.ZodType<T, any, any>) =>
   z.object({
     errors: z.array(errorSchema).optional(),
@@ -61,8 +71,25 @@ const responseSchema = <T>(dataSchema: z.ZodType<T, any, any>) =>
 
 const getProfileSchema = responseSchema(profileSchema)
 
-export type ResponseType<T> = z.infer<ReturnType<typeof responseSchema<T>>>
 
+/**
+ *
+ *
+ * Undefined data type / takes a zod schema as <T> 
+ * 
+ * 
+ * */
+export type ResponseType<T> = z.infer<ReturnType<typeof responseSchema<T>>>
+/**
+ *
+ * 
+ *  Pre-defined types
+ * 
+ * 
+ *  Profile
+ * 
+ * 
+ * */
 export type GETProfile = z.infer<typeof getProfileSchema>
 
 export type UserProfile = z.infer<typeof profileSchema>
