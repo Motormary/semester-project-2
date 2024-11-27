@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Check } from "lucide-react"
+import { Calendar, Check, ImagePlus, List } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { DialogFooter, DialogTrigger } from "@/components/ui/dialog"
@@ -44,7 +44,7 @@ export default function Stepper({ children, isDesktop, form }: props) {
 
   return (
     <div
-      className={`group mx-auto w-full max-w-3xl sm:px-4 py-8`}
+      className={`group mx-auto w-full max-w-3xl py-8 sm:px-4`}
       data-state={currentStep}
     >
       <div className="mb-8">
@@ -62,6 +62,12 @@ export default function Stepper({ children, isDesktop, form }: props) {
               >
                 {currentStep > step.id ? (
                   <Check className="h-5 w-5" />
+                ) : step.id === 1 ? (
+                  <List />
+                ) : step.id === 2 ? (
+                  <ImagePlus />
+                ) : step.id === 3 ? (
+                  <Calendar />
                 ) : (
                   step.id
                 )}
