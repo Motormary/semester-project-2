@@ -3,12 +3,10 @@ import Link from "next/link"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Button } from "../ui/button"
 import { Card } from "../ui/card"
+import wait from "@/lib/wait"
 
-type props = {
-  name: string
-}
-
-export default async function ProfileInfo({ name }: props) {
+export default async function ProfileInfo() {
+  await wait(1000)
   return (
     <Card className="sm:max-w-[274px] mx-auto space-y-6 overflow-hidden p-4 py-5 h-fit sm:mt-[2rem]">
       <Avatar className="h-full w-full max-h-[258px] max-w-[258px] mx-auto">

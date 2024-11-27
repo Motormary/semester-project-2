@@ -8,6 +8,6 @@ export default async function SelectedVendor({
 }) {
   const name = (await params).name
   return (
-      <ProfileInfo name={name} />
+      <ProfileInfo />
   )
 }
