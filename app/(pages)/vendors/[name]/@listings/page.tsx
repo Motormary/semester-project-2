@@ -1,4 +1,5 @@
 import Listing from "@/components/listing/listing"
+import wait from "@/lib/wait"
 
 export default async function ProfileListings({
   params,
@@ -6,6 +7,7 @@ export default async function ProfileListings({
   params: Promise<{ name: string }>
 }) {
   const name = (await params).name
+  await wait(1000)
   return (
     <>
       <h1 className="sr-only">My Listings</h1>
