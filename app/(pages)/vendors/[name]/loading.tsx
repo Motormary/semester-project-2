@@ -1,7 +1,7 @@
 import ListingLoading from "@/components/listing/listing-skeleton"
 import { Skeleton } from "@/components/ui/skeleton"
 
-export default async function Loading() {
+export function ProfileLoading() {
   return (
     <div className="mx-auto h-fit w-full space-y-6 overflow-hidden rounded-lg border bg-card p-4 py-5 shadow-sm sm:mt-8 sm:max-w-[274px]">
       <Skeleton className="mx-auto aspect-square h-[240px] w-[240px] rounded-full" />
@@ -34,7 +34,7 @@ export default async function Loading() {
   )
 }
 
-export function LoadingList() {
+export default async function LoadingList() {
   return (
     <>
       {Array.from({ length: 6 }).map((_, index) => (
