@@ -1,7 +1,12 @@
 "use server"
 
 import { API_AUTH_REGISTER, API_SOCIAL_PROFILES } from "@/lib/constants"
-import { Method, TYPE_GET_USER, TYPE_USER, TYPE_USER_LOGIN } from "@/lib/definitions"
+import {
+  Method,
+  TYPE_GET_USER,
+  TYPE_USER,
+  TYPE_USER_LOGIN,
+} from "@/lib/definitions"
 import { createSession, verifySession } from "@/lib/session"
 import bcrypt from "bcrypt"
 import { cache } from "react"
@@ -67,31 +72,36 @@ export const getCurrentUser = cache(async () => {
   return await getUser(session.user)
 })
 
-export const getUserListings = cache(async ({name, searchQuery, tag, param}: {
-  name : string
-  searchQuery: string
-  tag: string
-  param: string
-}): Promise<TYPE_GET_USER> => {
-  const session = await verifySession()
-  const urlz = new URLSearchParams()
-  const newUrl = `${API_SOCIAL_PROFILES}/listings?_active=true${tag ? `` : ""}`
-  const res = await superFetch({
-    method: Method.GET,
-    url: API_SOCIAL_PROFILES + "/listings?_active=true" + searchQuery ? `/search?q=${searchQuery}` : "",
-    body: name,
-    token: session.accessToken,
-    tags: [`user-${name}-listings`],
-  })
+export const getUserListings = cache(
+  async ({
+    name,
+    searchQuery,
+    tag,
+    user,
+  }: {
+    name: string
+    searchQuery: string
+    tag: string
+    user: string
+  }): Promise<TYPE_GET_USER> => {
+    const session = await verifySession()
+    const urlWithParams = `${API_SOCIAL_PROFILES}/${user}/listings?_active=true${tag ? `&_tag=${tag}` : ""}${searchQuery ? `/search?q=${searchQuery}` : ""}`
+    const res = await superFetch({
+      method: Method.GET,
+      url: urlWithParams,
+      body: name,
+      token: session.accessToken,
+      tags: [`user-${name}-listings`],
+    })
 
-  if (!res.success) {
-    console.error(res.data)
+    if (!res.success) {
+      console.error(res.data)
+      return res
+    }
+
     return res
-  }
-
-  return res
-})
-
+  },
+)
 
 // UPDATE
 export const updateUser = async (data: TYPE_USER): Promise<TYPE_GET_USER> => {
@@ -113,6 +123,5 @@ export const updateUser = async (data: TYPE_USER): Promise<TYPE_GET_USER> => {
 
   return res
 }
-
 
 // DELETE

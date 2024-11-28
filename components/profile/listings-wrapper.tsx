@@ -9,7 +9,7 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination"
-import ProfileListingSearch from "@/components/ui/search-bar"
+import ProfileListingSearch from "@/components/ui/profile-listing-search-bar"
 
 type props = {
   children: React.ReactNode
