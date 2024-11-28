@@ -1,23 +1,45 @@
 "use server"
 
 import { API_AUTH_REGISTER } from "@/lib/constants"
+import {
+  Method,
+  TYPE_GET_USER,
+  TYPE_USER_LOGIN
+} from "@/lib/definitions"
+import { createSession } from "@/lib/session"
+import bcrypt from "bcrypt"
 import superFetch from "./fetch"
-import { UserLogin } from "@/lib/definitions"
 
-export async function RegisterUser(data: UserLogin) {
-  const response = await superFetch({
-    method: "POST",
+// CREATE
+export async function RegisterUser(
+  data: TYPE_USER_LOGIN,
+): Promise<TYPE_GET_USER> {
+  console.log("Starting registration")
+  const res = await superFetch({
+    method: Method.POST,
     url: API_AUTH_REGISTER,
-    body: data,
+    body: {
+      ...data,
+      password: await bcrypt.hash(data.password, 10),
+    },
   })
 
-  // TODO: Handle response
-  
-  if (response.error) {
-    throw new Error(await response.error)
-  } else if (response.data && !response.data.ok) {
-    console.error("Error registering user:", await response.data.json())
-  } else {
-    console.log("Successful registration!", await response.data?.json())
-  }
+  if (!res.success) return res
+
+  // Create session and redirect
+  await createSession({
+    accessToken: res.data.data.accessToken as string,
+    username: res.data.data.name,
+  })
+
+  delete res.data.data.accessToken
+
+  return res // Just to make TS shut up.
+
 }
+
+// READ
+
+// UPDATE
+
+// DELETE

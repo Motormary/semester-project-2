@@ -1,11 +1,6 @@
 import "server-only"
 
-import { cookies } from "next/headers"
-
-export enum CacheOptions {
-  NoStore = "no-store",
-  ForceCache = "force-cache",
-}
+import { CacheOptions, ErrorType, Method } from "@/lib/definitions"
 
 /**
  * A helper function for making server-side API calls with headers, token handling,
@@ -14,7 +9,7 @@ export enum CacheOptions {
  * @param method - HTTP method to use for the request (GET, POST, etc.)
  * @param path - API endpoint path to request
  * @param body - Optional request body to send with POST/PUT requests
- * @param disableCache - Flag to disable caching (default: true)
+ * @param cache - Flag to enable caching (default: no-store)
  * @param revalidate - Optional number of seconds to revalidate the cache
  * @param tags - Optional array of cache tags for targeted invalidation
  *
@@ -23,27 +18,26 @@ export default async function superFetch({
   method,
   url,
   body,
+  token,
   cache = CacheOptions.NoStore,
   revalidate,
   tags,
 }: {
-  method: string
+  method: Method
   url: string
+  token?: string
   body?: any
   cache?: CacheOptions
   revalidate?: number
   tags?: string[]
 }) {
   if (!method || !url) throw new Error("Missing params")
-  const cookie = await cookies()
   const headers = new Headers()
 
   // Check for token cookie
-  const hasToken = cookie.has("token")
-  if (hasToken) {
+  if (token) {
     // Add accessToken to headers from cookies
-    const token = cookie.get("token")
-    headers.append("Authorization", `Bearer ${token?.value as string}`)
+    headers.append("Authorization", `Bearer ${token}`)
     headers.append("X-Noroff-API-Key", process.env.API_KEY as string)
   }
 
@@ -51,7 +45,7 @@ export default async function superFetch({
   const requestOptions: RequestInit = {
     method: method,
     headers,
-    cache: !revalidate ? cache : undefined,
+    cache: !revalidate ? cache : undefined, // cache can't be set with revalidate
     next: {
       revalidate: revalidate, // Time to revalidate fetch request - SECONDS (3600 = 1 hour)
       tags: tags, // Add tags to the fetch request for targeted invalidation
@@ -64,7 +58,37 @@ export default async function superFetch({
     requestOptions.body = JSON.stringify(body)
   }
 
-  return fetch(url, requestOptions)
-    .then((response) => ({ data: response, error: null }))
-    .catch((error) => ({ data: null, error }))
+  // Here we avoid the try/catch pit of despair
+  const response = await fetch(url, requestOptions)
+    .then((res) => ({ data: res, success: true }))
+    .catch((error) => ({ data: error, success: false }))
+
+  /**
+   * Pass a source we can check
+   * if source = caught? Bad. Show user generic error message in a toast or throw it to the errorBoundary.
+   * if source = api? Good. We can show the user an error based on the lovely error array from zie backend...
+   */
+  if (!response.success) {
+    return {
+      success: false,
+      source: ErrorType.CAUGHT,
+      data: await response.data.message,
+    }
+  }
+
+  const data = method !== Method.DELETE ? await response.data.json() : null // BE doesn't return any data if delete req is ok :-)
+
+  if (response.success && !response.data.ok) {
+    return {
+      success: false,
+      source: ErrorType.API,
+      data,
+    }
+  }
+
+  return {
+    success: true,
+    source: null,
+    data,
+  }
 }

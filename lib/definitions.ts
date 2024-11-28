@@ -1,6 +1,22 @@
 import { z } from "zod"
 
+export enum CacheOptions {
+  NoStore = "no-store",
+  ForceCache = "force-cache",
+}
 
+export enum ErrorType {
+  CAUGHT = "caught",
+  API = "api",
+}
+
+export enum Method {
+  POST = "POST",
+  DELETE = "DELETE",
+  PATCH = "PATCH",
+  PUT = "PUT",
+  GET = "GET",
+}
 
 const mediaSchema = z.object({
   url: z.string().url(),
@@ -42,7 +58,7 @@ const metaSchema = z.object({
 /**
  * User schemas
  */
-const profileSchema = z.object({
+const ProfileSchema = z.object({
   name: z.string(),
   email: z.string().email(),
   bio: z.string(),
@@ -55,7 +71,7 @@ const profileSchema = z.object({
     listings: z.number(),
     wins: z.number(),
   }),
-  accessToken: z.string().optional()
+  accessToken: z.string().optional(),
 })
 
 // Export it for the zodresolver in the register-form
@@ -93,25 +109,24 @@ export const RegisterUserSchema = z
     path: ["confirm"],
   })
 
-  export const LoginUserSchema = z.object({
-    email: z
-      .string()
-      .refine(
-        (val) => val.includes("@stud.noroff.no") || val.includes("@noroff.no"),
-        {
-          message: "Email must be a valid Noroff email",
-        },
-      ),
-    password: z.string().min(8, {
-      message: "Password must be at least 8 characters.",
-    }),
-  })
+export const LoginUserSchema = z.object({
+  email: z
+    .string()
+    .refine(
+      (val) => val.includes("@stud.noroff.no") || val.includes("@noroff.no"),
+      {
+        message: "Email must be a valid Noroff email",
+      },
+    ),
+  password: z.string().min(8, {
+    message: "Password must be at least 8 characters.",
+  }),
+})
 // ----------------------------
 
 /**
- * 
+ *
  */
-
 
 const errorSchema = z.object({
   code: z.string().optional(),
@@ -119,40 +134,28 @@ const errorSchema = z.object({
   path: z.array(z.string()).optional(),
 })
 
-// Dynamic zod schema, takes a zod schema as params and uses it as the type for data.
-const responseSchema = <T>(dataSchema: z.ZodType<T, any, any>) =>
+// Dynamic zod schema, takes a zod schema as params and uses it as the type for data in the response object.
+const responseSchema = <T>(dataSchema: z.ZodType<T>) =>
   z.object({
-    errors: z.array(errorSchema).optional(),
-    status: z.string(),
-    statusCode: z.number(),
-    data: dataSchema,
-    meta: metaSchema.optional(),
+    success: z.boolean(),
+    source: z.enum([ErrorType.API, ErrorType.CAUGHT]).nullish(),
+    data: z.object({
+      errors: z.array(errorSchema).optional(),
+      status: z.string(),
+      statusCode: z.number(),
+      data: dataSchema,
+      meta: metaSchema.optional(),
+    }),
   })
 
-const getProfileSchema = responseSchema(profileSchema)
+const getProfileSchema = responseSchema(ProfileSchema)
 
-/**
- *
- *
- * Undefined data type / takes a zod schema as <T>
- *
- *
- * */
-export type ResponseType<T> = z.infer<ReturnType<typeof responseSchema<T>>>
-/**
- *
- *
- *  Pre-defined types
- *
- *
- *  User
- *
- *
- * */
-export type GETProfile = z.infer<typeof getProfileSchema>
+// Flat user types
+export type TYPE_USER = z.infer<typeof ProfileSchema>
 
-export type UserProfile = z.infer<typeof profileSchema>
+export type TYPE_USER_REGISTER = z.infer<typeof RegisterUserSchema>
 
-export type UserRegister = z.infer<typeof RegisterUserSchema>
+export type TYPE_USER_LOGIN = z.infer<typeof LoginUserSchema>
 
-export type UserLogin = z.infer<typeof LoginUserSchema>
+// User request types
+export type TYPE_GET_USER = z.infer<typeof getProfileSchema>

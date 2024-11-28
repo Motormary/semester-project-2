@@ -1,19 +1,30 @@
 import { cache } from "react"
-import { GETProfile, UserLogin, UserRegister } from "./definitions"
+import {
+  TYPE_GET_USER,
+  TYPE_USER_LOGIN,
+  TYPE_USER_REGISTER,
+} from "./definitions"
 import { RegisterUser } from "@/app/actions/auth"
 
 // TODO: REMOVE VOIDS
 
 class UserApi {
-  public register = async (data: UserRegister): Promise<GETProfile | void> => {
+  public register = async (
+    data: TYPE_USER_REGISTER,
+  ): Promise<TYPE_GET_USER> => {
     return await RegisterUser(data)
+    
   }
 
-  public login = async (data: UserLogin): Promise<GETProfile | void> => {}
+  public login = async (
+    data: TYPE_USER_LOGIN,
+  ): Promise<TYPE_GET_USER | void> => {}
 
-  public get = cache(async (name: string): Promise<GETProfile | void> => {})
+  public get = cache(async (name: string): Promise<TYPE_GET_USER | void> => {})
 
-  public update = async (data: UserRegister): Promise<GETProfile | void> => {}
+  public update = async (
+    data: TYPE_USER_REGISTER,
+  ): Promise<TYPE_GET_USER | void> => {}
 }
 
 export const user = new UserApi()

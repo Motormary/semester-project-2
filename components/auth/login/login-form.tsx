@@ -18,7 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { LoginUserSchema, UserLogin } from "@/lib/definitions"
+import { LoginUserSchema, TYPE_USER_LOGIN } from "@/lib/definitions"
 import { zodResolver } from "@hookform/resolvers/zod"
 import logo from "assets/images/logo_filled.png"
 import Image from "next/image"
@@ -30,7 +30,7 @@ import { useForm } from "react-hook-form"
 
 export default function LoginCard() {
   const router = useRouter()
-  const form = useForm<UserLogin>({
+  const form = useForm<TYPE_USER_LOGIN>({
     resolver: zodResolver(LoginUserSchema),
     defaultValues: {
       email: "",
@@ -38,7 +38,7 @@ export default function LoginCard() {
     },
   })
 
-  async function onSubmit(data: UserLogin) {
+  async function onSubmit(data: TYPE_USER_LOGIN) {
     console.log(data)
   }
 

@@ -1,5 +1,5 @@
 "use client"
-import { RegisterUserSchema, UserRegister } from "@/lib/definitions"
+import { RegisterUserSchema, TYPE_USER_REGISTER } from "@/lib/definitions"
 import { user } from "@/lib/user-class"
 import { zodResolver } from "@hookform/resolvers/zod"
 import logo from "assets/images/logo_filled.png"
@@ -27,7 +27,7 @@ import {
 import { Input } from "../../ui/input"
 
 export default function RegisterCard() {
-  const form = useForm<UserRegister>({
+  const form = useForm<TYPE_USER_REGISTER>({
     resolver: zodResolver(RegisterUserSchema),
     defaultValues: {
       name: "",
@@ -41,8 +41,9 @@ export default function RegisterCard() {
     },
   })
 
-  async function onSubmit(data: UserRegister) {
+  async function onSubmit(data: TYPE_USER_REGISTER) {
     const res = await user.register(data)
+    console.log("🚀 ~ onSubmit ~ res:", res.data)
 
     /*   if (data) {
       form.reset()
