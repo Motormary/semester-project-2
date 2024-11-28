@@ -4,7 +4,7 @@ import {
   TYPE_USER_LOGIN,
   TYPE_USER_REGISTER,
 } from "./definitions"
-import { RegisterUser } from "@/app/actions/auth"
+import { createUser } from "@/app/actions/auth"
 
 // TODO: REMOVE VOIDS
 
@@ -12,7 +12,7 @@ class UserApi {
   public register = async (
     data: TYPE_USER_REGISTER,
   ): Promise<TYPE_GET_USER> => {
-    return await RegisterUser(data)
+    return await createUser(data)
     
   }
 

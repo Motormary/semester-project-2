@@ -2,13 +2,14 @@ import "server-only"
 import { SignJWT, jwtVerify } from "jose"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
+import { cache } from "react"
 
 // NEXTJS DOCS
 
 const secretKey = process.env.API_KEY
 const encodedKey = new TextEncoder().encode(secretKey)
 const cookie = {
-  name: "session",
+  name: "_ebox_session",
   duration: 24 * 60 * 60 * 1000,
 }
 
@@ -37,7 +38,6 @@ export async function createSession(data: {
 }) {
   const expires = new Date(Date.now() + cookie.duration)
   const session = await encrypt({ ...data, expires })
-  console.log("🚀 ~ Creating session:", session)
   const cookieStore = await cookies()
 
   cookieStore.set(cookie.name, session, {
@@ -50,7 +50,7 @@ export async function createSession(data: {
   redirect(`/vendors/${data.username}`)
 }
 
-export async function verifySession() {
+export const verifySession = cache(async () => {
   const cookie = (await cookies()).get("session")?.value
   const session = await decrypt(cookie)
 
@@ -58,8 +58,12 @@ export async function verifySession() {
     redirect("/login")
   }
 
-  return { isAuth: true, accessToken: session.accessToken }
-}
+  return {
+    isAuth: true,
+    accessToken: session.accessToken as string,
+    user: session.username as string,
+  }
+})
 
 export async function updateSession() {
   const session = (await cookies()).get("session")?.value

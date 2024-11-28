@@ -72,11 +72,11 @@ export default async function superFetch({
     return {
       success: false,
       source: ErrorType.CAUGHT,
-      data: await response.data.message,
+      data: response.data.message,
     }
   }
 
-  const data = method !== Method.DELETE ? await response.data.json() : null // BE doesn't return any data if delete req is ok :-)
+  const data = response.data.status !== 204 ? await response.data.json() : null // 204 = no content
 
   if (response.success && !response.data.ok) {
     return {

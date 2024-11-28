@@ -11,8 +11,8 @@ export default function Error({
   reset: () => void
 }) {
   return (
-    <div className="flex items-center gap-6">
-      <h2 className="text-2xl">404</h2>
+    <div className="flex h-96 w-full items-center justify-center gap-6">
+      <h2>404</h2>
       <Separator decorative orientation="vertical" className="h-16" />
       <div className="flex flex-col items-center gap-2">
         <p>{error.message}</p>

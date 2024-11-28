@@ -1,6 +1,10 @@
 "use client"
-import { RegisterUserSchema, TYPE_USER_REGISTER } from "@/lib/definitions"
-import { user } from "@/lib/user-class"
+import { createUser } from "@/app/actions/auth"
+import {
+  ErrorType,
+  RegisterUserSchema,
+  TYPE_USER_REGISTER,
+} from "@/lib/definitions"
 import { zodResolver } from "@hookform/resolvers/zod"
 import logo from "assets/images/logo_filled.png"
 import Image from "next/image"
@@ -25,6 +29,7 @@ import {
   FormMessage,
 } from "../../ui/form"
 import { Input } from "../../ui/input"
+import { toast } from "sonner"
 
 export default function RegisterCard() {
   const form = useForm<TYPE_USER_REGISTER>({
@@ -42,22 +47,26 @@ export default function RegisterCard() {
   })
 
   async function onSubmit(data: TYPE_USER_REGISTER) {
-    const res = await user.register(data)
+    const res = await createUser(data)
     console.log("🚀 ~ onSubmit ~ res:", res.data)
 
-    /*   if (data) {
-      form.reset()
-      toast.success("Welcome! 🎉", {
+    if (res.source === ErrorType.CAUGHT) {
+      toast.error("Error", {
         description: (
           <span>
-            You&apos;ve been successfully registered as{" "}
-            <strong>{data.name}</strong>!
+            Something went wrong. Try again or contact support
           </span>
         ),
       })
     } else {
-      //   handleApiErrors(response.data, form)
-    } */
+      toast.error("Error", {
+        description: (
+          <span>
+            Something went wrong. Try again or contact support
+          </span>
+        ),
+      })
+    }
   }
 
   return (

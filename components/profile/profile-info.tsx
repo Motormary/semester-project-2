@@ -7,7 +7,7 @@ import { Button } from "../ui/button"
 import { Card } from "../ui/card"
 
 export default function ProfileInfo() {
-  const { name } = useParams()
+  const { slug } = useParams()
   return (
     <Card className="mx-auto h-fit space-y-6 overflow-hidden p-4 py-5 sm:mt-[2rem] sm:max-w-[274px]">
       <Avatar className="mx-auto h-full max-h-[258px] w-full max-w-[258px]">
@@ -21,7 +21,7 @@ export default function ProfileInfo() {
         </AvatarFallback>
       </Avatar>
       <div className="text-center">
-        <p className="break-words text-lg">{name}</p>
+        <p className="break-words text-lg">{slug?.[0]}</p>
         <Link
           href="mailto:username@stud.noroff.no"
           className="text-sm text-muted-foreground"
