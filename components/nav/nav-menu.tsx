@@ -1,3 +1,4 @@
+import { getCurrentUser } from "@/app/actions/user"
 import { Button, buttonVariants } from "@/components/ui/button"
 import {
   Sheet,
@@ -9,6 +10,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { cn } from "@/lib/utils"
+import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu"
 import { Box, Home, LogOut, Menu, User, Users } from "lucide-react"
 import Link from "next/link"
 import NewListing from "../listing/new-listing"
@@ -22,13 +24,15 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu"
 import { Separator } from "../ui/separator"
-import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu"
 
 export default async function NavMenu() {
-  const session = false
+  // TODO: Reduce nesting..........?
+  const { data, success, source } = await getCurrentUser()
+  console.log("🚀 ~ NavMenu ~ data:", data)
+
   return (
     <>
-      {session ? (
+      {data ? (
         <NewListing>
           <Button className="relative max-md:size-10 max-md:rounded-full max-md:p-0">
             <span className="hidden md:block">New Listing</span>
@@ -56,7 +60,7 @@ export default async function NavMenu() {
         Vendors
       </Button> */}
       {/* Desktop menu */}
-      {session ? (
+      {data ? (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <div className="hidden md:flex">
@@ -64,7 +68,7 @@ export default async function NavMenu() {
                 variant="ghost"
                 className="group px-0 hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
               >
-                <span className="max-w-36 truncate">Username</span>
+                <span className="max-w-36 truncate">{}</span>
                 <Avatar className="max-h-8 max-w-8 outline-primary ring-primary ring-offset-2 group-focus:ring">
                   <AvatarImage
                     height={32}
@@ -118,13 +122,19 @@ export default async function NavMenu() {
       ) : (
         <>
           <Link
-            className={cn(buttonVariants({ variant: "outline" }), "hidden md:block")}
+            className={cn(
+              buttonVariants({ variant: "outline" }),
+              "hidden md:block",
+            )}
             href="/login"
           >
             Login
           </Link>
           <Link
-            className={cn(buttonVariants({ variant: "default" }), "hidden md:block")}
+            className={cn(
+              buttonVariants({ variant: "default" }),
+              "hidden md:block",
+            )}
             href="/register"
           >
             Sign up
@@ -151,7 +161,7 @@ export default async function NavMenu() {
             <SheetTitle>Mobile Menu</SheetTitle>
           </SheetHeader>
           <div className="my-2 flex flex-col gap-2">
-            {session ? (
+            {data ? (
               <SheetTrigger asChild>
                 <Link
                   href={"/vendors/user "}
@@ -180,7 +190,7 @@ export default async function NavMenu() {
                 </Link>
               </SheetTrigger>
             ) : (
-              <div className="flex flex-col gap-6 py-4 w-full sm:w-1/2 mx-auto">
+              <div className="mx-auto flex w-full flex-col gap-6 py-4 sm:w-1/2">
                 <SheetTrigger asChild>
                   <Link
                     href="/register"
@@ -201,14 +211,14 @@ export default async function NavMenu() {
             )}
           </div>
           <Separator />
-          <div className="flex flex-col items-center gap-6 py-4 [&>a]:flex [&>a]:sm:w-1/2 [&>a]:max-sm:w-full [&>a]:justify-between">
+          <div className="flex flex-col items-center gap-6 py-4 [&>a]:flex [&>a]:justify-between [&>a]:max-sm:w-full [&>a]:sm:w-1/2">
             <SheetTrigger asChild>
               <Link className="py-2" href={"/"}>
                 <p>Home</p>
                 <Home strokeWidth={1.5} className="size-5" />
               </Link>
             </SheetTrigger>
-            {session ? (
+            {data ? (
               <>
                 <SheetTrigger asChild>
                   <Link className="py-2" href={"/vendors/user#listings"}>
@@ -232,7 +242,7 @@ export default async function NavMenu() {
                 <SheetTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="max-sm:w-full sm:w-1/2 justify-between px-0 py-2"
+                    className="justify-between px-0 py-2 max-sm:w-full sm:w-1/2"
                   >
                     <p className="text-base">Log out</p>
                     <span>
@@ -243,7 +253,7 @@ export default async function NavMenu() {
               </>
             ) : null}
           </div>
-          <SheetFooter className="absolute bottom-5 left-1/2 w-[95%] sm:w-1/2 -translate-x-1/2 px-5">
+          <SheetFooter className="absolute bottom-5 left-1/2 w-[95%] -translate-x-1/2 px-5 sm:w-1/2">
             <SheetClose asChild>
               <Button variant="outline">Close</Button>
             </SheetClose>

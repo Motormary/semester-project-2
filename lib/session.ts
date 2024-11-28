@@ -13,7 +13,7 @@ const cookie = {
   duration: 24 * 60 * 60 * 1000,
 }
 
-export async function encrypt(payload: { accessToken: string; expires: Date }) {
+export async function encrypt(payload: { username: string, accessToken: string; expires: Date }) {
   return new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
@@ -28,7 +28,7 @@ export async function decrypt(session: string | undefined = "") {
     })
     return payload
   } catch (error) {
-    console.log("Failed to verify session")
+    console.error("Failed to verify session")
   }
 }
 
@@ -37,11 +37,11 @@ export async function createSession(data: {
   username: string
 }) {
   const expires = new Date(Date.now() + cookie.duration)
-  const session = await encrypt({ ...data, expires })
+  const session = await encrypt({ accessToken: data.accessToken, username: data.username, expires })
   const cookieStore = await cookies()
 
   cookieStore.set(cookie.name, session, {
-    httpOnly: true,
+    httpOnly: false,
     secure: true,
     sameSite: "lax",
     path: "/",
@@ -51,22 +51,27 @@ export async function createSession(data: {
 }
 
 export const verifySession = cache(async () => {
-  const cookie = (await cookies()).get("session")?.value
-  const session = await decrypt(cookie)
+  const encryptedSession = (await cookies()).get(cookie.name)?.value
+  const session = await decrypt(encryptedSession)
+  // TODO: update session based on date
 
   if (!session?.accessToken) {
-    redirect("/login")
-  }
-
-  return {
-    isAuth: true,
-    accessToken: session.accessToken as string,
-    user: session.username as string,
+    return {
+      isAuth: false,
+      accessToken: null,
+      user: null,
+    }
+  } else {
+    return {
+      isAuth: true,
+      accessToken: session.accessToken as string,
+      user: session.username as string,
+    }
   }
 })
 
 export async function updateSession() {
-  const session = (await cookies()).get("session")?.value
+  const session = (await cookies()).get(cookie.name)?.value
   const payload = await decrypt(session)
   const cookieStore = await cookies()
 
@@ -75,8 +80,8 @@ export async function updateSession() {
   }
 
   const expires = new Date(Date.now() + cookie.duration)
-  cookieStore.set("session", session, {
-    httpOnly: true,
+  cookieStore.set(cookie.name, session, {
+    httpOnly: false,
     secure: true,
     expires: expires,
     sameSite: "lax",
@@ -85,6 +90,6 @@ export async function updateSession() {
 }
 
 export async function deleteSession() {
-  ;(await cookies()).delete("session")
+  ;(await cookies()).delete(cookie.name)
   redirect("/")
 }

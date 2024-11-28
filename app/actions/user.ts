@@ -1,19 +1,46 @@
 "use server"
 
-import { API_AUTH_REGISTER, API_SOCIAL_PROFILES } from "@/lib/constants"
 import {
+  API_AUTH_LOGIN,
+  API_AUTH_REGISTER,
+  API_SOCIAL_PROFILES,
+} from "@/lib/constants"
+import {
+  ErrorType,
   Method,
   TYPE_GET_USER,
   TYPE_USER,
   TYPE_USER_LOGIN,
 } from "@/lib/definitions"
 import { createSession, verifySession } from "@/lib/session"
-import bcrypt from "bcrypt"
+import { revalidateTag } from "next/cache"
 import { cache } from "react"
 import superFetch from "./fetch"
-import { revalidateTag } from "next/cache"
 
 // TODO: Handle cache
+
+function failedToVerify() {
+  return {
+    success: false,
+    source: ErrorType.CAUGHT,
+    data: "Failed to validate session" as any,
+  }
+}
+
+export async function loginUser(data: TYPE_USER_LOGIN): Promise<TYPE_GET_USER> {
+  const res = await superFetch({
+    method: Method.POST,
+    url: API_AUTH_LOGIN,
+    body: data,
+  })
+
+  if (!res.success) {
+    console.error(res.data)
+    return res
+  }
+
+  return res
+}
 
 // CREATE
 export async function createUser(
@@ -22,10 +49,7 @@ export async function createUser(
   const res = await superFetch({
     method: Method.POST,
     url: API_AUTH_REGISTER,
-    body: {
-      ...data,
-      password: await bcrypt.hash(data.password, 10),
-    },
+    body: data,
   })
 
   if (!res.success) {
@@ -33,16 +57,24 @@ export async function createUser(
     return res
   }
 
+  const loginRes = await loginUser({
+    email: res.data.data.email,
+    password: data.password,
+  })
+  if (!loginRes?.success) {
+    console.error(loginRes)
+    return loginRes
+  }
   // Create session and redirect
   await createSession({
-    accessToken: res.data.data.accessToken as string,
-    username: res.data.data.name,
+    accessToken: loginRes.data.data.accessToken as string,
+    username: loginRes.data.data.name,
   })
 
   /**
    * The following code is just for silencing TS when we try to access the error props
    */
-  delete res.data.data.accessToken
+  delete res.data.accessToken
 
   return res
 }
@@ -50,10 +82,11 @@ export async function createUser(
 // READ
 export const getUser = cache(async (name: string): Promise<TYPE_GET_USER> => {
   const session = await verifySession()
+  if (!session.accessToken) return failedToVerify()
+
   const res = await superFetch({
     method: Method.GET,
-    url: API_SOCIAL_PROFILES,
-    body: name,
+    url: API_SOCIAL_PROFILES + `/${name}`,
     token: session.accessToken,
     tags: [`user-${name}`],
   })
@@ -68,7 +101,13 @@ export const getUser = cache(async (name: string): Promise<TYPE_GET_USER> => {
 
 export const getCurrentUser = cache(async () => {
   const session = await verifySession()
-  return await getUser(session.user)
+  if (!session.accessToken) return failedToVerify()
+  const res = await getUser(session.user)
+  return {
+    success: res.success,
+    source: res.source,
+    data: res.data,
+  }
 })
 
 export const getUserListings = cache(
@@ -84,6 +123,12 @@ export const getUserListings = cache(
     user: string
   }): Promise<TYPE_GET_USER> => {
     const session = await verifySession()
+    if (!session.accessToken)
+      return {
+        success: false,
+        source: ErrorType.CAUGHT,
+        data: "Failed to validate session" as any,
+      }
     const urlWithParams = `${API_SOCIAL_PROFILES}/${user}/listings?_active=true${tag ? `&_tag=${tag}` : ""}${searchQuery ? `/search?q=${searchQuery}` : ""}`
     const res = await superFetch({
       method: Method.GET,
@@ -105,6 +150,7 @@ export const getUserListings = cache(
 // UPDATE
 export const updateUser = async (data: TYPE_USER): Promise<TYPE_GET_USER> => {
   const session = await verifySession()
+  if (!session.accessToken) return failedToVerify()
   const res = await superFetch({
     method: Method.PUT,
     url: API_SOCIAL_PROFILES,
