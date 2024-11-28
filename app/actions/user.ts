@@ -13,6 +13,8 @@ import { cache } from "react"
 import superFetch from "./fetch"
 import { revalidateTag } from "next/cache"
 
+// TODO: Handle cache
+
 // CREATE
 export async function createUser(
   data: TYPE_USER_LOGIN,
@@ -39,9 +41,6 @@ export async function createUser(
 
   /**
    * The following code is just for silencing TS when we try to access the error props
-   * |
-   * |
-   * V
    */
   delete res.data.data.accessToken
 
@@ -91,7 +90,7 @@ export const getUserListings = cache(
       url: urlWithParams,
       body: name,
       token: session.accessToken,
-      tags: [`user-${name}-listings`],
+      // tags: [`user-${name}-listings`],
     })
 
     if (!res.success) {
@@ -119,7 +118,7 @@ export const updateUser = async (data: TYPE_USER): Promise<TYPE_GET_USER> => {
   }
 
   revalidateTag(`user-${data.name}`)
-  revalidateTag("users")
+  // revalidateTag("users")
 
   return res
 }
