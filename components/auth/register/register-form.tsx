@@ -1,5 +1,5 @@
 "use client"
-import { createUser } from "@/app/actions/auth"
+import { createUser } from "@/app/actions/user"
 import {
   ErrorType,
   RegisterUserSchema,
