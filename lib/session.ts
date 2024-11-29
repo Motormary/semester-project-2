@@ -4,7 +4,7 @@ import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import { cache } from "react"
 
-// NEXTJS DOCS
+// Followed nextjs docs
 
 const secretKey = process.env.API_KEY
 const encodedKey = new TextEncoder().encode(secretKey)
@@ -12,8 +12,17 @@ const cookie = {
   name: "_ebox_session",
   duration: 24 * 60 * 60 * 1000,
 }
+const noSession = {
+  isAuth: false,
+  accessToken: null,
+  user: null,
+}
 
-export async function encrypt(payload: { username: string, accessToken: string; expires: Date }) {
+export async function encrypt(payload: {
+  username: string
+  accessToken: string
+  expires: Date
+}) {
   return new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
@@ -37,7 +46,11 @@ export async function createSession(data: {
   username: string
 }) {
   const expires = new Date(Date.now() + cookie.duration)
-  const session = await encrypt({ accessToken: data.accessToken, username: data.username, expires })
+  const session = await encrypt({
+    accessToken: data.accessToken,
+    username: data.username,
+    expires,
+  })
   const cookieStore = await cookies()
 
   cookieStore.set(cookie.name, session, {
@@ -47,20 +60,19 @@ export async function createSession(data: {
     path: "/",
     expires,
   })
-  redirect(`/vendors/${data.username}`)
+  redirect("/")
 }
 
 export const verifySession = cache(async () => {
+  const hasSessionCookie = (await cookies()).has(cookie.name)
+  if (!hasSessionCookie) return noSession
+
   const encryptedSession = (await cookies()).get(cookie.name)?.value
   const session = await decrypt(encryptedSession)
   // TODO: update session based on date
 
   if (!session?.accessToken) {
-    return {
-      isAuth: false,
-      accessToken: null,
-      user: null,
-    }
+    return noSession
   } else {
     return {
       isAuth: true,

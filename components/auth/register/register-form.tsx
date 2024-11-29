@@ -48,7 +48,6 @@ export default function RegisterCard() {
 
   async function onSubmit(data: TYPE_USER_REGISTER) {
     const res = await createUser(data)
-    console.log("🚀 ~ onSubmit ~ res:", res?.data)
 
     if (res?.source === ErrorType.CAUGHT) {
       toast.error("Error", {

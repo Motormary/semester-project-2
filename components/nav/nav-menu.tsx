@@ -26,9 +26,7 @@ import {
 import { Separator } from "../ui/separator"
 
 export default async function NavMenu() {
-  // TODO: Reduce nesting..........?
-  const { data, success, source } = await getCurrentUser()
-  console.log("🚀 ~ NavMenu ~ data:", data)
+  const { data } = await getCurrentUser()
 
   return (
     <>
@@ -141,7 +139,6 @@ export default async function NavMenu() {
           </Link>
         </>
       )}
-      {/* Mobile menu */}
       <Sheet>
         <SheetTrigger asChild>
           <Button

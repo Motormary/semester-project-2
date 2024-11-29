@@ -14,7 +14,7 @@ import { CacheOptions, ErrorType, Method } from "@/lib/definitions"
  * @param tags - Optional array of cache tags for targeted invalidation
  *
  */
-export default async function superFetch({
+export default async function superFetch<T>({
   method,
   url,
   body,
@@ -30,7 +30,7 @@ export default async function superFetch({
   cache?: CacheOptions
   revalidate?: number
   tags?: string[]
-}) {
+}): Promise<T> {
   if (!method || !url) throw new Error("Missing params")
   const headers = new Headers()
 
@@ -65,30 +65,33 @@ export default async function superFetch({
 
   /**
    * Pass a source we can check
-   * if source = caught? Bad. Show user generic error message in a toast or throw it to the errorBoundary.
-   * if source = api? Good. We can show the user an error based on the lovely error array from zie backend...
+   * if ErrorType.CAUGHT return a string to the error field. Console.error this and show the user a generic error message instead
    */
   if (!response.success) {
     return {
       success: false,
       source: ErrorType.CAUGHT,
-      data: response.data.message,
-    }
+      data: null as null,
+      error: response.data.message,
+    } as T
   }
 
   const data = response.data.status !== 204 ? await response.data.json() : null // 204 = no content
 
+  //* If ErrorType.API set error as errors[] from backend
   if (response.success && !response.data.ok) {
     return {
       success: false,
       source: ErrorType.API,
       data,
-    }
+      error: data.errors,
+    } as T
   }
 
   return {
     success: true,
     source: null,
     data,
-  }
+    error: null,
+  } as T
 }

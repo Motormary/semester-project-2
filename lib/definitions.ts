@@ -6,8 +6,9 @@ export enum CacheOptions {
 }
 
 export enum ErrorType {
-  CAUGHT = "caught",
-  API = "api",
+  CAUGHT = "caught", // Error is unkown - Error will be a string
+  API = "api", // Error from BE - typeof errorSchema
+  SESSION = "session" // failed to verify auth - Error will be a string
 }
 
 export enum Method {
@@ -124,10 +125,6 @@ export const LoginUserSchema = z.object({
 })
 // ----------------------------
 
-/**
- *
- */
-
 const errorSchema = z.object({
   code: z.string().optional(),
   message: z.string(),
@@ -138,7 +135,7 @@ const errorSchema = z.object({
 const responseSchema = <T>(dataSchema: z.ZodType<T>) =>
   z.object({
     success: z.boolean(),
-    source: z.enum([ErrorType.API, ErrorType.CAUGHT]).nullish(),
+    source: z.enum([ErrorType.CAUGHT, ErrorType.API, ErrorType.SESSION]),
     data: z.object({
       errors: z.array(errorSchema).optional(),
       status: z.string(),
@@ -146,9 +143,12 @@ const responseSchema = <T>(dataSchema: z.ZodType<T>) =>
       data: dataSchema,
       meta: metaSchema.optional(),
     }),
+    error: z.string().or(z.array(errorSchema))
   })
 
 const getProfileSchema = responseSchema(ProfileSchema)
+
+export type TYPE_FETCH<T> = z.infer<ReturnType<typeof responseSchema<T>>>;
 
 // Flat user types
 export type TYPE_USER = z.infer<typeof ProfileSchema>
