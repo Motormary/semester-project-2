@@ -12,7 +12,7 @@ import {
   TYPE_USER,
   TYPE_USER_LOGIN,
 } from "@/lib/definitions"
-import { createSession, verifySession } from "@/lib/session"
+import { createSession, deleteSession, verifySession } from "@/lib/session"
 import { failedToVerify } from "@/lib/utils"
 import { revalidateTag } from "next/cache"
 import { cache } from "react"
@@ -32,7 +32,18 @@ export async function loginUser(data: TYPE_USER_LOGIN): Promise<TYPE_GET_USER> {
     return res
   }
 
-  return res
+  // Create session and redirect
+  await createSession({
+    accessToken: res.data?.data.accessToken as string,
+    username: res.data?.data.name as string,
+  })
+
+  return {...res}
+
+}
+
+export async function logoutUser() {
+  await deleteSession()
 }
 
 // CREATE
@@ -54,15 +65,11 @@ export async function createUser(
     email: res?.data.data.email,
     password: data.password,
   })
-  if (!loginRes?.success) {
+
+  if (loginRes && !loginRes?.success) {
     console.error("⚡ loginUser@createUser ~ Error signing in:", loginRes)
     return { ...loginRes }
   }
-  // Create session and redirect
-  await createSession({
-    accessToken: loginRes?.data?.data.accessToken as string,
-    username: loginRes?.data?.data.name as string,
-  })
 }
 
 // READ

@@ -1,9 +1,10 @@
-import { getCurrentUser } from "@/app/actions/user"
+import { getCurrentUser, logoutUser } from "@/app/actions/user"
 import { Button, buttonVariants } from "@/components/ui/button"
 import {
   Sheet,
   SheetClose,
   SheetContent,
+  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
@@ -11,7 +12,7 @@ import {
 } from "@/components/ui/sheet"
 import { cn } from "@/lib/utils"
 import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu"
-import { Box, Home, LogOut, Menu, User, Users } from "lucide-react"
+import { Box, Home, Menu, User, Users } from "lucide-react"
 import Link from "next/link"
 import NewListing from "../listing/new-listing"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
@@ -24,6 +25,7 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu"
 import { Separator } from "../ui/separator"
+import MobileLogoutButton from "./logout-button"
 
 export default async function NavMenu() {
   const { data } = await getCurrentUser()
@@ -57,6 +59,7 @@ export default async function NavMenu() {
       <Button className="hidden md:block" variant="ghost" asChild>
         Vendors
       </Button> */}
+
       {/* Desktop menu */}
       {data ? (
         <DropdownMenu>
@@ -114,10 +117,17 @@ export default async function NavMenu() {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Log out</DropdownMenuItem>
+            <form action={logoutUser}>
+              <DropdownMenuItem>
+                <button className="w-full text-left" type="submit">
+                  Log out
+                </button>
+              </DropdownMenuItem>
+            </form>
           </DropdownMenuContent>
         </DropdownMenu>
       ) : (
+        /* Mobile menu */
         <>
           <Link
             className={cn(
@@ -156,6 +166,7 @@ export default async function NavMenu() {
         <SheetContent className="top-[65px] max-h-[calc(100%-64px)] w-full pt-0">
           <SheetHeader className="sr-only">
             <SheetTitle>Mobile Menu</SheetTitle>
+            <SheetDescription>Navigation</SheetDescription>
           </SheetHeader>
           <div className="my-2 flex flex-col gap-2">
             {data ? (
@@ -236,16 +247,8 @@ export default async function NavMenu() {
                   </Link>
                 </SheetTrigger>
                 <Separator />
-                <SheetTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className="justify-between px-0 py-2 max-sm:w-full sm:w-1/2"
-                  >
-                    <p className="text-base">Log out</p>
-                    <span>
-                      <LogOut className="size-5" />
-                    </span>
-                  </Button>
+                <SheetTrigger className="h-full w-full">
+                  <MobileLogoutButton />
                 </SheetTrigger>
               </>
             ) : null}

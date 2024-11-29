@@ -45,6 +45,7 @@ export async function createSession(data: {
   accessToken: string
   username: string
 }) {
+  if (!data.accessToken || !data.username) throw new Error("⚡ createSession ~ data missing or incomplete")
   const expires = new Date(Date.now() + cookie.duration)
   const session = await encrypt({
     accessToken: data.accessToken,
@@ -60,7 +61,6 @@ export async function createSession(data: {
     path: "/",
     expires,
   })
-  redirect("/")
 }
 
 export const verifySession = cache(async () => {
