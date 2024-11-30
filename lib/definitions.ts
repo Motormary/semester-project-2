@@ -75,6 +75,19 @@ const ProfileSchema = z.object({
   accessToken: z.string().optional(),
 })
 
+const BidsSchema = z.object({
+  id: z.string(),
+  amount: z.number(),
+  bidder: z.object({
+    name: z.string(),
+    email: z.string().email(),
+    bio: z.string(),
+    avatar: mediaSchema,
+    banner: mediaSchema,
+  }),
+  created: z.date()
+})
+
 // Export it for the zodresolver in the register-form
 export const RegisterUserSchema = z
   .object({
@@ -141,12 +154,13 @@ const responseSchema = <T>(dataSchema: z.ZodType<T>) =>
       status: z.string(),
       statusCode: z.number(),
       data: dataSchema,
-      meta: metaSchema.optional(),
+      meta: metaSchema,
     }),
     error: z.string().or(z.array(errorSchema))
   })
 
 const getProfileSchema = responseSchema(ProfileSchema)
+const getUserBidsSchema = responseSchema(BidsSchema)
 
 export type TYPE_FETCH<T> = z.infer<ReturnType<typeof responseSchema<T>>>;
 
@@ -156,6 +170,8 @@ export type TYPE_USER = z.infer<typeof ProfileSchema>
 export type TYPE_USER_REGISTER = z.infer<typeof RegisterUserSchema>
 
 export type TYPE_USER_LOGIN = z.infer<typeof LoginUserSchema>
+
+export type TYPE_GET_USER_BIDS = z.infer<typeof getUserBidsSchema>
 
 // User request types
 export type TYPE_GET_USER = z.infer<typeof getProfileSchema>

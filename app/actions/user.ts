@@ -9,6 +9,7 @@ import {
   CacheOptions,
   Method,
   TYPE_GET_USER,
+  TYPE_GET_USER_BIDS,
   TYPE_USER,
   TYPE_USER_LOGIN,
 } from "@/lib/definitions"
@@ -38,8 +39,7 @@ export async function loginUser(data: TYPE_USER_LOGIN): Promise<TYPE_GET_USER> {
     username: res.data?.data.name as string,
   })
 
-  return {...res}
-
+  return { ...res }
 }
 
 export async function logoutUser() {
@@ -89,16 +89,16 @@ export const getUser = cache(async (name: string): Promise<TYPE_GET_USER> => {
     return { ...res }
   }
 
-  return res
+  return { ...res }
 })
 
-export const getCurrentUser = cache(async () => {
+export const getCurrentUser = cache(async (): Promise<TYPE_GET_USER> => {
   const session = await verifySession()
   if (!session.accessToken) return failedToVerify()
   const res = await getUser(session.user)
+
   return {
     ...res,
-    data: res.data.data,
   }
 })
 
@@ -106,12 +106,10 @@ export const getCurrentUser = cache(async () => {
 
 export const getUserListings = cache(
   async ({
-    name,
     searchQuery,
     tag,
     user,
   }: {
-    name: string
     searchQuery: string
     tag: string
     user: string
@@ -122,7 +120,6 @@ export const getUserListings = cache(
     const res = await superFetch<any>({
       method: Method.GET,
       url: urlWithParams,
-      body: name,
       token: session.accessToken,
       // tags: [`user-${name}-listings`],
     })
@@ -133,6 +130,27 @@ export const getUserListings = cache(
     }
 
     return res
+  },
+)
+
+export const getUserBids = cache(
+  async (name: string): Promise<TYPE_GET_USER_BIDS> => {
+    const session = await verifySession()
+    if (!session.accessToken) return failedToVerify()
+    const res = await superFetch<TYPE_GET_USER_BIDS>({
+      method: Method.GET,
+      url: API_AH_USERS + `/${name}/bids`,
+      token: session.accessToken,
+      cache: CacheOptions.ForceCache,
+      tags: [`user-${name}-bids`],
+    })
+
+    if (!res.success) {
+      console.error("⚡ getUserBids ~ Error fetching user bids:", res)
+      return { ...res }
+    }
+
+    return { ...res }
   },
 )
 

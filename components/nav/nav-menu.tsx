@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/sheet"
 import { cn } from "@/lib/utils"
 import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu"
-import { Box, Home, Menu, User, Users } from "lucide-react"
+import { Box, Home, Menu, User } from "lucide-react"
 import Link from "next/link"
 import NewListing from "../listing/new-listing"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
@@ -26,13 +26,19 @@ import {
 } from "../ui/dropdown-menu"
 import { Separator } from "../ui/separator"
 import MobileLogoutButton from "./logout-button"
+import UserBidsCounter from "./bids-counter"
 
 export default async function NavMenu() {
-  const { data } = await getCurrentUser()
+  let user
+  const { data, success } = await getCurrentUser()
+
+  if (success) user = data.data
+
+  // TODO: Components to fetch wins/bids/listings
 
   return (
     <>
-      {data ? (
+      {user ? (
         <NewListing>
           <Button className="relative max-md:size-10 max-md:rounded-full max-md:p-0">
             <span className="hidden md:block">New Listing</span>
@@ -61,7 +67,7 @@ export default async function NavMenu() {
       </Button> */}
 
       {/* Desktop menu */}
-      {data ? (
+      {user ? (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <div className="hidden md:flex">
@@ -74,7 +80,7 @@ export default async function NavMenu() {
                   <AvatarImage
                     height={32}
                     width={32}
-                    src="https://github.com/shadcn.png"
+                    src={user.avatar.url}
                     alt="Avatar"
                   />
                   <AvatarFallback>
@@ -90,36 +96,50 @@ export default async function NavMenu() {
             className="w-56 max-md:hidden"
           >
             <DropdownMenuGroup>
-              <DropdownMenuLabel>Account</DropdownMenuLabel>
+              <DropdownMenuLabel className="overflow-hidden truncate">
+                {user.email}
+              </DropdownMenuLabel>
               <DropdownMenuItem disabled>
-                <p className="text-sm">Total credits: 1000 Ω</p>
+                <p className="overflow-hidden truncate text-sm">
+                  Total credits: {user.credits} Ω
+                </p>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link className="flex justify-between" href="/vendors/user">
+                <Link
+                  className="flex justify-between"
+                  href={`/vendors/${user.name}`}
+                >
                   My page <User />
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link
                   className="flex justify-between"
-                  href="/vendors/user/bids"
+                  href={`/vendors/${user.name}/bids`}
                 >
-                  Bids <span className="p-0.5 text-xs">48</span>
+                  Bids{" "}
+                  <UserBidsCounter
+                    name={user.name}
+                    className="p-0.5 text-xs"
+                  />
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link
                   className="flex justify-between"
-                  href="/vendors/user/wins"
+                  href={`/vendors/${user.name}/wins`}
                 >
-                  Wins <span className="p-0.5 text-xs">10</span>
+                  Wins <span className="p-0.5 text-xs">{user._count.wins}</span>
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <form action={logoutUser}>
               <DropdownMenuItem>
-                <button className="w-full text-left" type="submit">
+                <button
+                  className="w-full text-left hover:cursor-default"
+                  type="submit"
+                >
                   Log out
                 </button>
               </DropdownMenuItem>
@@ -169,7 +189,7 @@ export default async function NavMenu() {
             <SheetDescription>Navigation</SheetDescription>
           </SheetHeader>
           <div className="my-2 flex flex-col gap-2">
-            {data ? (
+            {user ? (
               <SheetTrigger asChild>
                 <Link
                   href={"/vendors/user "}
@@ -179,20 +199,18 @@ export default async function NavMenu() {
                     <AvatarImage
                       height={40}
                       width={40}
-                      src="https://github.com/shadcn.png"
+                      src={user.avatar.url}
                       alt="Avatar"
                     />
                     <AvatarFallback>
                       <User />
                     </AvatarFallback>
                   </Avatar>
-                  <div className="whitespace-nowrap">
-                    <p className="text-sm font-semibold">Username</p>
-                    <p className="truncate text-sm">
-                      myusername@stud.noroff.no
-                    </p>
+                  <div className="overflow-hidden truncate whitespace-nowrap">
+                    <p className="text-sm font-semibold">{user.name}</p>
+                    <p className="truncate text-sm">{user.email}</p>
                     <p className="text-sm text-muted-foreground">
-                      Total credits: 1000 Ω
+                      Total credits: {user.credits} Ω
                     </p>
                   </div>
                 </Link>
@@ -226,26 +244,26 @@ export default async function NavMenu() {
                 <Home strokeWidth={1.5} className="size-5" />
               </Link>
             </SheetTrigger>
-            {data ? (
+            {user ? (
               <>
                 <SheetTrigger asChild>
-                  <Link className="py-2" href={"/vendors/user#listings"}>
-                    <p>My listings</p>
-                    <span className="p-0.5 text-sm">48</span>
+                  <Link className="py-2" href={`/vendors/${user.name}/bids`}>
+                    <p>Bids</p>
+                    <UserBidsCounter className="p-0.5 text-xs" name={user.name} />
                   </Link>
                 </SheetTrigger>
                 <SheetTrigger asChild>
-                  <Link className="py-2" href={"/vendors/user/bids"}>
-                    <p>My bids</p>
-                    <span className="p-0.5 text-sm">10</span>
+                  <Link className="py-2" href={`/vendors/${user.name}/wins`}>
+                    <p>Wins</p>
+                    <span className="p-0.5 text-sm">{user._count.wins}</span>
                   </Link>
                 </SheetTrigger>
-                <SheetTrigger asChild>
+                {/*                 <SheetTrigger asChild>
                   <Link className="py-2" href={"/vendors/user/bids"}>
                     <p>Vendors</p>
                     <Users strokeWidth={1.5} className="size-5" />
                   </Link>
-                </SheetTrigger>
+                </SheetTrigger> */}
                 <Separator />
                 <SheetTrigger className="h-full w-full">
                   <MobileLogoutButton />
