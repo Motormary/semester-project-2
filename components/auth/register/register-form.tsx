@@ -1,9 +1,7 @@
 "use client"
 import { createUser } from "@/app/actions/user"
 import {
-  ErrorType,
-  RegisterUserSchema,
-  TYPE_USER_REGISTER,
+  RegisterUserSchema, TYPE_USER_REGISTER
 } from "@/lib/definitions"
 import { zodResolver } from "@hookform/resolvers/zod"
 import logo from "assets/images/logo_filled.png"
@@ -29,9 +27,11 @@ import {
   FormMessage,
 } from "../../ui/form"
 import { Input } from "../../ui/input"
-import { toast } from "sonner"
+import { useRouter } from "next/navigation"
+import { handleErrors } from "@/lib/handle-errors"
 
 export default function RegisterCard() {
+  const router = useRouter()
   const form = useForm<TYPE_USER_REGISTER>({
     resolver: zodResolver(RegisterUserSchema),
     defaultValues: {
@@ -46,26 +46,12 @@ export default function RegisterCard() {
     },
   })
 
-  async function onSubmit(data: TYPE_USER_REGISTER) {
-    const res = await createUser(data)
 
-    if (res?.source === ErrorType.CAUGHT) {
-      toast.error("Error", {
-        description: (
-          <span>
-            Something went wrong. Try again or contact support
-          </span>
-        ),
-      })
-    } else {
-      toast.error("Error", {
-        description: (
-          <span>
-            Something went wrong. Try again or contact support
-          </span>
-        ),
-      })
-    }
+  async function onSubmit(formData: TYPE_USER_REGISTER) {
+    const { error, source, success } = await createUser(formData)
+
+    if (!success) handleErrors<TYPE_USER_REGISTER>(error, source, form)
+    else router.push("/")
   }
 
   return (

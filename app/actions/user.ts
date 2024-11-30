@@ -49,16 +49,16 @@ export async function logoutUser() {
 // CREATE
 export async function createUser(
   data: TYPE_USER_LOGIN,
-): Promise<TYPE_GET_USER | void> {
+): Promise<TYPE_GET_USER> {
   const res = await superFetch<TYPE_GET_USER>({
     method: Method.POST,
     url: API_AUTH_REGISTER,
     body: data,
   })
 
-  if (!res.success) {
+  if (res && !res.success) {
     console.error("⚡ createUser ~ Error creating user:", res)
-    return res
+    return { ...res }
   }
 
   const loginRes = await loginUser({
@@ -70,6 +70,8 @@ export async function createUser(
     console.error("⚡ loginUser@createUser ~ Error signing in:", loginRes)
     return { ...loginRes }
   }
+
+  return { ...res }
 }
 
 // READ
