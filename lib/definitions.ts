@@ -5,6 +5,11 @@ export enum CacheOptions {
   ForceCache = "force-cache",
 }
 
+export enum CacheTags {
+  ALL_LISTINGS = "listings",
+  LISTING = "listing-id-",
+}
+
 export enum ErrorType {
   CAUGHT = "caught", // Error is unkown - Error will be a string
   API = "api", // Error from BE - typeof errorSchema
@@ -37,6 +42,8 @@ const listingSchema = z.object({
     bids: z.number().int().nonnegative(),
   }),
 })
+
+const multipleListingSchema = z.array(listingSchema)
 
 export const newListingSchema = z.object({
   title: z.string().min(4, { message: "Minimum 4 characters required" }),
@@ -161,6 +168,7 @@ const responseSchema = <T>(dataSchema: z.ZodType<T>) =>
 
 const getProfileSchema = responseSchema(ProfileSchema)
 const getUserBidsSchema = responseSchema(BidsSchema)
+const getListingsSchema = responseSchema(multipleListingSchema)
 
 export type TYPE_FETCH<T> = z.infer<ReturnType<typeof responseSchema<T>>>;
 
@@ -171,7 +179,10 @@ export type TYPE_USER_REGISTER = z.infer<typeof RegisterUserSchema>
 
 export type TYPE_USER_LOGIN = z.infer<typeof LoginUserSchema>
 
-export type TYPE_GET_USER_BIDS = z.infer<typeof getUserBidsSchema>
 
 // User request types
+export type TYPE_GET_USER_BIDS = z.infer<typeof getUserBidsSchema>
 export type TYPE_GET_USER = z.infer<typeof getProfileSchema>
+
+// Listings types
+export type TYPE_GET_LISTINGS = z.infer<typeof getListingsSchema>
