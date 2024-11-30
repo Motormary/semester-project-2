@@ -13,7 +13,7 @@ export enum CacheTags {
 export enum ErrorType {
   CAUGHT = "caught", // Error is unkown - Error will be a string
   API = "api", // Error from BE - typeof errorSchema
-  SESSION = "session" // failed to verify auth - Error will be a string
+  SESSION = "session", // failed to verify auth - Error will be a string
 }
 
 export enum Method {
@@ -92,7 +92,7 @@ const BidsSchema = z.object({
     avatar: mediaSchema,
     banner: mediaSchema,
   }),
-  created: z.date()
+  created: z.date(),
 })
 
 // Export it for the zodresolver in the register-form
@@ -110,14 +110,9 @@ export const RegisterUserSchema = z
       url: z.string(),
       alt: z.string().optional(),
     }),
-    email: z
-      .string()
-      .refine(
-        (val) => val.includes("@stud.noroff.no") || val.includes("@noroff.no"),
-        {
-          message: "Email must be a valid Noroff email.",
-        },
-      ),
+    email: z.string().endsWith("@stud.noroff.no", {
+      message: "Email must be a valid Noroff email",
+    }),
     password: z.string().min(8, {
       message: "Password must be at least 8 characters.",
     }),
@@ -131,14 +126,9 @@ export const RegisterUserSchema = z
   })
 
 export const LoginUserSchema = z.object({
-  email: z
-    .string()
-    .refine(
-      (val) => val.includes("@stud.noroff.no") || val.includes("@noroff.no"),
-      {
-        message: "Email must be a valid Noroff email",
-      },
-    ),
+  email: z.string().endsWith("@stud.noroff.no", {
+    message: "Email must be a valid Noroff email",
+  }),
   password: z.string().min(8, {
     message: "Password must be at least 8 characters.",
   }),
@@ -163,14 +153,14 @@ const responseSchema = <T>(dataSchema: z.ZodType<T>) =>
       data: dataSchema,
       meta: metaSchema,
     }),
-    error: z.string().or(z.array(errorSchema))
+    error: z.string().or(z.array(errorSchema)),
   })
 
 const getProfileSchema = responseSchema(ProfileSchema)
 const getUserBidsSchema = responseSchema(BidsSchema)
 const getListingsSchema = responseSchema(multipleListingSchema)
 
-export type TYPE_FETCH<T> = z.infer<ReturnType<typeof responseSchema<T>>>;
+export type TYPE_FETCH<T> = z.infer<ReturnType<typeof responseSchema<T>>>
 
 // Misc
 export type TYPE_API_ERROR = z.infer<typeof errorSchema>
@@ -181,7 +171,6 @@ export type TYPE_USER = z.infer<typeof ProfileSchema>
 export type TYPE_USER_REGISTER = z.infer<typeof RegisterUserSchema>
 
 export type TYPE_USER_LOGIN = z.infer<typeof LoginUserSchema>
-
 
 // User request types
 export type TYPE_GET_USER_BIDS = z.infer<typeof getUserBidsSchema>

@@ -9,7 +9,7 @@ export function translateErrors(errors: TYPE_API_ERROR[]) {
       code: error?.code ?? undefined, // e.g "invalid type"
       message: error.message, // e.g "Account already exists"
       path: error?.path
-        ? error?.path.map((path) => path).join(", ")
+        ? error?.path.map((path) => path).join(".") // Join nested paths
         : undefined, // Form field
     }
   })

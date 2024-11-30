@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { LoginUserSchema, TYPE_USER_LOGIN } from "@/lib/definitions"
+import { handleErrors } from "@/lib/handle-errors"
 import { zodResolver } from "@hookform/resolvers/zod"
 import logo from "assets/images/logo_filled.png"
 import Image from "next/image"
@@ -40,10 +41,8 @@ export default function LoginCard() {
   async function onSubmit(formData: TYPE_USER_LOGIN) {
     const { success, source, error } = await loginUser(formData)
 
-    if (success) router.push("/")
-    else if (error) {
-      // handleError(error, source)
-    }
+    if (!success) handleErrors<TYPE_USER_LOGIN>(error, source, form)
+    else router.push("/")
   }
 
   return (
