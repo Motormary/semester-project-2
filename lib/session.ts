@@ -4,12 +4,12 @@ import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import { cache } from "react"
 
-// Followed nextjs docs
+// Nextjs docs
 
 const secretKey = process.env.API_KEY
 const encodedKey = new TextEncoder().encode(secretKey)
 const cookie = {
-  name: "_ebox_session",
+  name: "_ebox_session", // This cookie is used in middleware
   duration: 24 * 60 * 60 * 1000,
 }
 const noSession = {
