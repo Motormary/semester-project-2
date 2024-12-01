@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils"
 export function ProfileNav() {
   const pathname = usePathname()
   const { slug } = useParams()
+  console.log("🚀 ~ ProfileNav ~ slug:", slug)
 
   const items = [
     {
@@ -45,7 +46,7 @@ export function ProfileNav() {
             key={item.href}
             href={item.href}
             className={cn(
-              pathname.toLowerCase() === item.href
+              pathname.toLowerCase() === item.href.toLowerCase()
                 ? "border-l border-r border-t bg-card hover:bg-card max-xs:border-b xs:translate-y-[1px]"
                 : "text-muted-foreground hover:bg-card hover:text-secondary-foreground",
               "flex items-center justify-start rounded-md p-3 text-sm focus:bg-card focus:text-secondary-foreground focus:outline-none max-md:h-full xs:rounded-b-none md:h-8",
