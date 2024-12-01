@@ -21,6 +21,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { LoginUserSchema, TYPE_USER_LOGIN } from "@/lib/definitions"
 import { handleErrors } from "@/lib/handle-errors"
+import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import logo from "assets/images/logo_filled.png"
 import Image from "next/image"
@@ -28,7 +29,12 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 
-export default function LoginCard() {
+type props = {
+  className?: string
+  closeModal?: (state: boolean) => void
+}
+
+export default function LoginCard({ className, closeModal }: props) {
   const router = useRouter()
   const form = useForm<TYPE_USER_LOGIN>({
     resolver: zodResolver(LoginUserSchema),
@@ -41,12 +47,21 @@ export default function LoginCard() {
   async function onSubmit(formData: TYPE_USER_LOGIN) {
     const { success, source, error } = await loginUser(formData)
 
-    if (!success) handleErrors<TYPE_USER_LOGIN>(error, source, form)
-    else router.push("/")
+    if (!success) {
+      handleErrors<TYPE_USER_LOGIN>(error, source, form)
+    }
+    if (closeModal) {
+      closeModal(false)
+    } else router.push("/")
   }
 
+  // TODO: UPDATE CARD TO TAKE CLASSNAME
   return (
-    <Card className="mx-auto flex flex-col justify-center sm:w-1/2 lg:w-1/3">
+    <Card
+      className={cn(
+        className ?? "mx-auto flex flex-col justify-center sm:w-1/2 lg:w-1/3",
+      )}
+    >
       <CardHeader>
         <CardTitle className="flex items-center justify-center gap-4">
           <h1>Log in</h1>{" "}
