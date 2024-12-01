@@ -9,7 +9,7 @@ export default function LoginPage() {
 
   function handleChange(state: boolean) {
     if (!state) {
-     router.replace("/")
+     router.back()
     }
   }
 

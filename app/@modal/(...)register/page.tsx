@@ -8,7 +8,7 @@ export default function RegisterPage() {
   const router = useRouter()
   function handleChange(state: boolean) {
     if (!state) {
-      router.replace("/")
+      router.back()
     }
   }
 
