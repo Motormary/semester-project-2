@@ -1,7 +1,11 @@
 import Listing from "@/components/listing/listing"
 import wait from "@/lib/wait"
 
-export default async function WinsTab() {
+type props = {
+  username: string
+}
+
+export default async function WinsTab({username}: props) {
   await wait(1000)
   return (
     <>

@@ -1,8 +1,6 @@
 "use client"
-import { z } from "zod"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useRouter } from "next/navigation"
-import { useForm } from "react-hook-form"
+import { loginUser } from "@/app/actions/user/login"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -21,44 +19,55 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { LoginUserSchema, TYPE_USER_LOGIN } from "@/lib/definitions"
+import { handleErrors } from "@/lib/handle-errors"
+import { cn } from "@/lib/utils"
+import { zodResolver } from "@hookform/resolvers/zod"
 import logo from "assets/images/logo_filled.png"
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { useForm } from "react-hook-form"
 
-const FormSchema = z.object({
-  email: z
-    .string()
-    .refine(
-      (val) => val.includes("@stud.noroff.no") || val.includes("@noroff.no"),
-      {
-        message: "Email must be a valid Noroff email",
-      },
-    ),
-  password: z.string().min(8, {
-    message: "Password must be at least 8 characters.",
-  }),
-})
+type props = {
+  className?: string
+  closeModal?: (state: boolean) => void
+}
 
-export default function LoginCard() {
+export default function LoginCard({ className, closeModal }: props) {
   const router = useRouter()
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<TYPE_USER_LOGIN>({
+    resolver: zodResolver(LoginUserSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   })
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data)
+  async function onSubmit(formData: TYPE_USER_LOGIN) {
+    const { success, source, error } = await loginUser(formData)
+
+    if (!success) {
+      handleErrors<TYPE_USER_LOGIN>(error, source, form)
+    }
+    if (success) {
+      if (closeModal) {
+        closeModal(false)
+      } else router.push("/")
+    }
   }
 
+  // TODO: UPDATE CARD TO TAKE CLASSNAME
   return (
-    <Card className="mx-auto flex flex-col justify-center sm:w-1/2 lg:w-1/3">
+    <Card
+      className={cn(
+        className ?? "mx-auto flex flex-col justify-center sm:w-1/2 lg:w-1/3",
+      )}
+    >
       <CardHeader>
         <CardTitle className="flex items-center justify-center gap-4">
-          <h1>Log in</h1> <Image src={logo} alt="Logo" height="50" className="dark:invert" />
+          <h1>Log in</h1>{" "}
+          <Image src={logo} alt="Logo" height="50" className="dark:invert" />
         </CardTitle>
       </CardHeader>
       <Form {...form}>
@@ -100,7 +109,10 @@ export default function LoginCard() {
             </Button>
             <CardDescription>
               Not registered yet?{" "}
-              <Link className="font-semibold hover:text-primary" href="/register">
+              <Link
+                className="font-semibold hover:text-primary"
+                href="/register"
+              >
                 Sign up!
               </Link>
             </CardDescription>

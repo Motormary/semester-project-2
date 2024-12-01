@@ -25,8 +25,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode,
+  modal: React.ReactNode
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -43,6 +45,7 @@ export default function RootLayout({
           <main className="relative h-full flex w-full max-w-content px-4 mb-[15rem]">
             {children}
             <ModeToggle />
+            {modal}
           </main>
           <Toaster richColors />
           <Footer />

@@ -13,8 +13,8 @@ export default async function TopNav() {
           <Link href="/">
             <picture>
               <img
-                width={32}
-                height={32}
+                width={40}
+                height={40}
                 src={logo.src}
                 alt="NavLogo"
                 className="dark:invert"
@@ -28,7 +28,7 @@ export default async function TopNav() {
           </div>
         </nav>
       </div>
-      <div className="mx-auto w-full max-w-content">
+      <div className="mx-auto w-full max-w-content px-4">
         <SearchBar />
       </div>
     </div>

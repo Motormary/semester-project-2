@@ -4,7 +4,7 @@ import Link from "next/link"
 import { Badge } from "../ui/badge"
 
 type props = {
-  id: string
+  id?: string
   classname?: string
 }
 

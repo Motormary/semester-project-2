@@ -1,26 +1,27 @@
+"use client"
 import { User } from "lucide-react"
 import Link from "next/link"
+import { useParams } from "next/navigation"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Button } from "../ui/button"
 import { Card } from "../ui/card"
-import wait from "@/lib/wait"
 
-export default async function ProfileInfo() {
-  await wait(1000)
+export default function ProfileInfo() {
+  const { slug } = useParams()
   return (
-    <Card className="sm:max-w-[274px] mx-auto space-y-6 overflow-hidden p-4 py-5 h-fit sm:mt-[2rem]">
-      <Avatar className="h-full w-full max-h-[258px] max-w-[258px] mx-auto">
+    <Card className="mx-auto h-fit space-y-6 overflow-hidden p-4 py-5 sm:mt-[2rem] sm:max-w-[274px]">
+      <Avatar className="mx-auto h-full max-h-[258px] w-full max-w-[258px]">
         <AvatarImage
-        className="aspect-square"
+          className="aspect-square"
           src="https://github.com/shadcn.png"
           alt="Avatar"
         />
-        <AvatarFallback className="p-5"><User strokeWidth={1} stroke={"#696969"} className="h-full w-full"/></AvatarFallback>
+        <AvatarFallback className="p-5">
+          <User strokeWidth={1} stroke={"#696969"} className="h-full w-full" />
+        </AvatarFallback>
       </Avatar>
       <div className="text-center">
-        <p className="break-words text-lg">
-          Username
-        </p>
+        <p className="break-words text-lg">{slug?.[0]}</p>
         <Link
           href="mailto:username@stud.noroff.no"
           className="text-sm text-muted-foreground"
