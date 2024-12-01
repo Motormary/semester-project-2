@@ -50,9 +50,11 @@ export default function LoginCard({ className, closeModal }: props) {
     if (!success) {
       handleErrors<TYPE_USER_LOGIN>(error, source, form)
     }
-    if (closeModal) {
-      closeModal(false)
-    } else router.push("/")
+    if (success) {
+      if (closeModal) {
+        closeModal(false)
+      } else router.push("/")
+    }
   }
 
   // TODO: UPDATE CARD TO TAKE CLASSNAME

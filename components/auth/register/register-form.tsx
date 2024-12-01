@@ -1,8 +1,6 @@
 "use client"
 import { createUser } from "@/app/actions/user"
-import {
-  RegisterUserSchema, TYPE_USER_REGISTER
-} from "@/lib/definitions"
+import { RegisterUserSchema, TYPE_USER_REGISTER } from "@/lib/definitions"
 import { zodResolver } from "@hookform/resolvers/zod"
 import logo from "assets/images/logo_filled.png"
 import Image from "next/image"
@@ -29,8 +27,14 @@ import {
 import { Input } from "../../ui/input"
 import { useRouter } from "next/navigation"
 import { handleErrors } from "@/lib/handle-errors"
+import { cn } from "@/lib/utils"
 
-export default function RegisterCard() {
+type props = {
+  className?: string
+  closeModal?: (state: boolean) => void
+}
+
+export default function RegisterCard({ className, closeModal }: props) {
   const router = useRouter()
   const form = useForm<TYPE_USER_REGISTER>({
     resolver: zodResolver(RegisterUserSchema),
@@ -46,16 +50,23 @@ export default function RegisterCard() {
     },
   })
 
-
   async function onSubmit(formData: TYPE_USER_REGISTER) {
     const { error, source, success } = await createUser(formData)
 
     if (!success) handleErrors<TYPE_USER_REGISTER>(error, source, form)
-    else router.push("/")
+    if (success) {
+      if (closeModal) {
+        closeModal(false)
+      } else router.push("/")
+    }
   }
 
   return (
-    <Card className="mx-auto flex flex-col justify-center sm:w-1/2 lg:w-1/3">
+    <Card
+      className={cn(
+        className ?? "mx-auto flex flex-col justify-center sm:w-1/2 lg:w-1/3",
+      )}
+    >
       <CardHeader>
         <CardTitle className="flex items-center justify-center gap-4">
           <h1>Register</h1>
