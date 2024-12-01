@@ -1,6 +1,7 @@
 import { FieldValues, UseFormReturn } from "react-hook-form"
 import { toast } from "sonner"
 import { TYPE_API_ERROR, ErrorSource } from "./definitions"
+import { redirect } from "next/navigation"
 
 export function translateErrors(errors: TYPE_API_ERROR[]) {
   // Map out errors given by Backend response
@@ -86,12 +87,16 @@ export function handleErrors<T extends FieldValues>(
 }
 
 
-// Server side
+// Server
 export function checkAndThrowError(error: TYPE_API_ERROR[] | string, source: ErrorSource) {
-  if (source === ErrorSource.CAUGHT || source === ErrorSource.SESSION) {
-    throw new Error(typeof error === "string" ? error : "Something went wrong")
-  } else if (source === ErrorSource.API) {
+  if (source === ErrorSource.CAUGHT) {
+    throw new Error("Something went wrong, contact support or try again.")
+  } 
+  if (source === ErrorSource.API) {
     const translatedErrors = translateErrors(error as TYPE_API_ERROR[])
     throw new Error(`Error: ${translatedErrors[0].message}`)
+  }
+  if (source === ErrorSource.SESSION) {
+    redirect("/login")
   }
 }
