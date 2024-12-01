@@ -11,23 +11,19 @@ import {
 } from "@/components/ui/pagination"
 import { Separator } from "@/components/ui/separator"
 import { getAllListings } from "./actions/listings/get-all"
-import { ErrorType } from "@/lib/definitions"
+import { checkAndThrowError } from "@/lib/handle-errors"
 
 export default async function Home() {
   const { data, success, error, source } = await getAllListings()
-  console.log("🚀 ~ Home ~ data:", data.data.length)
 
-  if ((error && source === ErrorType.CAUGHT) || source === ErrorType.SESSION) {
-    throw new Error(error as string)
-  } else if (error && source === ErrorType.API)
-    console.error("⚡ Home ~ Error fetching all listings:", error)
+  if (!success) checkAndThrowError(error, source)
 
   return (
     <div className="w-full space-y-4">
       <Separator />
       <h1>All listings</h1>
       <div className="grid grid-cols-[repeat(auto-fill,minmax(290px,1fr))] gap-4">
-        {data.data.map((listing) => {
+        {data?.data?.length ? data.data.map((listing) => {
           return (
             <Listing
               key={listing.id}
@@ -35,7 +31,7 @@ export default async function Home() {
               id={listing.id}
             />
           )
-        })}
+        }) : <p className="m-auto">No listings found</p>}
       </div>
       <Pagination>
         <PaginationContent>

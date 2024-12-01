@@ -1,6 +1,6 @@
 import { FieldValues, UseFormReturn } from "react-hook-form"
 import { toast } from "sonner"
-import { TYPE_API_ERROR, ErrorType } from "./definitions"
+import { TYPE_API_ERROR, ErrorSource } from "./definitions"
 
 export function translateErrors(errors: TYPE_API_ERROR[]) {
   // Map out errors given by Backend response
@@ -51,7 +51,7 @@ export function printErrors(
   })
 }
 
-export function handleFormErrors<T extends FieldValues>(
+export function translateAndDisplayErrors<T extends FieldValues>(
   errors: TYPE_API_ERROR[],
   form?: UseFormReturn<T>,
 ) {
@@ -69,18 +69,29 @@ export function handleFormErrors<T extends FieldValues>(
 
 export function handleErrors<T extends FieldValues>(
   error: string | TYPE_API_ERROR[],
-  source: ErrorType,
+  source: ErrorSource,
   form?: UseFormReturn<T>,
 ) {
-  if (source === ErrorType.CAUGHT)
+  if (source === ErrorSource.CAUGHT)
     toast.error("Something went wrong", {
       description: "Try again or contact support.",
     })
 
-  if (source === ErrorType.API) {
-    handleFormErrors<T>(error as TYPE_API_ERROR[], form)
+  if (source === ErrorSource.API) {
+    translateAndDisplayErrors<T>(error as TYPE_API_ERROR[], form)
   }
 
-  if (source === ErrorType.SESSION && typeof error === "string")
+  if (source === ErrorSource.SESSION && typeof error === "string")
     toast.error(error)
+}
+
+
+// Server side
+export function checkAndThrowError(error: TYPE_API_ERROR[] | string, source: ErrorSource) {
+  if (source === ErrorSource.CAUGHT || source === ErrorSource.SESSION) {
+    throw new Error(typeof error === "string" ? error : "Something went wrong")
+  } else if (source === ErrorSource.API) {
+    const translatedErrors = translateErrors(error as TYPE_API_ERROR[])
+    throw new Error(`Error: ${translatedErrors[0].message}`)
+  }
 }

@@ -10,7 +10,7 @@ export enum CacheTags {
   LISTING = "listing-id-",
 }
 
-export enum ErrorType {
+export enum ErrorSource {
   CAUGHT = "caught", // Error is unkown - Error will be a string
   API = "api", // Error from BE - typeof errorSchema
   SESSION = "session", // failed to verify auth - Error will be a string
@@ -145,7 +145,7 @@ const errorSchema = z.object({
 const responseSchema = <T>(dataSchema: z.ZodType<T>) =>
   z.object({
     success: z.boolean(),
-    source: z.enum([ErrorType.CAUGHT, ErrorType.API, ErrorType.SESSION]),
+    source: z.enum([ErrorSource.CAUGHT, ErrorSource.API, ErrorSource.SESSION]),
     data: z.object({
       errors: z.array(errorSchema).optional(),
       status: z.string(),

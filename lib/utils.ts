@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { ErrorType } from "./definitions"
+import { ErrorSource } from "./definitions"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -15,7 +15,7 @@ export default function removeEmptyObjValues(obj: any) {
 export function failedToVerify() {
   return {
     success: false,
-    source: ErrorType.SESSION,
+    source: ErrorSource.SESSION,
     data: null as any,
     error: "You don't have the authorization to use this feature",
   }

@@ -1,6 +1,6 @@
 import "server-only"
 
-import { CacheOptions, ErrorType, Method } from "@/lib/definitions"
+import { CacheOptions, ErrorSource, Method } from "@/lib/definitions"
 
 /**
  * A helper function for making server-side API calls with headers, token handling,
@@ -65,12 +65,12 @@ export default async function superFetch<T>({
 
   /**
    * Pass a source we can check
-   * if ErrorType.CAUGHT return a string to the error field. Console.error this and show the user a generic error message instead
+   * if ErrorSource.CAUGHT return a string to the error field. Console.error this and show the user a generic error message instead
    */
   if (!response.success) {
     return {
       success: false,
-      source: ErrorType.CAUGHT,
+      source: ErrorSource.CAUGHT,
       data: null as null,
       error: response.data.message,
     } as T
@@ -78,11 +78,11 @@ export default async function superFetch<T>({
 
   const data = response.data.status !== 204 ? await response.data.json() : null // 204 = no content
 
-  //* If ErrorType.API set error as errors[] from backend
+  //* If ErrorSource.API set error as errors[] from backend
   if (response.success && !response.data.ok) {
     return {
       success: false,
-      source: ErrorType.API,
+      source: ErrorSource.API,
       data,
       error: data.errors,
     } as T
