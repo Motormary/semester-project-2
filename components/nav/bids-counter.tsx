@@ -1,4 +1,4 @@
-import { getUserBids } from "@/app/actions/user"
+import { getUserBids } from "@/app/actions/user/get-bids"
 
 type props = {
   name: string

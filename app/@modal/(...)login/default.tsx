@@ -1,14 +1,15 @@
 "use client"
 
-import RegisterCard from "@/components/auth/register/register-form"
+import LoginCard from "@/components/auth/login/login-form"
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { useRouter } from "next/navigation"
 
-export default function RegisterPage() {
+export default function LoginPage() {
   const router = useRouter()
+
   function handleChange(state: boolean) {
     if (!state) {
-      router.replace("/")
+     router.replace("/")
     }
   }
 
@@ -16,7 +17,7 @@ export default function RegisterPage() {
     <Dialog defaultOpen onOpenChange={handleChange}>
       <DialogContent>
         <DialogTitle className="sr-only">Login modal</DialogTitle>
-        <RegisterCard
+        <LoginCard
           className="border-none bg-transparent shadow-none"
           closeModal={handleChange}
         />

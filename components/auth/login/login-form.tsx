@@ -1,5 +1,5 @@
 "use client"
-import { loginUser } from "@/app/actions/user"
+import { loginUser } from "@/app/actions/user/login"
 import { Button } from "@/components/ui/button"
 import {
   Card,

@@ -8,7 +8,7 @@ export default function LoginPage() {
   const router = useRouter()
   function handleChange(state: boolean) {
     if (!state) {
-      router.back()
+      router.replace("/")
     }
   }
 

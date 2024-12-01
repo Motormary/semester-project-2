@@ -1,6 +1,6 @@
 "use client"
 
-import { logoutUser } from "@/app/actions/user"
+import { logoutUser } from "@/app/actions/user/login"
 import { LogOut } from "lucide-react"
 
 // Div element as button to trigger both sheet close and logout event. Do not try to fix with button/form/wrapping

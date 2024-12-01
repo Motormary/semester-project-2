@@ -1,4 +1,3 @@
-import { getCurrentUser, logoutUser } from "@/app/actions/user"
 import { Button, buttonVariants } from "@/components/ui/button"
 import {
   Sheet,
@@ -27,6 +26,8 @@ import {
 import { Separator } from "../ui/separator"
 import MobileLogoutButton from "./logout-button"
 import UserBidsCounter from "./bids-counter"
+import { getCurrentUser } from "@/app/actions/user/get"
+import { logoutUser } from "@/app/actions/user/login"
 
 export default async function NavMenu() {
   let user
