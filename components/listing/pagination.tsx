@@ -1,21 +1,34 @@
-'use client'
+"use client"
 
 import {
-    Pagination
+  Pagination,
+  PaginationContent,
+  PaginationFirst,
+  PaginationItem,
+  PaginationLast,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
 } from "@/components/ui/pagination"
+import { useMediaQuery } from "@/hooks/use-media-query"
 import { TYPE_META } from "@/lib/definitions"
-import { useMemo } from 'react'
+import { cn } from "@/lib/utils"
+import { useSearchParams } from "next/navigation"
+import { useMemo } from "react"
 
 type Props = {
   meta: TYPE_META
 }
 
 export default function ListingPagination({ meta }: Props) {
+  const isDesktop = useMediaQuery("(min-width: 768px)")
+  const params = useSearchParams()
   const pageNumbers = useMemo(() => {
+    const displayPages = isDesktop ? 5 : 3
     const totalPages = meta.pageCount
     const currentPage = meta.currentPage
-    const displayPages = 5
-
+    
+    // Mr.jippity calculations will try to keep current page in center of row
     let startPage = Math.max(1, currentPage - Math.floor(displayPages / 2))
     const endPage = Math.min(totalPages, startPage + displayPages - 1)
 
@@ -23,29 +36,33 @@ export default function ListingPagination({ meta }: Props) {
       startPage = Math.max(1, endPage - displayPages + 1)
     }
 
-    return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i)
-  }, [meta.currentPage, meta.pageCount])
+    return Array.from(
+      { length: endPage - startPage + 1 },
+      (_, i) => startPage + i,
+    )
+  }, [meta.currentPage, meta.pageCount, isDesktop])
 
   const getPageHref = (page: number) => {
-    // Replace this with your actual URL generation logic
-    return `?page=${page}`
+    const url = new URLSearchParams(params)
+    url.set("page", page.toString())
+    return `?${url.toString()}`
   }
 
   return (
     <Pagination>
-{/*       <PaginationContent>
+      <PaginationContent>
         <PaginationItem>
           <PaginationFirst
             size="sm"
             href={getPageHref(1)}
-            disabled={meta.isFirstPage}
+            className={cn(meta.isFirstPage && "hidden")}
           />
         </PaginationItem>
         <PaginationItem>
           <PaginationPrevious
             size="sm"
-            href={meta.previousPage ? getPageHref(meta.previousPage) : undefined}
-            disabled={!meta.previousPage}
+            href={meta.previousPage ? getPageHref(meta.previousPage) : ""}
+            className={cn(!meta.previousPage && "hidden")}
           />
         </PaginationItem>
         {pageNumbers.map((pageNumber) => (
@@ -62,19 +79,18 @@ export default function ListingPagination({ meta }: Props) {
         <PaginationItem>
           <PaginationNext
             size="sm"
-            href={meta.nextPage ? getPageHref(meta.nextPage) : undefined}
-            disabled={!meta.nextPage}
+            href={meta.nextPage ? getPageHref(meta.nextPage) : ""}
+            className={cn(!meta.nextPage && "hidden")}
           />
         </PaginationItem>
         <PaginationItem>
           <PaginationLast
             size="sm"
             href={getPageHref(meta.pageCount)}
-            disabled={meta.isLastPage}
+            className={cn(meta.isLastPage && "hidden")}
           />
         </PaginationItem>
-      </PaginationContent> */}
+      </PaginationContent>
     </Pagination>
   )
 }
-
