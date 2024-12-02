@@ -24,6 +24,8 @@ export enum Method {
   GET = "GET",
 }
 
+export type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
+
 const mediaSchema = z.object({
   url: z.string().url(),
   alt: z.string(),
@@ -159,6 +161,7 @@ const responseSchema = <T>(dataSchema: z.ZodType<T>) =>
 const getProfileSchema = responseSchema(ProfileSchema)
 const getUserBidsSchema = responseSchema(BidsSchema)
 const getListingsSchema = responseSchema(multipleListingSchema)
+const getListingSchema = responseSchema(listingSchema)
 
 export type TYPE_FETCH<T> = z.infer<ReturnType<typeof responseSchema<T>>>
 
@@ -177,4 +180,8 @@ export type TYPE_GET_USER_BIDS = z.infer<typeof getUserBidsSchema>
 export type TYPE_GET_USER = z.infer<typeof getProfileSchema>
 
 // Listings types
+export type TYPE_LISTING = z.infer<typeof listingSchema>
+
+export type TYPE_GET_LISTING = z.infer<typeof getListingSchema>
+
 export type TYPE_GET_LISTINGS = z.infer<typeof getListingsSchema>
