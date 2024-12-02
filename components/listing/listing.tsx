@@ -1,9 +1,9 @@
 import { TYPE_LISTING } from "@/lib/definitions"
+import { cn } from "@/lib/utils"
 import { Dot } from "lucide-react"
 import Link from "next/link"
 import { Badge } from "../ui/badge"
 import { Countdown } from "./countdown"
-import { cn } from "@/lib/utils"
 
 type props = {
   id?: string
@@ -12,7 +12,6 @@ type props = {
 }
 
 export default async function Listing({ data, classname }: props) {
-
   return (
     <div
       id={data.id}
@@ -27,7 +26,7 @@ export default async function Listing({ data, classname }: props) {
           alt="alt image"
           className={cn(
             !data.media?.[0]?.url
-              ? "bg-[url('assets/svg/alt.svg')] bg-contain bg-center bg-no-repeat" /* Compensate for missing image, will not work for the people adding non-direct links */
+              ? `bg-[url('/assets/svg/alt.svg')] bg-contain bg-center bg-no-repeat` /* Compensate for missing image, will not work for the people adding non-direct links */
               : "",
             `h-full w-full object-cover text-transparent`,
           )}
