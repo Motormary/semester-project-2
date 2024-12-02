@@ -23,7 +23,9 @@ export default function ProfileListingSearch() {
   // Debounced search (500ms)
   const handleSearch = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
     const newSearchParams = new URLSearchParams(searchParams.toString())
-    newSearchParams.set("user_listings", e.target.value.trim().toLowerCase())
+    if (!e.target.value) newSearchParams.delete("user_listings")
+    else
+      newSearchParams.set("user_listings", e.target.value.trim().toLowerCase())
 
     startTransition(() =>
       router.push(`?${newSearchParams.toString()}`, { scroll: false }),

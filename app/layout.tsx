@@ -42,7 +42,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <TopNav />
-          <main className="relative h-full flex w-full max-w-content px-4 mb-[15rem]">
+          <main className="relative h-full flex w-full max-w-content px-4 mb-[15rem] peer-has-[[data-search]]:animate-pulse">
             {children}
             <ModeToggle />
             {modal}
