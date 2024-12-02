@@ -178,6 +178,8 @@ export type TYPE_FETCH<T> = z.infer<ReturnType<typeof responseSchema<T>>>
 // Misc
 export type TYPE_API_ERROR = z.infer<typeof errorSchema>
 
+export type TYPE_META = z.infer<typeof metaSchema>
+
 // Flat user types
 export type TYPE_USER = z.infer<typeof ProfileSchema>
 

@@ -1,24 +1,15 @@
 import Listing from "@/components/listing/listing"
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationPrevious,
-  PaginationLink,
-  PaginationNext,
-  PaginationLast,
-  PaginationFirst,
-} from "@/components/ui/pagination"
+import ListingPagination from "@/components/listing/pagination"
 import { Separator } from "@/components/ui/separator"
-import { getAllListings } from "./actions/listings/get-all"
-import { checkAndThrowError } from "@/lib/handle-errors"
 import { SearchParams } from "@/lib/definitions"
+import { checkAndThrowError } from "@/lib/handle-errors"
+import { getAllListings } from "./actions/listings/get-all"
 
 type props = {
   searchParams: SearchParams
 }
 
-export default async function Home({searchParams}: props) {
+export default async function Home({ searchParams }: props) {
   const params = await searchParams
   const { data, success, error, source } = await getAllListings(params)
 
@@ -29,48 +20,22 @@ export default async function Home({searchParams}: props) {
       <Separator />
       <h1>All listings</h1>
       <div className="grid grid-cols-[repeat(auto-fill,minmax(290px,1fr))] gap-4">
-        {data?.data?.length ? data.data.map((listing) => {
-          return (
-            <Listing
-              key={listing.id}
-              data={listing}
-              classname="hover:shadow-md focus-within:outline outline-2 outline-primary border"
-              id={listing.id}
-            />
-          )
-        }) : <p className="m-auto">No listings found</p>}
+        {data?.data?.length ? (
+          data.data.map((listing) => {
+            return (
+              <Listing
+                key={listing.id}
+                data={listing}
+                classname="hover:shadow-md focus-within:outline outline-2 outline-primary border"
+                id={listing.id}
+              />
+            )
+          })
+        ) : (
+          <p className="m-auto">No listings found</p>
+        )}
       </div>
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationFirst size="sm" href="#" />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationPrevious size="sm" href="#" />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink size="sm" href="#">
-              1
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink size="sm" href="#" isActive>
-              2
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLink size="sm" href="#">
-              3
-            </PaginationLink>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationNext size="sm" href="#" />
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationLast size="sm" href="#" />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+      <ListingPagination meta={data.meta}/>
     </div>
   )
 }
