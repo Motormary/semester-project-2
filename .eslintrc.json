@@ -8,5 +8,6 @@
     "@typescript-eslint/no-require-imports": "off",
     "tailwindcss/no-contradicting-classname": "warn",
     "unused-imports/no-unused-imports": "error"
-  }
+  },
+  "ignorePatterns":["/node_modules"]
 }
