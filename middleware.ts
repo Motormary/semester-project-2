@@ -11,6 +11,10 @@ export default async function middleware(req: NextRequest) {
   const isPublicRoute = publicRoutes.includes(path)
 
   if (!isPublicRoute) {
+    const hasSession = (await cookies()).has("_ebox_session")
+    if (!hasSession) {
+      return NextResponse.redirect(new URL("/login", req.nextUrl))
+    }
     const cookie = (await cookies()).get("_ebox_session")?.value
     const session = await decrypt(cookie)
     if (!session?.accessToken)

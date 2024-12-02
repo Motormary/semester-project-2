@@ -43,6 +43,16 @@ const listingSchema = z.object({
   _count: z.object({
     bids: z.number().int().nonnegative(),
   }),
+  bids: z.array(z.object({
+    id: z.string(),
+    amount: z.number(),
+    bidder: z.object({
+      name: z.string(),
+      avatar: z.object({
+        url: z.string()
+      })
+    })
+  }))
 })
 
 const multipleListingSchema = z.array(listingSchema)

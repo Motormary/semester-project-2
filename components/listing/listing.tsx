@@ -4,6 +4,7 @@ import { Dot } from "lucide-react"
 import Link from "next/link"
 import { Badge } from "../ui/badge"
 import { Countdown } from "./countdown"
+import PriceTag from "./price"
 
 type props = {
   id?: string
@@ -35,7 +36,7 @@ export default async function Listing({ data, classname }: props) {
       <div className="space-y-3 [&>p]:leading-none">
         {data.tags?.[0] ? <Badge>{data.tags?.[0]}</Badge> : null}
         <p className="text-pretty">{data.title}</p>
-        <p className="text-2xl">{"10"} Ω</p>
+        <PriceTag id={data.id}/>
         <div className="flex items-center text-pretty text-sm text-muted-foreground">
           {data._count.bids} bids{" "}
           {new Date(data.endsAt) > new Date() ? (
