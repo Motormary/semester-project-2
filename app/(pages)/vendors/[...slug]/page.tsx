@@ -1,4 +1,3 @@
-import Listing from "@/components/listing/listing"
 import wait from "@/lib/wait"
 import BidsTab from "./(bids)/bids"
 import InactiveTab from "./(inactive)/inactive"
@@ -27,13 +26,13 @@ export default async function ProfileListings({
     return (
       <>
         <h1 className="sr-only listings">My Listings</h1>
-        <Listing
+{/*         <Listing
           classname="md:basis-1/2 xl:basis-1/3 shadow-none focus-within:bg-muted"
           id="1"
         />
         <Listing classname="md:basis-1/2 xl:basis-1/3 shadow-none" id="1" />
         <Listing classname="md:basis-1/2 xl:basis-1/3 shadow-none" id="1" />
-        <Listing classname="md:basis-1/2 xl:basis-1/3 shadow-none" id="1" />
+        <Listing classname="md:basis-1/2 xl:basis-1/3 shadow-none" id="1" /> */}
       </>
     )
   }

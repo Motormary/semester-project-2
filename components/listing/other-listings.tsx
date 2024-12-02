@@ -1,7 +1,6 @@
-import Link from "next/link"
-import { Dot } from "lucide-react"
 import image from "assets/images/pokemon.png"
-import Listing from "./listing"
+import { Dot } from "lucide-react"
+import Link from "next/link"
 import { Fragment } from "react"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 
@@ -51,7 +50,7 @@ export default async function OtherListings({ id }: { id: string }) {
                 </div>
               </div>
               <div className="flex shrink-0 basis-72 xl:hidden">
-                <Listing id={index.toString()} />
+                {/* <Listing id={index.toString()} /> */}
               </div>
             </Fragment>
           ))}
