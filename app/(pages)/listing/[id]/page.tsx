@@ -15,7 +15,7 @@ export default async function ListingPage({
       <Card className="flex flex-col gap-y-6 p-[5%] md:p-6 pb-8 xl:flex-row">
         <InteractiveListing id={id} />
         <Separator className="xl:hidden" />
-        <OtherListings id={id} />
+        <OtherListings id="1" />
       </Card>
       <SimilarListing />
     </div>

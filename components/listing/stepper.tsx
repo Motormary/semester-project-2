@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { DialogFooter, DialogTrigger } from "@/components/ui/dialog"
 import { DrawerFooter, DrawerTrigger } from "@/components/ui/drawer"
+import { useMediaQuery } from "@/hooks/use-media-query"
 
 const steps = [
   { id: 1, title: "Step 1", description: "Enter details" },
@@ -13,12 +14,12 @@ const steps = [
 
 type props = {
   children: React.ReactNode
-  isDesktop: boolean
-  form: any
+  form: any 
 }
 
-export default function Stepper({ children, isDesktop, form }: props) {
+export default function Stepper({ children, form }: props) {
   const [currentStep, setCurrentStep] = useState(1)
+  const isDesktop = useMediaQuery("(min-width: 768px)")
 
   const nextStep = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()

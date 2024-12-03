@@ -21,10 +21,11 @@ type Props = {
 }
 
 export default function ListingPagination({ meta }: Props) {
-  const isDesktop = useMediaQuery("(min-width: 768px)")
+  const isMobile = useMediaQuery("(max-width: 767px)")
   const params = useSearchParams()
   const pageNumbers = useMemo(() => {
-    const displayPages = isDesktop ? 5 : 3
+    let displayPages = 5
+    if (isMobile) displayPages = 3
     const totalPages = meta.pageCount
     const currentPage = meta.currentPage
     
@@ -40,7 +41,7 @@ export default function ListingPagination({ meta }: Props) {
       { length: endPage - startPage + 1 },
       (_, i) => startPage + i,
     )
-  }, [meta.currentPage, meta.pageCount, isDesktop])
+  }, [meta.currentPage, meta.pageCount, isMobile])
 
   const getPageHref = (page: number) => {
     const url = new URLSearchParams(params)
@@ -50,7 +51,7 @@ export default function ListingPagination({ meta }: Props) {
 
   return (
     <Pagination>
-      <PaginationContent>
+      <PaginationContent className="max-xs:max-w-[320px] overflow-hidden">
         <PaginationItem>
           <PaginationFirst
             size="sm"

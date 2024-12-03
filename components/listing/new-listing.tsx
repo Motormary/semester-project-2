@@ -36,7 +36,7 @@ export default function NewListing({ children }: props) {
           <DialogHeader>
             <DialogTitle>New listing</DialogTitle>
           </DialogHeader>
-          <ListingForm isDesktop={isDesktop} />
+          <ListingForm />
         </DialogContent>
       </Dialog>
     )
@@ -53,7 +53,7 @@ export default function NewListing({ children }: props) {
             </DrawerDescription>
           </DrawerHeader>
           <div className="px-4">
-            <ListingForm isDesktop={isDesktop} />
+            <ListingForm />
           </div>
           <ScrollBar orientation="vertical"/>
         </ScrollArea>

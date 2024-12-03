@@ -48,7 +48,6 @@ export function Countdown({ endsAt }: CountdownProps) {
     )
 
     if (isLessThanHour) {
-      console.log("🚀 ~ Countdown ~ isLessThanHour:", isLessThanHour)
       return (
         <div className="text-sm text-destructive">
           {formatTime(timeLeft.minutes)}m {formatTime(timeLeft.seconds)}s
