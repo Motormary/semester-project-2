@@ -111,7 +111,7 @@ export default function SearchBar() {
               className="justify-between max-xs:hidden sm:w-fit"
             >
               {tag
-                ? tags.find((framework) => framework.value === tag)?.label
+                ? tags.find((label) => label.label === tag)?.label
                 : "Select Category"}
               <ChevronsUpDown className="opacity-50" />
             </Button>
@@ -127,7 +127,7 @@ export default function SearchBar() {
                   <CommandItem
                     className="py-3 text-xl sm:py-1.5 sm:text-sm"
                     key={options.value}
-                    value={options.value}
+                    value={options.label}
                     onSelect={(currentValue) => {
                       startTransition(() => {
                         if (currentValue === tag) {
@@ -146,7 +146,7 @@ export default function SearchBar() {
                     <Check
                       className={cn(
                         "ml-auto",
-                        tag === options.value ? "opacity-100" : "opacity-0",
+                        tag === options.label ? "opacity-100" : "opacity-0",
                       )}
                     />
                   </CommandItem>

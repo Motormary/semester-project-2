@@ -9,7 +9,7 @@ export default async function PriceTag({ id }: props) {
   if (!success) return null
   if (!data.data.bids?.length) return null
   return (
-    <p className="text-2xl">
+    <p className="text-xl">
       {data.data.bids[data.data.bids.length - 1]?.amount} Ω
     </p>
   )

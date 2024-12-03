@@ -20,6 +20,10 @@ export const tags = [
       label: "Antiques",
     },
     {
+      value: "electronics",
+      label: "Electronics",
+    },
+    {
       value: "jewelry",
       label: "Jewelry",
     },
