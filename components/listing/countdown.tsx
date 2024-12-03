@@ -4,7 +4,6 @@ import { calculateTimeDifference } from "@/lib/utils"
 import { useState, useEffect } from "react"
 import { CacheTags } from "@/lib/definitions"
 import { RevalidateCache } from "@/app/actions/revalidate"
-import { toast } from "sonner"
 import { Dot } from "lucide-react"
 
 interface CountdownProps {
@@ -19,7 +18,6 @@ export function Countdown({ endsAt, id }: CountdownProps) {
 
   useEffect(() => {
     async function handleRevalidate() {
-      toast.info(`Post ${id} has ended`) // Todo: Create route that checks if user has bid on item 
       RevalidateCache(CacheTags.ALL_LISTINGS)
       RevalidateCache(CacheTags.LISTING + id)
     }
