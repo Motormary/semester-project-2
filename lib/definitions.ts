@@ -24,10 +24,12 @@ export enum Method {
   GET = "GET",
 }
 
-export type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
+export type SearchParams = Promise<{
+  [key: string]: string | string[] | undefined
+}>
 
-const mediaSchema = z.object({
-  url: z.string().url(),
+export const mediaSchema = z.object({
+  url: z.string().url({ message: "Must be a valid URL" }),
   alt: z.string(),
 })
 
@@ -43,16 +45,18 @@ const listingSchema = z.object({
   _count: z.object({
     bids: z.number().int().nonnegative(),
   }),
-  bids: z.array(z.object({
-    id: z.string(),
-    amount: z.number(),
-    bidder: z.object({
-      name: z.string(),
-      avatar: z.object({
-        url: z.string()
-      })
-    })
-  }))
+  bids: z.array(
+    z.object({
+      id: z.string(),
+      amount: z.number(),
+      bidder: z.object({
+        name: z.string(),
+        avatar: z.object({
+          url: z.string(),
+        }),
+      }),
+    }),
+  ),
 })
 
 const multipleListingSchema = z.array(listingSchema)

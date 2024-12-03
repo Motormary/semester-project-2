@@ -5,23 +5,21 @@ import { z } from "zod"
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { toast } from "sonner"
-import { newListingSchema } from "@/lib/definitions"
-import Stepper from "./stepper"
 import { Textarea } from "@/components/ui/textarea"
-import { Button } from "../ui/button"
-import { Check, ChevronsUpDown, Plus, X } from "lucide-react"
-import image from "assets/images/pokemon.png"
-import { DateTimePicker24hForm } from "../ui/date-time-picker"
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
-import { cn } from "@/lib/utils"
 import { tags } from "@/lib/data/tags"
+import { mediaSchema, newListingSchema } from "@/lib/definitions"
+import { cn } from "@/lib/utils"
+import { Check, ChevronsUpDown, Plus, X } from "lucide-react"
+import { useState } from "react"
+import { toast } from "sonner"
+import { Button } from "../ui/button"
 import {
   Command,
   CommandEmpty,
@@ -30,10 +28,15 @@ import {
   CommandItem,
   CommandList,
 } from "../ui/command"
+import { DateTimePicker24hForm } from "../ui/date-time-picker"
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
-
+import Stepper from "./stepper"
 
 export default function ListingForm() {
+  const [gallery, setGallery] = useState<
+    z.infer<typeof mediaSchema>[] | undefined
+  >([])
   const form = useForm<z.infer<typeof newListingSchema>>({
     resolver: zodResolver(newListingSchema),
     defaultValues: {
@@ -41,7 +44,7 @@ export default function ListingForm() {
       description: "",
       tags: [],
       media: [],
-      endsAt: new Date()
+      endsAt: new Date(),
     },
   })
 
@@ -55,6 +58,46 @@ export default function ListingForm() {
     })
   }
 
+  function handleAddMedia(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault()
+    const input = document.querySelector(
+      "input.media-input",
+    ) as HTMLInputElement
+    if (input && input.tagName === "INPUT") {
+      try {
+        const newMedia = { url: input.value, alt: "thumbnail" }
+        const newGallery = gallery?.length ? [...gallery, newMedia] : [newMedia]
+        mediaSchema.parse(newMedia)
+        
+        setGallery(newGallery)
+        form.setValue("media", newGallery)
+        input.value = ""
+        form.clearErrors("media")
+      } catch (e: any) {
+        form.setError("media", { message: JSON.parse(e)[0].message })
+      }
+    }
+  }
+
+  function handleDeleteMedia(mediaIndex: number) {
+    const newGallery = gallery?.filter((_, i) => i !== mediaIndex)
+    setGallery(newGallery)
+    form.setValue("media", newGallery)
+  }
+
+  function handleSetMainImage(
+    mediaObject: z.infer<typeof mediaSchema>,
+    mediaIndex: number,
+  ) {
+    const newGallery = gallery?.filter((_, i) => i !== mediaIndex)
+    const reorderedGallery = newGallery
+      ? [{ ...mediaObject }, ...newGallery]
+      : [mediaObject]
+    console.log(reorderedGallery)
+    setGallery(reorderedGallery)
+    form.setValue("media", reorderedGallery)
+  }
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -63,12 +106,12 @@ export default function ListingForm() {
             control={form.control}
             name="title"
             render={({ field }) => (
-              <FormItem className="hidden group-data-[state=1]:block">
+              <FormItem autoFocus className="hidden group-data-[state=1]:block">
                 <FormLabel>
                   Title <span className="text-destructive">*</span>
                 </FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input autoComplete="off" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -81,7 +124,7 @@ export default function ListingForm() {
               <FormItem className="hidden group-data-[state=1]:block">
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Textarea {...field} />
+                  <Textarea className="textarea" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -161,29 +204,52 @@ export default function ListingForm() {
                 <FormItem className="w-full">
                   <FormLabel>Media</FormLabel>
                   <div className="flex gap-1">
-                    <FormControl></FormControl>
-                    <Button title="Delete" variant="outline">
+                    <Input className="media-input" />
+                    <Button onClick={handleAddMedia} variant="outline">
                       <Plus />
                     </Button>
                   </div>
                   <FormMessage />
+                  <FormDescription>
+                    {gallery?.length ? "Click on image to select as main" : ""}
+                  </FormDescription>
                 </FormItem>
               )}
             />
             <div className="flex flex-wrap gap-1">
-              {Array.from({ length: 8 }).map((_, index) => (
-                <div className="relative" key={index}>
-                  <Button
-                    variant="destructive"
-                    className="absolute right-0 top-0 size-5 p-0"
-                  >
-                    <X />
-                  </Button>
-                  <picture>
-                    <img className="max-w-20" src={image.src} alt="thumbnail" />
-                  </picture>
-                </div>
-              ))}
+              {gallery
+                ? gallery.map((image, index) => (
+                    <div
+                      onClick={() => handleSetMainImage(image, index)}
+                      className="relative"
+                      key={index}
+                    >
+                      <Button
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          handleDeleteMedia(index)
+                        }}
+                        variant="destructive"
+                        className="absolute -right-1 -top-1 size-4 p-0"
+                      >
+                        <X />
+                      </Button>
+                      <picture
+                        className={cn(
+                          index === 0 ? "outline outline-primary" : "",
+                          "flex aspect-video max-w-20 rounded-md",
+                        )}
+                      >
+                        <img
+                          className="h-full w-full rounded-md object-cover"
+                          src={image.url}
+                          alt="thumbnail"
+                        />
+                      </picture>
+                    </div>
+                  ))
+                : null}
             </div>
           </div>
           <DateTimePicker24hForm form={form} />

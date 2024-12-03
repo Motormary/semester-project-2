@@ -4,6 +4,7 @@ import React, { useState } from "react"
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -35,6 +36,7 @@ export default function NewListing({ children }: props) {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>New listing</DialogTitle>
+            <DialogDescription className="sr-only">Form</DialogDescription>
           </DialogHeader>
           <ListingForm />
         </DialogContent>
@@ -55,7 +57,7 @@ export default function NewListing({ children }: props) {
           <div className="px-4">
             <ListingForm />
           </div>
-          <ScrollBar orientation="vertical"/>
+          <ScrollBar orientation="vertical" />
         </ScrollArea>
       </DrawerContent>
     </Drawer>
