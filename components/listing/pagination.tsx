@@ -49,6 +49,8 @@ export default function ListingPagination({ meta }: Props) {
     return `?${url.toString()}`
   }
 
+  if (meta.pageCount === 1) return null
+
   return (
     <Pagination>
       <PaginationContent className="max-xs:max-w-[320px] overflow-hidden">

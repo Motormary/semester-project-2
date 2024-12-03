@@ -1,6 +1,5 @@
 import { TYPE_LISTING } from "@/lib/definitions"
 import { cn } from "@/lib/utils"
-import { Dot } from "lucide-react"
 import Link from "next/link"
 import { Badge } from "../ui/badge"
 import { Countdown } from "./countdown"
@@ -13,6 +12,7 @@ type props = {
 }
 
 export default async function Listing({ data, classname }: props) {
+  if (data.id === "f8b797fd-4936-4af3-ae44-8d3f94afeed1") console.log(data.endsAt)
   return (
     <div
       id={data.id}
@@ -36,24 +36,10 @@ export default async function Listing({ data, classname }: props) {
       <div className="space-y-3 [&>p]:leading-none">
         {data.tags?.[0] ? <Badge>{data.tags?.[0]}</Badge> : null}
         <p className="text-pretty">{data.title}</p>
-        <PriceTag id={data.id}/>
+        <PriceTag id={data.id} />
         <div className="flex items-center text-pretty text-sm text-muted-foreground">
           {data._count.bids} bids{" "}
-          {new Date(data.endsAt) > new Date() ? (
-            <>
-              <Dot
-                stroke="rgb(34 197 94)"
-                fill="rgb(34 197 94)"
-                strokeWidth="3"
-              />
-              <Countdown endsAt={data.endsAt} />
-            </>
-          ) : (
-            <>
-              <Dot className="text-destructive" strokeWidth="3" />
-              <span className="text-sm">Ended</span>
-            </>
-          )}
+          <Countdown id={data.id} endsAt={data.endsAt} />
         </div>
       </div>
     </div>

@@ -2,17 +2,12 @@
 
 import { API_AH_LISTINGS } from "@/lib/constants"
 import {
-  CacheOptions,
   CacheTags,
   Method,
-  TYPE_GET_LISTINGS,
+  TYPE_GET_LISTINGS
 } from "@/lib/definitions"
 import { cache } from "react"
 import superFetch from "../fetch"
-
-type params = {
-  searchParams: any
-}
 
 const getAllListings = cache(
   async (params: Record<string, any>): Promise<TYPE_GET_LISTINGS> => {
@@ -30,7 +25,6 @@ const getAllListings = cache(
     const res = await superFetch<TYPE_GET_LISTINGS>({
       method: Method.GET,
       url: API_AH_LISTINGS + `${hasSearch ? `${searchQ}&` : "?"}${query.toString()}`, // ? Backend ignores tags when searching
-      cache: CacheOptions.ForceCache,
       tags: [CacheTags.ALL_LISTINGS],
     })
 
