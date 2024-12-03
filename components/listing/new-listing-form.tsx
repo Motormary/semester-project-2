@@ -32,8 +32,10 @@ import { DateTimePicker24hForm } from "../ui/date-time-picker"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 import Stepper from "./stepper"
+import { useAutoAnimate } from '@formkit/auto-animate/react'
 
 export default function ListingForm() {
+  const [mediaRef] = useAutoAnimate()
   const [gallery, setGallery] = useState<
     z.infer<typeof mediaSchema>[] | undefined
   >([])
@@ -93,7 +95,6 @@ export default function ListingForm() {
     const reorderedGallery = newGallery
       ? [{ ...mediaObject }, ...newGallery]
       : [mediaObject]
-    console.log(reorderedGallery)
     setGallery(reorderedGallery)
     form.setValue("media", reorderedGallery)
   }
@@ -203,7 +204,7 @@ export default function ListingForm() {
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormLabel>Media</FormLabel>
-                  <div className="flex gap-1">
+                  <div className="flex gap-2">
                     <Input className="media-input" />
                     <Button onClick={handleAddMedia} variant="outline">
                       <Plus />
@@ -216,13 +217,13 @@ export default function ListingForm() {
                 </FormItem>
               )}
             />
-            <div className="flex flex-wrap gap-1">
+            <div ref={mediaRef} className="flex flex-wrap gap-1 items-start">
               {gallery
                 ? gallery.map((image, index) => (
                     <div
                       onClick={() => handleSetMainImage(image, index)}
                       className="relative"
-                      key={index}
+                      key={image.url+index}
                     >
                       <Button
                         onClick={(e) => {
@@ -238,7 +239,7 @@ export default function ListingForm() {
                       <picture
                         className={cn(
                           index === 0 ? "outline outline-primary" : "",
-                          "flex aspect-video max-w-20 rounded-md",
+                          "flex aspect-video max-w-20 rounded-md bg-muted",
                         )}
                       >
                         <img
