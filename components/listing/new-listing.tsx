@@ -38,7 +38,7 @@ export default function NewListing({ children }: props) {
             <DialogTitle>New listing</DialogTitle>
             <DialogDescription className="sr-only">Form</DialogDescription>
           </DialogHeader>
-          <ListingForm />
+          <ListingForm closeModal={setOpen} />
         </DialogContent>
       </Dialog>
     )
@@ -55,7 +55,7 @@ export default function NewListing({ children }: props) {
             </DrawerDescription>
           </DrawerHeader>
           <div className="px-4">
-            <ListingForm />
+            <ListingForm closeModal={setOpen} />
           </div>
           <ScrollBar orientation="vertical" />
         </ScrollArea>

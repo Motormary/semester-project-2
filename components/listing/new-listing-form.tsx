@@ -2,6 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
+import createListing from "@/app/actions/listings/create"
 import {
   Form,
   FormControl,
@@ -14,9 +15,16 @@ import {
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { tags } from "@/lib/data/tags"
-import { mediaSchema, newListingSchema } from "@/lib/definitions"
+import {
+  mediaSchema,
+  newListingSchema,
+  TYPE_CREATE_LISTING,
+} from "@/lib/definitions"
+import { handleErrors } from "@/lib/handle-errors"
 import { cn } from "@/lib/utils"
+import { useAutoAnimate } from "@formkit/auto-animate/react"
 import { Check, ChevronsUpDown, Plus, X } from "lucide-react"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "sonner"
 import { Button } from "../ui/button"
@@ -32,9 +40,14 @@ import { DateTimePicker24hForm } from "../ui/date-time-picker"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 import Stepper from "./stepper"
-import { useAutoAnimate } from '@formkit/auto-animate/react'
 
-export default function ListingForm() {
+type props = {
+  closeModal: (state: boolean) => void
+}
+
+export default function ListingForm({ closeModal }: props) {
+  const router = useRouter()
+  const [isPending, setIspending] = useState(false)
   const [mediaRef] = useAutoAnimate()
   const [gallery, setGallery] = useState<
     z.infer<typeof mediaSchema>[] | undefined
@@ -50,14 +63,20 @@ export default function ListingForm() {
     },
   })
 
-  function onSubmit(data: z.infer<typeof newListingSchema>) {
-    toast.success("success+!", {
-      description: (
-        <pre className="mt-2 w-full rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    })
+  async function onSubmit(formData: z.infer<typeof newListingSchema>) {
+    setIspending(true)
+    const { data, success, error, source } = await createListing(formData)
+    if (!success) handleErrors<TYPE_CREATE_LISTING>(error, source, form)
+    if (success) {
+      closeModal(false)
+      toast.success("New listing posted 🎉", {
+        action: {
+          label: "Go to",
+          onClick: () => router.push(`/listing/${data.data.id}`),
+        },
+      })
+    }
+    setIspending(false)
   }
 
   function handleAddMedia(e: React.MouseEvent<HTMLButtonElement>) {
@@ -70,7 +89,7 @@ export default function ListingForm() {
         const newMedia = { url: input.value, alt: "thumbnail" }
         const newGallery = gallery?.length ? [...gallery, newMedia] : [newMedia]
         mediaSchema.parse(newMedia)
-        
+
         setGallery(newGallery)
         form.setValue("media", newGallery)
         input.value = ""
@@ -102,7 +121,7 @@ export default function ListingForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <Stepper form={form}>
+        <Stepper isPending={isPending} form={form}>
           <FormField
             control={form.control}
             name="title"
@@ -149,8 +168,10 @@ export default function ListingForm() {
                         )}
                       >
                         {field.value?.length
-                          ? tags.find((tag) => tag.value === field.value?.[0])
-                              ?.label
+                          ? tags.find(
+                              (tag) =>
+                                tag.value === field.value?.[0]?.toLowerCase(),
+                            )?.label
                           : "Select Category"}
                         <ChevronsUpDown className="opacity-50" />
                       </Button>
@@ -168,10 +189,13 @@ export default function ListingForm() {
                                 value={tag.label}
                                 key={index}
                                 onSelect={() => {
-                                  if (field.value?.[0] === tag.value) {
+                                  if (
+                                    field.value?.[0]?.toLowerCase() ===
+                                    tag.value
+                                  ) {
                                     form.resetField("tags")
                                   } else {
-                                    form.setValue("tags", [tag.value])
+                                    form.setValue("tags", [tag.label])
                                   }
                                 }}
                               >
@@ -179,7 +203,8 @@ export default function ListingForm() {
                                 <Check
                                   className={cn(
                                     "ml-auto",
-                                    tag.value === field.value?.[0]
+                                    tag.value ===
+                                      field.value?.[0]?.toLowerCase()
                                       ? "opacity-100"
                                       : "opacity-0",
                                   )}
@@ -217,13 +242,13 @@ export default function ListingForm() {
                 </FormItem>
               )}
             />
-            <div ref={mediaRef} className="flex flex-wrap gap-1 items-start">
+            <div ref={mediaRef} className="flex flex-wrap items-start gap-1">
               {gallery
                 ? gallery.map((image, index) => (
                     <div
                       onClick={() => handleSetMainImage(image, index)}
                       className="relative"
-                      key={image.url+index}
+                      key={image.url + index}
                     >
                       <Button
                         onClick={(e) => {

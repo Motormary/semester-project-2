@@ -195,8 +195,10 @@ export type TYPE_USER_LOGIN = z.infer<typeof LoginUserSchema>
 export type TYPE_GET_USER_BIDS = z.infer<typeof getUserBidsSchema>
 export type TYPE_GET_USER = z.infer<typeof getProfileSchema>
 
-// Listings types
+// flat listings types
 export type TYPE_LISTING = z.infer<typeof listingSchema>
+
+export type TYPE_CREATE_LISTING = z.infer<typeof newListingSchema>
 
 export type TYPE_GET_LISTING = z.infer<typeof getListingSchema>
 

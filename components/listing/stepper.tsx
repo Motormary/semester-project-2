@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react"
-import { Calendar, Check, ImagePlus, List } from "lucide-react"
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { DialogFooter, DialogTrigger } from "@/components/ui/dialog"
 import { DrawerFooter, DrawerTrigger } from "@/components/ui/drawer"
 import { useMediaQuery } from "@/hooks/use-media-query"
+import { TYPE_CREATE_LISTING } from "@/lib/definitions"
+import { cn } from "@/lib/utils"
+import { Calendar, Check, ImagePlus, List, RefreshCw } from "lucide-react"
+import { useEffect, useState } from "react"
+import { UseFormReturn } from "react-hook-form"
 
 const steps = [
   { id: 1, title: "Step 1", description: "Enter details" },
@@ -14,10 +16,11 @@ const steps = [
 
 type props = {
   children: React.ReactNode
-  form: any 
+  form: UseFormReturn<TYPE_CREATE_LISTING>
+  isPending: boolean
 }
 
-export default function Stepper({ children, form }: props) {
+export default function Stepper({ children, form, isPending }: props) {
   const [currentStep, setCurrentStep] = useState(1)
   const isDesktop = useMediaQuery("(min-width: 768px)")
 
@@ -120,7 +123,9 @@ export default function Stepper({ children, form }: props) {
                 Next
               </Button>
             ) : (
-              <Button type="submit">Submit</Button>
+              <Button disabled={isPending} type="submit">
+              {isPending ? <RefreshCw className="size-5 animate-spin mx-3" /> : "Submit"}
+            </Button>
             )}
           </div>
         </DialogFooter>
@@ -148,7 +153,9 @@ export default function Stepper({ children, form }: props) {
                 Next
               </Button>
             ) : (
-              <Button type="submit">Submit</Button>
+              <Button disabled={isPending} type="submit">
+                {isPending ? <RefreshCw className="size-5 animate-spin" /> : "Submit"}
+              </Button>
             )}
           </div>
         </DrawerFooter>
