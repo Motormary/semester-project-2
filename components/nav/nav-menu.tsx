@@ -76,7 +76,7 @@ export default async function NavMenu() {
                 variant="ghost"
                 className="group px-0 hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
               >
-                <span className="max-w-36 truncate">{}</span>
+                <span className="max-w-36 truncate mb-[2px]">{user.name}</span>
                 <Avatar className="max-h-8 max-w-8 outline-primary ring-primary ring-offset-2 group-focus:ring">
                   <AvatarImage
                     height={32}
