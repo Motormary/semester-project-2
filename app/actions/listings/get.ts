@@ -12,7 +12,7 @@ import { failedToVerify } from "@/lib/utils"
 import { cache } from "react"
 import superFetch from "../fetch"
 
-export const getListing = cache(
+const getListing = cache(
   async (id: string): Promise<TYPE_GET_LISTING> => {
     const session = await verifySession()
     if (!session.accessToken) return failedToVerify()
@@ -31,3 +31,5 @@ export const getListing = cache(
     return { ...res }
   },
 )
+
+export default getListing

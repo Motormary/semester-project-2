@@ -5,7 +5,7 @@ import { TYPE_USER_LOGIN, TYPE_GET_USER, Method } from "@/lib/definitions"
 import superFetch from "../fetch"
 import { loginUser } from "./login"
 
-export async function createUser(
+async function createUser(
     data: TYPE_USER_LOGIN,
   ): Promise<TYPE_GET_USER> {
     const res = await superFetch<TYPE_GET_USER>({
@@ -31,3 +31,5 @@ export async function createUser(
   
     return { ...res }
   }
+
+export default createUser

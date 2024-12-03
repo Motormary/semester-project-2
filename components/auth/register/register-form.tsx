@@ -1,5 +1,5 @@
 "use client"
-import { createUser } from "@/app/actions/user/create"
+import createUser from "@/app/actions/user/create"
 import { RegisterUserSchema, TYPE_USER_REGISTER } from "@/lib/definitions"
 import { zodResolver } from "@hookform/resolvers/zod"
 import logo from "assets/images/logo_filled.png"

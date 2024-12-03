@@ -7,23 +7,25 @@ import { failedToVerify } from "@/lib/utils"
 import { revalidateTag } from "next/cache"
 import superFetch from "../fetch"
 
-export const updateUser = async (data: TYPE_USER): Promise<TYPE_GET_USER> => {
-    const session = await verifySession()
-    if (!session.accessToken) return failedToVerify()
-    const res = await superFetch<any>({
-      method: Method.PUT,
-      url: API_AH_USERS,
-      body: data,
-      token: session.accessToken,
-    })
-  
-    if (!res.success) {
-      console.error(res.data)
-      return res
-    }
-  
-    revalidateTag(`user-${data.name}`)
-    // revalidateTag("users")
-  
+const updateUser = async (data: TYPE_USER): Promise<TYPE_GET_USER> => {
+  const session = await verifySession()
+  if (!session.accessToken) return failedToVerify()
+  const res = await superFetch<any>({
+    method: Method.PUT,
+    url: API_AH_USERS,
+    body: data,
+    token: session.accessToken,
+  })
+
+  if (!res.success) {
+    console.error(res.data)
     return res
   }
+
+  revalidateTag(`user-${data.name}`)
+  // revalidateTag("users")
+
+  return res
+}
+
+export default updateUser

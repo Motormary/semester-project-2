@@ -3,7 +3,7 @@ import ListingPagination from "@/components/listing/pagination"
 import { Separator } from "@/components/ui/separator"
 import { SearchParams } from "@/lib/definitions"
 import { checkAndThrowError } from "@/lib/handle-errors"
-import { getAllListings } from "./actions/listings/get-all"
+import getAllListings from "./actions/listings/get-all"
 
 type props = {
   searchParams: SearchParams
@@ -35,7 +35,7 @@ export default async function Home({ searchParams }: props) {
           <p className="m-auto">No listings found</p>
         )}
       </div>
-      <ListingPagination meta={data.meta}/>
+      <ListingPagination meta={data.meta} />
     </div>
   )
 }

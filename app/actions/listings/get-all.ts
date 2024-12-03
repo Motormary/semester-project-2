@@ -14,7 +14,7 @@ type params = {
   searchParams: any
 }
 
-export const getAllListings = cache(
+const getAllListings = cache(
   async (params: Record<string, any>): Promise<TYPE_GET_LISTINGS> => {
     const query = new URLSearchParams(params)
     let searchQ
@@ -42,3 +42,5 @@ export const getAllListings = cache(
     return { ...res }
   },
 )
+
+export default getAllListings
