@@ -10,11 +10,13 @@ import superFetch from "../fetch"
 type props = {
   data: { amount: number }
   id: string
+  seller: string
 }
 
 export default async function bidOnListing({
   data,
   id,
+  seller
 }: props): Promise<TYPE_GET_LISTING> {
   const session = await verifySession()
   if (!session.accessToken) return failedToVerify()
@@ -32,6 +34,7 @@ export default async function bidOnListing({
 
   revalidateTag(CacheTags.ALL_LISTINGS)
   revalidateTag(CacheTags.LISTING + id)
+  revalidateTag(CacheTags.USER_LISTINGS + seller)
 
   return { ...res }
 }

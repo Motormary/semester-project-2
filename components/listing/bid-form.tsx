@@ -25,9 +25,10 @@ const FormSchema = z.object({
 type props = {
   id: string
   minBid: number | undefined
+  seller: string
 }
 
-export default function CreateBid({ id, minBid }: props) {
+export default function BidForm({ id, minBid, seller }: props) {
   const bidAmount = minBid ? minBid + 1 : 1
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -37,7 +38,7 @@ export default function CreateBid({ id, minBid }: props) {
   })
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    const { success, error, source } = await bidOnListing({ data, id: id })
+    const { success, error, source } = await bidOnListing({ data, id: id, seller })
     if (!success) handleErrors(error, source, form)
     if (success) {
       toast.success("Your bid has been added")

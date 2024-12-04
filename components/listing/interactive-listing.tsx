@@ -14,7 +14,7 @@ import {
 } from "../ui/tooltip"
 import BidListDialog from "./bid-list"
 import { Countdown } from "./countdown"
-import CreateBid from "./bid-form"
+import BidForm from "./bid-form"
 import ListingGallery from "./listing-gallery"
 import NewListing from "./new-listing"
 import PriceTag from "./price"
@@ -85,7 +85,7 @@ export default async function InteractiveListing({ listing }: props) {
               <Countdown endsAt={listing.endsAt} id={listing.id} />
             </div>
           </div>
-          <CreateBid minBid={minBid} id={listing.id} />
+          <BidForm seller={listing.seller.name} minBid={minBid} id={listing.id} />
           <div className="text-pretty">
             <p className="mb-1 font-semibold">Description</p>
             <p className="text-pretty text-sm">{listing.description}</p>
