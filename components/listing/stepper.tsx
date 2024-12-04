@@ -38,13 +38,15 @@ export default function Stepper({ children, form, isPending }: props) {
     }
   }
 
+  // Direct user back to step 1 if
   useEffect(() => {
     const errors = Object.entries(form.formState.errors)
     if (errors?.length) {
       const errorKey = errors[0][0]
-      if (errorKey === "title") setCurrentStep(1)
+      if (errorKey === "title" || errorKey === "description") setCurrentStep(1)
+      if (errorKey === "media") setCurrentStep(2)
     }
-  }, [form.formState.errors])
+  }, [form.formState])
 
   return (
     <div
@@ -124,8 +126,12 @@ export default function Stepper({ children, form, isPending }: props) {
               </Button>
             ) : (
               <Button disabled={isPending} type="submit">
-              {isPending ? <RefreshCw className="size-5 animate-spin mx-3" /> : "Submit"}
-            </Button>
+                {isPending ? (
+                  <RefreshCw className="mx-3 size-5 animate-spin" />
+                ) : (
+                  "Submit"
+                )}
+              </Button>
             )}
           </div>
         </DialogFooter>
@@ -154,7 +160,11 @@ export default function Stepper({ children, form, isPending }: props) {
               </Button>
             ) : (
               <Button disabled={isPending} type="submit">
-                {isPending ? <RefreshCw className="size-5 animate-spin" /> : "Submit"}
+                {isPending ? (
+                  <RefreshCw className="size-5 animate-spin" />
+                ) : (
+                  "Submit"
+                )}
               </Button>
             )}
           </div>

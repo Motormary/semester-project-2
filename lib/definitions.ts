@@ -73,7 +73,7 @@ const multipleListingSchema = z.array(listingSchema)
 
 export const newListingSchema = z.object({
   title: z.string().min(4, { message: "Minimum 4 characters required" }),
-  description: z.string().optional(),
+  description: z.string().max(280, {message: "Maximum 280 characters"}).optional(),
   media: z.array(mediaSchema).optional(),
   tags: z.array(z.string()).optional(),
   endsAt: z.date({ required_error: "A date and time is required." }),

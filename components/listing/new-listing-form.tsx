@@ -41,6 +41,7 @@ import { DateTimePicker24hForm } from "../ui/date-time-picker"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 import Stepper from "./stepper"
+import updateListing from "@/app/actions/listings/update"
 
 type props = {
   closeModal: (state: boolean) => void
@@ -48,7 +49,6 @@ type props = {
 }
 
 export default function ListingForm({ closeModal, initialData }: props) {
-  console.log("🚀 ~ ListingForm ~ initialData:", initialData)
   const router = useRouter()
   const [isPending, setIspending] = useState(false)
   const [mediaRef] = useAutoAnimate()
@@ -70,16 +70,24 @@ export default function ListingForm({ closeModal, initialData }: props) {
 
   async function onSubmit(formData: z.infer<typeof newListingSchema>) {
     setIspending(true)
-    const { data, success, error, source } = await createListing(formData)
-    if (!success) handleErrors<TYPE_CREATE_LISTING>(error, source, form)
+    // Selects server action based on if initialData is provided
+    const { data, success, error, source } = await (!initialData
+      ? createListing(formData)
+      : updateListing(formData, initialData.id))
+    if (!success) {
+      handleErrors<TYPE_CREATE_LISTING>(error, source, form)
+    }
     if (success) {
       closeModal(false)
-      toast.success("New listing posted 🎉", {
-        action: {
-          label: "Go to",
-          onClick: () => router.push(`/listing/${data.data.id}`),
+      toast.success(
+        initialData ? "Listing updated successfully" : "New listing posted 🎉",
+        {
+          action: {
+            label: "Go to",
+            onClick: () => router.push(`/listing/${data.data.id}`),
+          },
         },
-      })
+      )
     }
     setIspending(false)
   }
@@ -151,6 +159,11 @@ export default function ListingForm({ closeModal, initialData }: props) {
                 <FormControl>
                   <Textarea className="textarea" {...field} />
                 </FormControl>
+                {field.value?.length ? (
+                  <FormDescription>
+                    {field.value?.length ?? 0} / 280 characters
+                  </FormDescription>
+                ) : null}
                 <FormMessage />
               </FormItem>
             )}
