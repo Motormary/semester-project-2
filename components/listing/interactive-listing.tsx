@@ -15,7 +15,7 @@ import {
 import BidListDialog from "./bid-list"
 import { Countdown } from "./countdown"
 import CreateBid from "./bid-form"
-import ListingCarousel from "./listing-carousel"
+import ListingGallery from "./listing-gallery"
 import NewListing from "./new-listing"
 import PriceTag from "./price"
 import { compareValues } from "@/lib/utils"
@@ -65,7 +65,7 @@ export default async function InteractiveListing({ listing }: props) {
         ) : null}
       </div>
       <div className="gap-6 space-y-4 md:flex">
-        <ListingCarousel listing={listing} />
+        <ListingGallery listing={listing} />
         <div className="w-full space-y-6">
           <CardTitle className="overflow-hidden text-wrap break-words">
             {listing.title}

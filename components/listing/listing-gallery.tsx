@@ -11,7 +11,7 @@ type props = {
   listing: TYPE_LISTING
 }
 
-export default function ListingCarousel({ listing }: props) {
+export default function ListingGallery({ listing }: props) {
   const scrollRef = useRef<HTMLDivElement | null>(null)
   const overflowRef = useRef<HTMLDivElement | null>(null)
   const lastImageRef = useRef<HTMLElement | null>(null)
@@ -100,7 +100,7 @@ export default function ListingCarousel({ listing }: props) {
                   onClick={() => setImage(media.url)}
                   className={cn(
                     image === media.url ? "outline outline-green-500" : "",
-                    "flex aspect-square w-28 rounded-md bg-muted",
+                    "flex aspect-square w-28 rounded-md bg-muted overflow-hidden",
                   )}
                 >
                   <img

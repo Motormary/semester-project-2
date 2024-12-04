@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { handleErrors } from "@/lib/handle-errors"
+import { toast } from "sonner"
 
 const FormSchema = z.object({
   amount: z.coerce.number({ message: "Bid value is required" }),
@@ -38,6 +39,10 @@ export default function CreateBid({ id, minBid }: props) {
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     const { success, error, source } = await bidOnListing({ data, id: id })
     if (!success) handleErrors(error, source, form)
+    if (success) {
+      toast.success("Your bid has been added")
+      form.setValue("amount", 0)
+    }
   }
 
   return (
@@ -54,9 +59,10 @@ export default function CreateBid({ id, minBid }: props) {
               <FormLabel>Amount</FormLabel>
               <FormControl>
                 <Input
-                  type="number"
                   min={bidAmount}
+                  type="number"
                   {...field}
+                  onClick={(e) => e.currentTarget.select()}
                   onInput={(event) => {
                     // Forces integer value
                     const input = event.currentTarget
