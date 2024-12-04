@@ -5,6 +5,7 @@ import { useState, useEffect } from "react"
 import { CacheTags } from "@/lib/definitions"
 import { RevalidateCache } from "@/app/actions/revalidate"
 import { Dot } from "lucide-react"
+import { useSearchParams } from "next/navigation"
 
 interface CountdownProps {
   endsAt: Date
@@ -12,11 +13,18 @@ interface CountdownProps {
 }
 
 export function Countdown({ endsAt, id }: CountdownProps) {
-  const [timeLeft, setTimeLeft] = useState(calculateTimeDifference(endsAt.toString()))
+  const url = useSearchParams()
+  const hasSearch = url.has("search")
+  const [timeLeft, setTimeLeft] = useState(
+    calculateTimeDifference(endsAt.toString()),
+  )
   const [isLessThanHour, setIsLessThanHour] = useState(false)
-  const [ended, setIsEnded] = useState(new Date(endsAt) < new Date() ? true : false)
+  const [ended, setIsEnded] = useState(
+    new Date(endsAt) < new Date() ? true : false,
+  )
 
   useEffect(() => {
+      console.log("🔺 ~~~~~~~~~~~~~~~~~~~~ useEffect")
     async function handleRevalidate() {
       RevalidateCache(CacheTags.ALL_LISTINGS)
       RevalidateCache(CacheTags.LISTING + id)
@@ -27,6 +35,11 @@ export function Countdown({ endsAt, id }: CountdownProps) {
 
       if (newTimeLeft.days === 0 && newTimeLeft.hours === 0) {
         setIsLessThanHour(true)
+      }
+
+      // If the user has cached a page this will clean out the ended auctions when met. // ! Do not run with search, as search will show ended listings === loop
+      if (new Date(endsAt) < new Date() && !hasSearch) {
+        handleRevalidate()
       }
 
       if (
@@ -42,7 +55,7 @@ export function Countdown({ endsAt, id }: CountdownProps) {
     }, 1000)
 
     return () => clearInterval(timer)
-  }, [endsAt, id])
+  }, [endsAt, id, hasSearch])
 
   const formatTime = (value: number) => value.toString().padStart(2, "0")
 

@@ -4,6 +4,7 @@ import Link from "next/link"
 import { Badge } from "../ui/badge"
 import { Countdown } from "./countdown"
 import PriceTag from "./price"
+import altImg from "assets/svg/alt.svg"
 
 type props = {
   id?: string
@@ -12,7 +13,7 @@ type props = {
 }
 
 export default async function Listing({ data, classname }: props) {
-  if (data.id === "f8b797fd-4936-4af3-ae44-8d3f94afeed1") console.log(data.endsAt)
+
   return (
     <li
       id={data.id}
@@ -23,13 +24,13 @@ export default async function Listing({ data, classname }: props) {
         className={`flex aspect-[16/9] max-h-52 overflow-hidden rounded-md border bg-muted`}
       >
         <img
-          src={data.media?.[0]?.url}
+          src={data.media?.[0]?.url ?? altImg.src} // Alt only runs on missing links, not bad ones.
           alt="alt image"
           className={cn(
             !data.media?.[0]?.url
-              ? `bg-[url('/assets/svg/alt.svg')] bg-contain bg-center bg-no-repeat` /* Compensate for missing image, will not work for the people adding non-direct links */
-              : "",
-            `h-full w-full object-cover text-transparent`,
+              ? `mx-auto object-center`
+              : "h-full w-full object-cover",
+            `text-transparent`,
           )}
         />
       </picture>

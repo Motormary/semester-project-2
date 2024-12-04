@@ -24,7 +24,7 @@ import { TYPE_LISTING } from "@/lib/definitions"
 
 type props = {
   children: React.ReactNode
-  initialData: TYPE_LISTING
+  initialData?: TYPE_LISTING
 }
 
 export default function NewListing({ children, initialData }: props) {

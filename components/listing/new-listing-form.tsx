@@ -44,7 +44,7 @@ import Stepper from "./stepper"
 
 type props = {
   closeModal: (state: boolean) => void
-  initialData: TYPE_LISTING
+  initialData?: TYPE_LISTING
 }
 
 export default function ListingForm({ closeModal, initialData }: props) {
