@@ -5,6 +5,7 @@ import { TYPE_LISTING } from "@/lib/definitions"
 import { cn } from "@/lib/utils"
 import { useEffect, useMemo, useRef, useState } from "react"
 import Link from "next/link"
+import altImg from "assets/svg/alt.svg"
 
 type props = {
   listing: TYPE_LISTING
@@ -19,7 +20,7 @@ export default function ListingCarousel({ listing }: props) {
   const [isLastImageInView, setIsLastImageInView] = useState(false)
   const [isFirstImageInView, setIsFirstImageInView] = useState(false)
   const [image, setImage] = useState<string | undefined>(
-    listing && listing?.media?.length ? listing.media[0].url : "",
+    listing && listing?.media?.length ? listing?.media?.[0]?.url.trim() : altImg.src,
   )
   const gallery = useMemo(
     () => (listing && listing?.media?.length ? listing.media : []),

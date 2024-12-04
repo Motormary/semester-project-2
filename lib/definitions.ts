@@ -3,6 +3,8 @@ import { z } from "zod"
 export enum CacheOptions {
   NoStore = "no-store",
   ForceCache = "force-cache",
+  NoCache = "no-cache",
+  Default = "default"
 }
 
 export enum CacheTags {

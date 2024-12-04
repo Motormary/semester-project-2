@@ -20,6 +20,7 @@ const getAllListings = cache(
     let searchQ
     query.set("limit", "12")
     query.set("_active", "true")
+    query.set("sort", "created")
     const hasSearch = params.search
 
     if (hasSearch) {

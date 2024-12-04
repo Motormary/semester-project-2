@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import {
   Dialog,
   DialogContent,
@@ -49,7 +49,7 @@ type bidsProps = {
 
 
 function List({ bids }: bidsProps) {
-  const sortedBids = bids.toSorted((a, b) => compareValues(a.amount, b.amount))
+  const sortedBids = useMemo(() => bids.toSorted((a, b) => compareValues(a.amount, b.amount)), [bids])
   return (
     <ScrollArea className="relative mt-8 h-[30rem] pr-2 sm:h-96">
       <Table>

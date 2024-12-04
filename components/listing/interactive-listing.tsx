@@ -1,23 +1,24 @@
+import { getCurrentUser } from "@/app/actions/user/get"
+import { TYPE_LISTING } from "@/lib/definitions"
 import { Edit, User } from "lucide-react"
+import Link from "next/link"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
+import { Badge } from "../ui/badge"
+import { Button } from "../ui/button"
+import { CardTitle } from "../ui/card"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip"
-import ListingCarousel from "./listing-carousel"
-import { Badge } from "../ui/badge"
-import { Input } from "../ui/input"
-import { Button } from "../ui/button"
-import { CardTitle } from "../ui/card"
 import BidListDialog from "./bid-list"
-import { TYPE_LISTING } from "@/lib/definitions"
-import Link from "next/link"
-import NewListing from "./new-listing"
-import { getCurrentUser } from "@/app/actions/user/get"
-import PriceTag from "./price"
 import { Countdown } from "./countdown"
+import CreateBid from "./bid-form"
+import ListingCarousel from "./listing-carousel"
+import NewListing from "./new-listing"
+import PriceTag from "./price"
+import { compareValues } from "@/lib/utils"
 
 type props = {
   listing: TYPE_LISTING
@@ -25,8 +26,12 @@ type props = {
 
 export default async function InteractiveListing({ listing }: props) {
   let user
+  let minBid
   const { data, success } = await getCurrentUser()
   if (success) user = data.data
+  if (listing.bids?.length) {
+    minBid = listing.bids?.toSorted((a, b) => compareValues(a.amount, b.amount))[0].amount
+  }
   return (
     <div className="space-y-4">
       {/* Username */}
@@ -65,8 +70,7 @@ export default async function InteractiveListing({ listing }: props) {
           <CardTitle className="overflow-hidden text-wrap break-words">
             {listing.title}
           </CardTitle>
-          {listing.tags?.length ? <Badge>{listing.tags[0]}</Badge> : null}
-
+          {listing.tags?.[0] ? <Badge>{listing.tags[0]}</Badge> : null}
           <div>
             <PriceTag id={listing.id} />
             <div className="flex items-center">
@@ -81,27 +85,9 @@ export default async function InteractiveListing({ listing }: props) {
               <Countdown endsAt={listing.endsAt} id={listing.id} />
             </div>
           </div>
-          <div className="space-y-4">
-            <label htmlFor="bid">
-              Amount
-              <Input
-                id="bid"
-                min={0}
-                placeholder="Ω"
-                /*        onInput={(event) => {
-                  // Forces integer value
-                  const input = event.currentTarget
-                  input.value = input.value.replace(/[^0-9]/g, "")
-                }} */
-              />
-            </label>
-            <Button className="w-full">Bid</Button>
-            <Button variant="outline" className="w-full">
-              Quick bid +1 Ω
-            </Button>
-          </div>
-          <div>
-            <p className="font-semibold mb-1">Description</p>
+          <CreateBid minBid={minBid} id={listing.id} />
+          <div className="text-pretty sm:max-w-96">
+            <p className="mb-1 font-semibold">Description</p>
             <p className="text-pretty text-sm">{listing.description}</p>
           </div>
         </div>

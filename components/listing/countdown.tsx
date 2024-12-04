@@ -1,11 +1,11 @@
 "use client"
 
-import { calculateTimeDifference } from "@/lib/utils"
-import { useState, useEffect } from "react"
-import { CacheTags } from "@/lib/definitions"
 import { RevalidateCache } from "@/app/actions/revalidate"
+import { CacheTags } from "@/lib/definitions"
+import { calculateTimeDifference } from "@/lib/utils"
 import { Dot } from "lucide-react"
 import { useSearchParams } from "next/navigation"
+import { useEffect, useState } from "react"
 
 interface CountdownProps {
   endsAt: Date
@@ -24,7 +24,7 @@ export function Countdown({ endsAt, id }: CountdownProps) {
   )
 
   useEffect(() => {
-      console.log("🔺 ~~~~~~~~~~~~~~~~~~~~ useEffect")
+    console.log("🚀 ~ Countdown - useEffect running! ~ path:")
     async function handleRevalidate() {
       RevalidateCache(CacheTags.ALL_LISTINGS)
       RevalidateCache(CacheTags.LISTING + id)
@@ -37,8 +37,8 @@ export function Countdown({ endsAt, id }: CountdownProps) {
         setIsLessThanHour(true)
       }
 
-      // If the user has cached a page this will clean out the ended auctions when met. // ! Do not run with search, as search will show ended listings === loop
-      if (new Date(endsAt) < new Date() && !hasSearch) {
+      // If the user has cached a page this will clean out the ended auctions when met. // ! Do not run with search & listing[id] & wins & inactive, as search will show ended listings === loop
+      if (new Date(endsAt) < new Date() && !hasSearch && !ended) {
         handleRevalidate()
       }
 
@@ -55,6 +55,7 @@ export function Countdown({ endsAt, id }: CountdownProps) {
     }, 1000)
 
     return () => clearInterval(timer)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [endsAt, id, hasSearch])
 
   const formatTime = (value: number) => value.toString().padStart(2, "0")

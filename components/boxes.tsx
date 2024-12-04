@@ -9,7 +9,7 @@ export default function FloatingBoxes() {
   }))
 
   return (
-    <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+    <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden max-md:hidden">
       {boxes.map((box, index) => (
         <Box
           key={index}
