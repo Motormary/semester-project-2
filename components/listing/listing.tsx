@@ -17,7 +17,7 @@ export default async function Listing({ data, classname }: props) {
   return (
     <li
       id={data.id}
-      className={`${classname} relative flex w-full flex-col gap-4 overflow-hidden rounded-lg bg-card p-4 shadow-sm`}
+      className={`${classname} relative flex w-full flex-col gap-4 overflow-hidden rounded-lg bg-card/70 backdrop-blur-sm p-4 shadow-sm`}
     >
       <Link className="absolute inset-0" href={`/listing/${data.id}`}></Link>
       <picture

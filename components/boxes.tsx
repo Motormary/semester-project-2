@@ -1,12 +1,30 @@
 import { Box } from "lucide-react"
 
 export default function FloatingBoxes() {
-    return (
-        <div className="absolute inset-0 left-0 top-1/2 flex justify-evenly flex-wrap z-50">
-            <Box className="text-muted"/>
-            <Box className="text-muted"/>
-            <Box className="text-muted"/>
-            <Box className="text-muted"/>
-        </div>
-    )
+  const boxes = Array.from({ length: 14 }, () => ({
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    size: Math.random() * 70 + 15,
+    rotation: Math.random() * 360,
+  }))
+
+  return (
+    <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+      {boxes.map((box, index) => (
+        <Box
+          key={index}
+          className="absolute text-muted-foreground dark:text-muted"
+          style={{
+            left: `${box.x}%`,
+            top: `${box.y}%`,
+            width: `${box.size}px`,
+            height: `${box.size}px`,
+            opacity: 0.3,
+            transform: `rotate(${box.rotation}deg)`,
+            transition: "all 0.5s ease-in-out",
+          }}
+        />
+      ))}
+    </div>
+  )
 }
