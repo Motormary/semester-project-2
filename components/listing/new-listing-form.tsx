@@ -19,6 +19,7 @@ import {
   mediaSchema,
   newListingSchema,
   TYPE_CREATE_LISTING,
+  TYPE_LISTING,
 } from "@/lib/definitions"
 import { handleErrors } from "@/lib/handle-errors"
 import { cn } from "@/lib/utils"
@@ -43,24 +44,28 @@ import Stepper from "./stepper"
 
 type props = {
   closeModal: (state: boolean) => void
+  initialData: TYPE_LISTING
 }
 
-export default function ListingForm({ closeModal }: props) {
+export default function ListingForm({ closeModal, initialData }: props) {
+  console.log("🚀 ~ ListingForm ~ initialData:", initialData)
   const router = useRouter()
   const [isPending, setIspending] = useState(false)
   const [mediaRef] = useAutoAnimate()
   const [gallery, setGallery] = useState<
     z.infer<typeof mediaSchema>[] | undefined
-  >([])
+  >(initialData ? initialData.media : [])
   const form = useForm<z.infer<typeof newListingSchema>>({
     resolver: zodResolver(newListingSchema),
-    defaultValues: {
-      title: "",
-      description: "",
-      tags: [],
-      media: [],
-      endsAt: new Date(),
-    },
+    defaultValues: initialData
+      ? { ...initialData, endsAt: new Date(initialData.endsAt) }
+      : {
+          title: "",
+          description: "",
+          tags: [],
+          media: [],
+          endsAt: new Date(),
+        },
   })
 
   async function onSubmit(formData: z.infer<typeof newListingSchema>) {

@@ -7,12 +7,12 @@ import { RevalidateCache } from "@/app/actions/revalidate"
 import { Dot } from "lucide-react"
 
 interface CountdownProps {
-  endsAt: string
+  endsAt: Date
   id: string
 }
 
 export function Countdown({ endsAt, id }: CountdownProps) {
-  const [timeLeft, setTimeLeft] = useState(calculateTimeDifference(endsAt))
+  const [timeLeft, setTimeLeft] = useState(calculateTimeDifference(endsAt.toString()))
   const [isLessThanHour, setIsLessThanHour] = useState(false)
   const [ended, setIsEnded] = useState(new Date(endsAt) < new Date() ? true : false)
 
@@ -22,7 +22,7 @@ export function Countdown({ endsAt, id }: CountdownProps) {
       RevalidateCache(CacheTags.LISTING + id)
     }
     const timer = setInterval(() => {
-      const newTimeLeft = calculateTimeDifference(endsAt)
+      const newTimeLeft = calculateTimeDifference(endsAt.toString())
       setTimeLeft(newTimeLeft)
 
       if (newTimeLeft.days === 0 && newTimeLeft.hours === 0) {

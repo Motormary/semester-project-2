@@ -13,8 +13,8 @@ const getUserListings = cache(
     tag,
     user,
   }: {
-    searchQuery: string
-    tag: string
+    searchQuery?: string
+    tag?: string
     user: string
   }): Promise<TYPE_GET_USER> => {
     const session = await verifySession()

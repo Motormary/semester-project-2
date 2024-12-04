@@ -33,18 +33,27 @@ export const mediaSchema = z.object({
   alt: z.string(),
 })
 
+const userSchema = z.object({
+  name: z.string(),
+  email: z.string().email(),
+  bio: z.string(),
+  avatar: mediaSchema,
+  banner: mediaSchema,
+})
+
 const listingSchema = z.object({
   id: z.string(),
   title: z.string(),
   description: z.string(),
   media: z.array(mediaSchema),
   tags: z.array(z.string()),
-  created: z.string().datetime(),
-  updated: z.string().datetime(),
-  endsAt: z.string().datetime(),
+  created: z.date(),
+  updated: z.date(),
+  endsAt: z.date(),
   _count: z.object({
     bids: z.number().int().nonnegative(),
   }),
+  seller: userSchema,
   bids: z.array(
     z.object({
       id: z.string(),
@@ -55,6 +64,7 @@ const listingSchema = z.object({
           url: z.string(),
         }),
       }),
+      created: z.date()
     }),
   ),
 })
@@ -193,6 +203,7 @@ export type TYPE_USER_LOGIN = z.infer<typeof LoginUserSchema>
 
 // User request types
 export type TYPE_GET_USER_BIDS = z.infer<typeof getUserBidsSchema>
+
 export type TYPE_GET_USER = z.infer<typeof getProfileSchema>
 
 // flat listings types
@@ -200,6 +211,7 @@ export type TYPE_LISTING = z.infer<typeof listingSchema>
 
 export type TYPE_CREATE_LISTING = z.infer<typeof newListingSchema>
 
+// Listing requests
 export type TYPE_GET_LISTING = z.infer<typeof getListingSchema>
 
 export type TYPE_GET_LISTINGS = z.infer<typeof getListingsSchema>

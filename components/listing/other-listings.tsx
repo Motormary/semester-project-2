@@ -3,13 +3,22 @@ import { Dot } from "lucide-react"
 import Link from "next/link"
 import { Fragment } from "react"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
+import getUserListings from "@/app/actions/user/get-listings"
 
 const containerStyles = {
   default: "flex gap-4 w-full shrink-1 max-w-[1400px]",
   xl: " mx-auto xl:w-fit xl:flex-col xl:justify-center xl:border-t",
 }
 
-export default async function OtherListings({ id }: { id: string }) {
+type props = {
+  user: string
+}
+
+export default async function OtherListings({ user }: props) {
+  const {data, success} = await getUserListings({ user: user })
+
+  if (!success || data) return null
+  
   return (
     <div className="w-full space-y-4 max-md:grid">
       <h3 className="text-sm font-semibold xl:text-center">
@@ -22,7 +31,7 @@ export default async function OtherListings({ id }: { id: string }) {
               <div className="relative hidden w-full items-center gap-4 overflow-hidden rounded-md border-b p-4 hover:bg-muted xl:flex">
                 <Link
                   className="absolute inset-0"
-                  href={`/listing/${id}`}
+                  href={`/listing/${""}`}
                 ></Link>
                 <picture className="flex aspect-square size-20 overflow-hidden rounded-md border bg-muted">
                   <img
@@ -55,7 +64,7 @@ export default async function OtherListings({ id }: { id: string }) {
             </Fragment>
           ))}
         </div>
-        <ScrollBar orientation="horizontal" className="xl:hidden"/>
+        <ScrollBar orientation="horizontal" className="xl:hidden" />
       </ScrollArea>
     </div>
   )

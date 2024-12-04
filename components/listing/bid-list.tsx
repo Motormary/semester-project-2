@@ -24,65 +24,72 @@ import { Button } from "../ui/button"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 import {
   Table,
-  TableBody, TableCell,
+  TableBody,
+  TableCell,
   TableHead,
   TableHeader,
-  TableRow
+  TableRow,
 } from "../ui/table"
 import Link from "next/link"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
+import { TYPE_LISTING } from "@/lib/definitions"
+import { User } from "lucide-react"
+import { format } from "date-fns"
+import { nb } from "date-fns/locale"
 
 type props = {
   children: React.ReactNode
-  postId: string
+  listing: TYPE_LISTING
 }
 
-function List(bids: any) {
+type bidsProps = {
+  bids: TYPE_LISTING["bids"]
+}
+
+function List({ bids }: bidsProps) {
   return (
-    <ScrollArea className="h-[30rem] sm:h-96 relative mt-8 pr-2">
-    <Table>
-      <TableHeader className="relative">
-        <TableRow className="fixed w-full bg-background hover:bg-background z-[999] left-0 px-5 h-8 flex justify-between -translate-y-8">
-          <TableHead className="w-1/3">User</TableHead>
-          <TableHead className="text-center">Date</TableHead>
-          <TableHead className="text-right">Amount</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {Array.from({ length: 10 }).map((_, index) => (
-          <TableRow key={index}>
-            <TableCell>
-              <Link href={`/profile/username`}>
-                {" "}
-                <div className="flex items-center gap-2">
-                  <Avatar className="max-h-5 max-w-5">
-                    <AvatarImage
-                      src="https://github.com/shadcn.png"
-                      alt="Avatar"
-                    />
-                    <AvatarFallback>CN</AvatarFallback>
-                  </Avatar>
-                  <span className="max-w-20 sm:max-w-32 sm:overflow-hidden sm:truncate text-sm max-sm:break-all">
-                    Username asasdasa asd
-                  </span>
-                </div>
-              </Link>
-            </TableCell>
-            <TableCell className="text-center">
-              {new Date().toDateString()}
-            </TableCell>
-            <TableCell className="text-right">250</TableCell>
+    <ScrollArea className="relative mt-8 h-[30rem] pr-2 sm:h-96">
+      <Table>
+        <TableHeader className="relative">
+          <TableRow className="fixed left-0 z-[999] flex h-8 w-full -translate-y-8 justify-between bg-background px-5 hover:bg-background">
+            <TableHead className="w-1/3">User</TableHead>
+            <TableHead className="text-center">Date</TableHead>
+            <TableHead className="text-right">Amount</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {bids.map((bid, index) => (
+            <TableRow key={bid.bidder.name+index}>
+              <TableCell>
+                <Link href={`/profile/${bid.bidder.name}`}>
+                  <div className="flex items-center gap-2">
+                    <Avatar className="max-h-5 max-w-5">
+                      <AvatarImage
+                        src={bid.bidder.avatar.url}
+                        alt="Avatar"
+                      />
+                      <AvatarFallback><User className="size-5"/></AvatarFallback>
+                    </Avatar>
+                    <span className="max-w-20 text-sm max-sm:break-all sm:max-w-32 sm:overflow-hidden sm:truncate">
+                      {bid.bidder.name}
+                    </span>
+                  </div>
+                </Link>
+              </TableCell>
+              <TableCell className="text-center">
+                {format(bid.created, "PPp", { locale: nb })}
+              </TableCell>
+              <TableCell className="text-right">{bid.amount}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </ScrollArea>
   )
 }
 
-export default function BidListDialog({ postId, children }: props) {
+export default function BidListDialog({ listing, children }: props) {
   const [open, setOpen] = useState(false)
-  // get bids
   const isDesktop = useMediaQuery("(min-width: 768px)")
   if (isDesktop) {
     return (
@@ -93,7 +100,7 @@ export default function BidListDialog({ postId, children }: props) {
             <DialogTitle>Bids</DialogTitle>
             <DialogDescription>All recent bids on this item</DialogDescription>
           </DialogHeader>
-          <List _user={{}} />
+           <List bids={listing.bids} />
           <DialogFooter>
             <DialogTrigger asChild>
               <Button variant="outline">Close</Button>
@@ -116,7 +123,7 @@ export default function BidListDialog({ postId, children }: props) {
               </DrawerDescription>
             </DrawerHeader>
             <div className="px-4">
-              <List />
+              <List bids={listing.bids} />
             </div>
             <DrawerFooter>
               <DrawerTrigger asChild>

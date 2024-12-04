@@ -14,7 +14,7 @@ type props = {
 export default async function Listing({ data, classname }: props) {
   if (data.id === "f8b797fd-4936-4af3-ae44-8d3f94afeed1") console.log(data.endsAt)
   return (
-    <div
+    <li
       id={data.id}
       className={`${classname} relative flex w-full flex-col gap-4 overflow-hidden rounded-lg bg-card p-4 shadow-sm`}
     >
@@ -42,6 +42,6 @@ export default async function Listing({ data, classname }: props) {
           <Countdown id={data.id} endsAt={data.endsAt} />
         </div>
       </div>
-    </div>
+    </li>
   )
 }

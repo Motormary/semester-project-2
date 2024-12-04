@@ -16,10 +16,10 @@ export default async function Home({ searchParams }: props) {
   if (!success) checkAndThrowError(error, source)
 
   return (
-    <div className="w-full space-y-4">
+    <section className="w-full space-y-4">
       <Separator />
       <h1>All listings</h1>
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(290px,1fr))] gap-4">
+      <ul className="grid grid-cols-[repeat(auto-fill,minmax(290px,1fr))] gap-4">
         {data?.data?.length ? (
           data.data.map((listing) => {
             return (
@@ -34,8 +34,8 @@ export default async function Home({ searchParams }: props) {
         ) : (
           <p className="m-auto">No listings found</p>
         )}
-      </div>
+      </ul>
       <ListingPagination meta={data.meta} />
-    </div>
+    </section>
   )
 }

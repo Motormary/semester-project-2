@@ -1,4 +1,4 @@
-import { Dot, Edit } from "lucide-react"
+import { Edit, User } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import {
   Tooltip,
@@ -6,62 +6,79 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip"
-import { ListingCarousel } from "./listing-carousel"
+import ListingCarousel from "./listing-carousel"
 import { Badge } from "../ui/badge"
 import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import { CardTitle } from "../ui/card"
 import BidListDialog from "./bid-list"
+import { TYPE_LISTING } from "@/lib/definitions"
+import Link from "next/link"
+import NewListing from "./new-listing"
+import { getCurrentUser } from "@/app/actions/user/get"
+import PriceTag from "./price"
+import { Countdown } from "./countdown"
 
-export default function InteractiveListing({ id }: { id: string }) {
+type props = {
+  listing: TYPE_LISTING
+}
+
+export default async function InteractiveListing({ listing }: props) {
+  let user
+  const { data, success } = await getCurrentUser()
+  if (success) user = data.data
   return (
     <div className="space-y-4">
       {/* Username */}
       <div className="flex w-full items-center justify-between">
-        <div className="flex items-center gap-2">
+        <Link
+          href={`/vendors/${listing.seller.name}`}
+          className="flex items-center gap-2"
+        >
           <Avatar className="max-h-7 max-w-7">
-            <AvatarImage src="https://github.com/shadcn.png" alt="Avatar" />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarImage src={listing.seller.avatar?.url} alt="Avatar" />
+            <AvatarFallback>
+              <User className="size-5" />
+            </AvatarFallback>
           </Avatar>
-          <span className="text-sm">Username</span>
-        </div>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Edit strokeWidth={1.5} className="size-5 hover:cursor-pointer" />
-            </TooltipTrigger>
-            <TooltipContent>Edit listing</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+          <span className="text-sm">{listing.seller.name}</span>
+        </Link>
+        {user && user.name === listing.seller.name ? (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <NewListing initialData={listing}>
+                  <Edit
+                    strokeWidth={1.5}
+                    className="size-5 hover:cursor-pointer"
+                  />
+                </NewListing>
+              </TooltipTrigger>
+              <TooltipContent>Edit listing</TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        ) : null}
       </div>
       <div className="gap-6 space-y-4 md:flex">
-        <ListingCarousel />
-        <div className="w-full space-y-4 lg:min-w-[300px]">
-          <CardTitle className="max-h-32 overflow-hidden text-wrap break-words">
-            Pokémon TCG: Scarlet & Violet - Surging Sparks Elite Trainer Box
+        <ListingCarousel listing={listing} />
+        <div className="w-full space-y-4">
+          <CardTitle className="overflow-hidden text-wrap break-words">
+            {listing.title}
           </CardTitle>
-          <Badge>Trading Cards</Badge>
+          {listing.tags?.length ? <Badge>{listing.tags[0]}</Badge> : null}
+
           <div>
-            <p className="text-2xl">10 Ω</p>
-            <div className="flex">
-              <BidListDialog
-              postId={id}
-              >
-              <Button
-                variant="link"
-                className="px-0 text-muted-foreground underline hover:text-secondary-foreground"
-              >
-                11 bids
-              </Button>
+            <PriceTag id={listing.id} />
+            <div className="flex items-center">
+              <BidListDialog listing={listing}>
+                <Button
+                  variant="link"
+                  className="px-0 text-muted-foreground underline hover:text-secondary-foreground"
+                >
+                  {listing._count.bids} Bids
+                </Button>
               </BidListDialog>
-              <p className="flex items-center text-sm text-muted-foreground">
-                <Dot
-                  stroke="rgb(34 197 94)"
-                  fill="rgb(34 197 94)"
-                  strokeWidth="3"
-                />
-                2d 7h
-              </p>
+              <Countdown endsAt={listing.endsAt} id={listing.id} />
             </div>
           </div>
           <div className="space-y-4">
@@ -89,22 +106,7 @@ export default function InteractiveListing({ id }: { id: string }) {
       <div className="max-w-[790px]">
         <p className="font-semibold">Description</p>
         <p className="text-pretty text-sm">
-          The most anticipated set of 2023 is finally here, Scarlet & Violet
-          151! This expansion includes all 151 Pokémon originally discovered in
-          Kanto. The set is packed with absolute classics including the infamous
-          Charizard, Blastoise & Venusaur! Complete your collection today!
-        </p>
-        <p className="text-pretty text-sm">
-          The Pokémon TCG: Scarlet & Violet—Surging Sparks Elite Trainer Box
-          includes 9 Pokémon TCG: Scarlet & Violet—Surging Sparks booster packs,
-          1 full-art foil promo card featuring Magneton, and 65 card sleeves.
-          The Pokémon TCG: Scarlet & Violet—Surging Sparks Elite Trainer Box
-          also comes with 45 Pokémon TCG Energy cards, a player’s guide to the
-          Scarlet & Violet—Surging Sparks expansion, and 6 damage-counter dice.
-          You will also receive 1 competition-legal coin-flip die, 2 plastic
-          condition markers, and a collector’s box to hold everything, with 4
-          dividers to keep it organized. You will also get a code card for
-          Pokémon Trading Card Game Live.
+         {listing.description}
         </p>
       </div>
     </div>
