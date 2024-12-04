@@ -33,7 +33,7 @@ export default async function InteractiveListing({ listing }: props) {
     minBid = listing.bids?.toSorted((a, b) => compareValues(a.amount, b.amount))[0].amount
   }
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 ">
       {/* Username */}
       <div className="flex w-full items-center justify-between">
         <Link
@@ -86,7 +86,7 @@ export default async function InteractiveListing({ listing }: props) {
             </div>
           </div>
           <CreateBid minBid={minBid} id={listing.id} />
-          <div className="text-pretty sm:max-w-96">
+          <div className="text-pretty">
             <p className="mb-1 font-semibold">Description</p>
             <p className="text-pretty text-sm">{listing.description}</p>
           </div>

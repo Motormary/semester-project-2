@@ -1,68 +1,69 @@
-import image from "assets/images/pokemon.png"
-import { Dot } from "lucide-react"
+import getUserListings from "@/app/actions/user/get-listings"
+import image from "assets/svg/alt.svg"
 import Link from "next/link"
 import { Fragment } from "react"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
-import getUserListings from "@/app/actions/user/get-listings"
+import { Countdown } from "./countdown"
+import Listing from "./listing"
+import PriceTag from "./price"
 
 const containerStyles = {
   default: "flex gap-4 w-full shrink-1 max-w-[1400px]",
-  xl: " mx-auto xl:w-fit xl:flex-col xl:justify-center xl:border-t",
+  xl: " mx-auto xl:w-full xl:flex-col xl:justify-center xl:border-t",
 }
 
 type props = {
   user: string
+  id: string // currently listing view
 }
 
-export default async function OtherListings({ user }: props) {
-  const {data, success} = await getUserListings({ user: user })
+export default async function OtherListings({ user, id }: props) {
+  const { data, success } = await getUserListings({ user: user })
 
-  if (!success || data) return null
-  
+  if (!success || data?.data?.length <= 1) return null
+
   return (
-    <div className="w-full space-y-4 max-md:grid">
+    <div className="w-full space-y-4 max-md:grid xl:max-w-[30%]">
       <h3 className="text-sm font-semibold xl:text-center">
         Other listings from this user
       </h3>
       <ScrollArea className="rounded-md pb-4">
         <div className={`${containerStyles.default} xl:${containerStyles.xl}`}>
-          {Array.from({ length: 5 }).map((_, index) => (
-            <Fragment key={index}>
-              <div className="relative hidden w-full items-center gap-4 overflow-hidden rounded-md border-b p-4 hover:bg-muted xl:flex">
-                <Link
-                  className="absolute inset-0"
-                  href={`/listing/${""}`}
-                ></Link>
-                <picture className="flex aspect-square size-20 overflow-hidden rounded-md border bg-muted">
-                  <img
-                    src={image.src}
-                    alt="Listing"
-                    className="h-full w-full object-cover"
-                  />
-                </picture>
-                <div className="space-y-3 [&>p]:leading-none">
-                  <p className="max-w-[14.5rem] overflow-hidden truncate text-pretty text-sm">
-                    Official pokemon cards
-                  </p>
-                  <div>
-                    <p>10 Ω</p>
-                    <p className="flex items-center text-pretty text-xs text-muted-foreground">
-                      11 bids{" "}
-                      <Dot
-                        stroke="rgb(34 197 94)"
-                        fill="rgb(34 197 94)"
-                        strokeWidth="3"
-                      />
-                      2d 7h
+          {data.data.map((listing, index) => {
+            if (listing.id === id) return null
+            return (
+              <Fragment key={index}>
+                <div className="relative hidden w-full items-center gap-4 overflow-hidden rounded-md  p-4 hover:bg-muted xl:flex">
+                  <Link
+                    className="absolute inset-0"
+                    href={`/listing/${listing.id}`}
+                  ></Link>
+                  <picture className="flex aspect-square size-20 overflow-hidden rounded-md border bg-muted">
+                    <img
+                      src={listing.media?.[0]?.url ?? image.src}
+                      alt="Listing"
+                      className="h-full w-full object-cover"
+                    />
+                  </picture>
+                  <div className="space-y-3 [&>p]:leading-none">
+                    <p className="max-w-[14.5rem] overflow-hidden truncate text-pretty text-sm">
+                      {listing.title}
                     </p>
+                    <PriceTag className={"text-sm"} id={listing.id} />
+                    <div className="flex items-center">
+                      <span className="flex items-center text-pretty text-xs text-muted-foreground">
+                        {listing._count.bids}
+                        <Countdown endsAt={listing.endsAt} id={listing.id} />
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="flex shrink-0 basis-72 xl:hidden">
-                {/* <Listing id={index.toString()} /> */}
-              </div>
-            </Fragment>
-          ))}
+                <div className="flex shrink-0 basis-72 xl:hidden">
+                  <Listing data={listing} />
+                </div>
+              </Fragment>
+            )
+          })}
         </div>
         <ScrollBar orientation="horizontal" className="xl:hidden" />
       </ScrollArea>

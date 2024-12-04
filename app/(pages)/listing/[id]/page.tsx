@@ -17,11 +17,13 @@ export default async function ListingPage({
   if (!success) checkAndThrowError(error, source)
 
   return (
-    <section className="space-y-4">
-      <Card className="flex flex-col gap-y-6 p-[5%] pb-8 md:p-6 xl:flex-row">
+    <section className="space-y-4 w-full">
+      <Separator />
+      <h1>Listing</h1>
+      <Card className="flex flex-col gap-y-6 p-[5%] pb-8 md:p-6 xl:flex-row xl:gap-10">
         <InteractiveListing listing={data.data} />
         <Separator className="xl:hidden" />
-        <OtherListings user={data.data.seller.name} />
+        <OtherListings id={data.data.id} user={data.data.seller.name} />
       </Card>
       <SimilarListing />
     </section>

@@ -7,9 +7,16 @@ export enum CacheOptions {
   Default = "default"
 }
 
+/**
+ * @description Cache tags for fetching data -
+ * Add {+ username} to USER members of enum
+ */
 export enum CacheTags {
   ALL_LISTINGS = "listings",
-  LISTING = "listing-id-",
+  LISTING = "listing-id-", //! + listing uuid
+  USER_LISTINGS = "user-listings-", //! + username
+  USER_BIDS = "user-bids-", //! + username
+  USER_WINS = "user-wins-" //! + username
 }
 
 export enum ErrorSource {
@@ -169,7 +176,7 @@ const errorSchema = z.object({
   path: z.array(z.string()).optional(),
 })
 
-// Dynamic zod schema, takes a zod schema as params and uses it as the type for data in the response object.
+// Dynamic zod schema, takes a zod schema as params and uses it as the TYPE for "data" in the response object.
 const responseSchema = <T>(dataSchema: z.ZodType<T>) =>
   z.object({
     success: z.boolean(),
