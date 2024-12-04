@@ -49,7 +49,7 @@ export default function BidForm({ id, minBid, seller }: props) {
   return (
     <Form {...form}>
       <form
-        className="space-y-4 sm:max-w-96"
+        className="space-y-4"
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <FormField

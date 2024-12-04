@@ -33,7 +33,7 @@ export default async function InteractiveListing({ listing }: props) {
     minBid = listing.bids?.toSorted((a, b) => compareValues(a.amount, b.amount))[0].amount
   }
   return (
-    <div className="space-y-4 ">
+    <div className="space-y-4 mx-auto">
       {/* Username */}
       <div className="flex w-full items-center justify-between">
         <Link
@@ -64,9 +64,9 @@ export default async function InteractiveListing({ listing }: props) {
           </TooltipProvider>
         ) : null}
       </div>
-      <div className="gap-6 space-y-4 md:flex">
+      <div className="gap-6 space-y-4 lg:flex">
         <ListingGallery listing={listing} />
-        <div className="w-full space-y-6">
+        <div className="w-full lg:min-w-96 space-y-6">
           <CardTitle className="overflow-hidden text-wrap break-words">
             {listing.title}
           </CardTitle>

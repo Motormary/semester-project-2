@@ -77,8 +77,8 @@ export default function ListingGallery({ listing }: props) {
   return (
     <div className="space-y-4">
       <Link href={image ?? "#"} target="_blank">
-        <picture className="aspect-square max-w-[32rem] md:max-w-[calc(32rem_+_10%)]">
-          <img className="rounded-md object-cover" src={image} alt="Listing img" />
+        <picture className="aspect-square flex basis-[600px] w-full lg:w-[600px]">
+          <img className="rounded-md object-contain bg-muted h-full w-full" src={image} alt="Listing img" />
         </picture>
       </Link>
       <ScrollArea

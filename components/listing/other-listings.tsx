@@ -31,7 +31,7 @@ export default async function OtherListings({ user, currentListingId }: props) {
       <ScrollArea className="rounded-md pb-4">
         <div className={`${containerStyles.default} xl:${containerStyles.xl}`}>
           {data.data.map((listing, index) => {
-            if (listing.id === currentListingId) return null
+            if (listing.id === currentListingId || index > 4) return
             return (
               <Fragment key={listing.id}>
                 <div className="relative hidden w-full items-center gap-4 overflow-hidden rounded-md p-4 hover:bg-muted xl:flex">
