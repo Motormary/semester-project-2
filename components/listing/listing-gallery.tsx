@@ -96,7 +96,7 @@ export default function ListingGallery({ listing }: props) {
                         ? firstImageRef
                         : null
                   }
-                  key={index}
+                  key={media.url+index}
                   onClick={() => setImage(media.url)}
                   className={cn(
                     image === media.url ? "outline outline-green-500" : "",

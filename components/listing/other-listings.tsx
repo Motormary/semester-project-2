@@ -6,6 +6,7 @@ import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 import { Countdown } from "./countdown"
 import Listing from "./listing"
 import PriceTag from "./price"
+import { Separator } from "../ui/separator"
 
 const containerStyles = {
   default: "flex gap-4 w-full shrink-1 max-w-[1400px]",
@@ -14,10 +15,10 @@ const containerStyles = {
 
 type props = {
   user: string
-  id: string // currently listing view
+  currentListingId: string // currently listing view
 }
 
-export default async function OtherListings({ user, id }: props) {
+export default async function OtherListings({ user, currentListingId }: props) {
   const { data, success } = await getUserListings({ user: user })
 
   if (!success || data?.data?.length <= 1) return null
@@ -30,10 +31,10 @@ export default async function OtherListings({ user, id }: props) {
       <ScrollArea className="rounded-md pb-4">
         <div className={`${containerStyles.default} xl:${containerStyles.xl}`}>
           {data.data.map((listing, index) => {
-            if (listing.id === id) return null
+            if (listing.id === currentListingId) return null
             return (
-              <Fragment key={index}>
-                <div className="relative hidden w-full items-center gap-4 overflow-hidden rounded-md  p-4 hover:bg-muted xl:flex">
+              <Fragment key={listing.id}>
+                <div className="relative hidden w-full items-center gap-4 overflow-hidden rounded-md p-4 hover:bg-muted xl:flex">
                   <Link
                     className="absolute inset-0"
                     href={`/listing/${listing.id}`}
@@ -61,6 +62,7 @@ export default async function OtherListings({ user, id }: props) {
                 <div className="flex shrink-0 basis-72 xl:hidden">
                   <Listing data={listing} />
                 </div>
+                {index !== data.data.length - 1 ? <Separator className="hidden xl:block" /> : null}
               </Fragment>
             )
           })}

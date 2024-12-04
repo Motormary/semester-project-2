@@ -23,9 +23,9 @@ export default async function ListingPage({
       <Card className="flex flex-col gap-y-6 p-[5%] pb-8 md:p-6 xl:flex-row xl:gap-10">
         <InteractiveListing listing={data.data} />
         <Separator className="xl:hidden" />
-        <OtherListings id={data.data.id} user={data.data.seller.name} />
+        <OtherListings currentListingId={data.data.id} user={data.data.seller.name} />
       </Card>
-      <SimilarListing />
+      <SimilarListing currentListingId={data.data.id} tags={data.data.tags} />
     </section>
   )
 }
