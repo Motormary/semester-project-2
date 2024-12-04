@@ -34,8 +34,9 @@ import Link from "next/link"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { TYPE_LISTING } from "@/lib/definitions"
 import { User } from "lucide-react"
-import { format } from "date-fns"
+import * as datefn from "date-fns"
 import { nb } from "date-fns/locale"
+import { compareValues } from "@/lib/utils"
 
 type props = {
   children: React.ReactNode
@@ -46,7 +47,9 @@ type bidsProps = {
   bids: TYPE_LISTING["bids"]
 }
 
+
 function List({ bids }: bidsProps) {
+  const sortedBids = bids.toSorted((a, b) => compareValues(a.amount, b.amount))
   return (
     <ScrollArea className="relative mt-8 h-[30rem] pr-2 sm:h-96">
       <Table>
@@ -58,17 +61,16 @@ function List({ bids }: bidsProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {bids.map((bid, index) => (
-            <TableRow key={bid.bidder.name+index}>
+          {sortedBids.map((bid, index) => (
+            <TableRow key={bid.bidder.name + index}>
               <TableCell>
                 <Link href={`/profile/${bid.bidder.name}`}>
                   <div className="flex items-center gap-2">
                     <Avatar className="max-h-5 max-w-5">
-                      <AvatarImage
-                        src={bid.bidder.avatar.url}
-                        alt="Avatar"
-                      />
-                      <AvatarFallback><User className="size-5"/></AvatarFallback>
+                      <AvatarImage src={bid.bidder.avatar.url} alt="Avatar" />
+                      <AvatarFallback>
+                        <User className="size-5" />
+                      </AvatarFallback>
                     </Avatar>
                     <span className="max-w-20 text-sm max-sm:break-all sm:max-w-32 sm:overflow-hidden sm:truncate">
                       {bid.bidder.name}
@@ -77,7 +79,7 @@ function List({ bids }: bidsProps) {
                 </Link>
               </TableCell>
               <TableCell className="text-center">
-                {format(bid.created, "PPp", { locale: nb })}
+                {datefn.format(bid.created, "PPp", { locale: nb })}
               </TableCell>
               <TableCell className="text-right">{bid.amount}</TableCell>
             </TableRow>
@@ -100,7 +102,7 @@ export default function BidListDialog({ listing, children }: props) {
             <DialogTitle>Bids</DialogTitle>
             <DialogDescription>All recent bids on this item</DialogDescription>
           </DialogHeader>
-           <List bids={listing.bids} />
+          <List bids={listing.bids} />
           <DialogFooter>
             <DialogTrigger asChild>
               <Button variant="outline">Close</Button>

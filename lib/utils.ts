@@ -39,3 +39,14 @@ export function calculateTimeDifference(endTime: string): {
 
   return { days, hours, minutes, seconds };
 }
+
+export function compareValues(a: number, b: number) {
+  if (a < b) {
+    return 1
+  }
+  if (a > b) {
+    return -1
+  }
+
+  return 0
+}

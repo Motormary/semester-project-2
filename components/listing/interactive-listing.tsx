@@ -61,7 +61,7 @@ export default async function InteractiveListing({ listing }: props) {
       </div>
       <div className="gap-6 space-y-4 md:flex">
         <ListingCarousel listing={listing} />
-        <div className="w-full space-y-4">
+        <div className="w-full space-y-6">
           <CardTitle className="overflow-hidden text-wrap break-words">
             {listing.title}
           </CardTitle>
@@ -100,15 +100,13 @@ export default async function InteractiveListing({ listing }: props) {
               Quick bid +1 Ω
             </Button>
           </div>
+          <div>
+            <p className="font-semibold mb-1">Description</p>
+            <p className="text-pretty text-sm">{listing.description}</p>
+          </div>
         </div>
       </div>
       {/* 3 */}
-      <div className="max-w-[790px]">
-        <p className="font-semibold">Description</p>
-        <p className="text-pretty text-sm">
-         {listing.description}
-        </p>
-      </div>
     </div>
   )
 }
