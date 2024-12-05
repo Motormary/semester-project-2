@@ -18,7 +18,7 @@ const getAllListings = cache(
   async (
     params?: URLSearchParams | string[][] | string | any,
   ): Promise<TYPE_GET_LISTINGS> => {
-    const query = new URLSearchParams(params ? params : "")
+    const query = new URLSearchParams(params)
     let searchQ
     query.set("limit", "12")
     query.set("_active", "true")
