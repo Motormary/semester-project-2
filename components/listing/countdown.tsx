@@ -10,25 +10,35 @@ import { useEffect, useState } from "react"
 interface CountdownProps {
   endsAt: Date
   id: string
+  user?: string
 }
 
-export function Countdown({ endsAt, id }: CountdownProps) {
-  const url = useSearchParams()
-  const hasSearch = url.has("search")
-  const [timeLeft, setTimeLeft] = useState(
+/**
+ * @description - Calculates time to end of auction and shows a dynamic clock.
+ * - When time reaches 00:00 all post + id of post will be revalidated.
+ */
+export function Countdown({ endsAt, id, user }: CountdownProps) {
+  const searchParams = useSearchParams()
+  const isSearchQuery = searchParams.get("search")
+  const isListingQuery = searchParams.get("user_listings")
+  const [timeLeft, setTimeLeft] = useState(() =>
     calculateTimeDifference(endsAt.toString()),
   )
   const [isLessThanHour, setIsLessThanHour] = useState(false)
-  const [ended, setIsEnded] = useState(
-    new Date(endsAt) < new Date() ? true : false,
-  )
+  const [ended, setIsEnded] = useState(false)
 
   useEffect(() => {
-    console.log("🚀 ~ Countdown - useEffect running! ~ path:")
+    if (ended) return
+    // todo: remove this
+    console.log("useEffect is running amok!")
     async function handleRevalidate() {
       RevalidateCache(CacheTags.ALL_LISTINGS)
       RevalidateCache(CacheTags.LISTING + id)
+      if (user) {
+        RevalidateCache(CacheTags.USER_LISTINGS + user)
+      }
     }
+
     const timer = setInterval(() => {
       const newTimeLeft = calculateTimeDifference(endsAt.toString())
       setTimeLeft(newTimeLeft)
@@ -37,26 +47,18 @@ export function Countdown({ endsAt, id }: CountdownProps) {
         setIsLessThanHour(true)
       }
 
-      // If the user has cached a page this will clean out the ended auctions when met. // ! Do not run with search & listing[id] & wins & inactive, as search will show ended listings === loop
-      if (new Date(endsAt) < new Date() && !hasSearch && !ended) {
-        handleRevalidate()
-      }
-
-      if (
-        newTimeLeft.days === 0 &&
-        newTimeLeft.hours === 0 &&
-        newTimeLeft.minutes === 0 &&
-        newTimeLeft.seconds === 0
-      ) {
+      if (new Date(endsAt) < new Date()) {
         setIsEnded(true)
-        handleRevalidate()
         clearInterval(timer)
+
+        if (!isSearchQuery || !isListingQuery) {
+          handleRevalidate()
+        }
       }
     }, 1000)
 
     return () => clearInterval(timer)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [endsAt, id, hasSearch])
+  }, [endsAt, id, ended, isSearchQuery, isListingQuery, user])
 
   const formatTime = (value: number) => value.toString().padStart(2, "0")
 

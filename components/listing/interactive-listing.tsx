@@ -13,12 +13,11 @@ import {
   TooltipTrigger,
 } from "../ui/tooltip"
 import BidListDialog from "./bid-list"
-import { Countdown } from "./countdown"
 import BidForm from "./bid-form"
 import ListingGallery from "./listing-gallery"
 import NewListing from "./new-listing"
 import PriceTag from "./price"
-import { compareValues } from "@/lib/utils"
+import ListingClock from "./listing-clock"
 
 type props = {
   listing: TYPE_LISTING
@@ -30,10 +29,10 @@ export default async function InteractiveListing({ listing }: props) {
   const { data, success } = await getCurrentUser()
   if (success) user = data.data
   if (listing.bids?.length) {
-    minBid = listing.bids?.toSorted((a, b) => compareValues(a.amount, b.amount))[0].amount
+    minBid = listing.bids?.toSorted((a, b) => b.amount - a.amount)[0].amount
   }
   return (
-    <div className="space-y-4 mx-auto">
+    <div className="space-y-4">
       {/* Username */}
       <div className="flex w-full items-center justify-between">
         <Link
@@ -66,7 +65,7 @@ export default async function InteractiveListing({ listing }: props) {
       </div>
       <div className="gap-6 space-y-4 lg:flex">
         <ListingGallery listing={listing} />
-        <div className="w-full lg:min-w-96 space-y-6">
+        <div className="w-full space-y-6 lg:min-w-96">
           <CardTitle className="overflow-hidden text-wrap break-words">
             {listing.title}
           </CardTitle>
@@ -82,10 +81,14 @@ export default async function InteractiveListing({ listing }: props) {
                   {listing._count.bids} Bids
                 </Button>
               </BidListDialog>
-              <Countdown endsAt={listing.endsAt} id={listing.id} />
+              <ListingClock revalidate={false} id={listing.id} />
             </div>
           </div>
-          <BidForm seller={listing.seller.name} minBid={minBid} id={listing.id} />
+          <BidForm
+            seller={listing.seller.name}
+            minBid={minBid}
+            id={listing.id}
+          />
           <div className="text-pretty">
             <p className="mb-1 font-semibold">Description</p>
             <p className="text-pretty text-sm">{listing.description}</p>

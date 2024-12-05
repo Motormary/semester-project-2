@@ -3,10 +3,11 @@ import image from "assets/svg/alt.svg"
 import Link from "next/link"
 import { Fragment } from "react"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
-import { Countdown } from "./countdown"
 import Listing from "./listing"
 import PriceTag from "./price"
 import { Separator } from "../ui/separator"
+import ListingClock from "./listing-clock"
+import { TYPE_LISTING } from "@/lib/definitions"
 
 const containerStyles = {
   default: "flex gap-4 w-full shrink-1 max-w-[1400px]",
@@ -23,6 +24,13 @@ export default async function OtherListings({ user, currentListingId }: props) {
 
   if (!success || data?.data?.length <= 1) return null
 
+  const dataList = data.data.reduce<TYPE_LISTING[]>((acc, item, index) => {
+    const currentDate = new Date()
+    const endDate = new Date(item.endsAt)
+    if (index < 5 && endDate > currentDate) acc.push(item)
+    return acc
+  }, [])
+
   return (
     <div className="w-full space-y-4 max-md:grid xl:max-w-[30%]">
       <h3 className="text-sm font-semibold xl:text-center">
@@ -30,8 +38,7 @@ export default async function OtherListings({ user, currentListingId }: props) {
       </h3>
       <ScrollArea className="rounded-md pb-4">
         <div className={`${containerStyles.default} xl:${containerStyles.xl}`}>
-          {data.data.map((listing, index) => {
-            if (listing.id === currentListingId || index > 4) return
+          {dataList.map((listing, index) => {
             return (
               <Fragment key={listing.id}>
                 <div className="relative hidden w-full items-center gap-4 overflow-hidden rounded-md p-4 hover:bg-muted xl:flex">
@@ -53,8 +60,8 @@ export default async function OtherListings({ user, currentListingId }: props) {
                     <PriceTag className={"text-sm"} id={listing.id} />
                     <div className="flex items-center">
                       <span className="flex items-center text-pretty text-xs text-muted-foreground">
-                        {listing._count.bids}
-                        <Countdown endsAt={listing.endsAt} id={listing.id} />
+                        {listing._count.bids} Bids
+                        <ListingClock revalidate id={listing.id} user={user} />
                       </span>
                     </div>
                   </div>
@@ -62,7 +69,9 @@ export default async function OtherListings({ user, currentListingId }: props) {
                 <div className="flex shrink-0 basis-72 xl:hidden">
                   <Listing data={listing} />
                 </div>
-                {index !== data.data.length - 1 ? <Separator className="hidden xl:block" /> : null}
+                {index !== dataList.length - 1 ? (
+                  <Separator className="hidden xl:block" />
+                ) : null}
               </Fragment>
             )
           })}

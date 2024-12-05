@@ -2,11 +2,11 @@ import { TYPE_LISTING } from "@/lib/definitions"
 import { cn } from "@/lib/utils"
 import Link from "next/link"
 import { Badge } from "../ui/badge"
-import { Countdown } from "./countdown"
 import PriceTag from "./price"
 import altImg from "assets/svg/alt.svg"
 import { Suspense } from "react"
 import { Skeleton } from "../ui/skeleton"
+import ListingClock from "./listing-clock"
 
 type props = {
   id?: string
@@ -43,7 +43,7 @@ export default function Listing({ data, classname }: props) {
         </Suspense>
         <div className="flex items-center text-pretty text-sm text-muted-foreground">
           {data._count.bids} bids{" "}
-          <Countdown id={data.id} endsAt={data.endsAt} />
+          <ListingClock revalidate id={data.id} />
         </div>
       </div>
     </li>

@@ -23,21 +23,27 @@ export function failedToVerify() {
 
 // Thanks to mr.jippity
 export function calculateTimeDifference(endTime: string): {
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
+  days: number
+  hours: number
+  minutes: number
+  seconds: number
 } {
-  const end = new Date(endTime).getTime();
-  const now = new Date().getTime();
-  const difference = end - now;
+  const end = new Date(endTime).getTime()
+  const now = new Date().getTime()
+  const difference = end - now
 
-  const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+  if (difference <= 0) {
+    return { days: 0, hours: 0, minutes: 0, seconds: 0 }
+  }
 
-  return { days, hours, minutes, seconds };
+  const days = Math.floor(difference / (1000 * 60 * 60 * 24))
+  const hours = Math.floor(
+    (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+  )
+  const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60))
+  const seconds = Math.floor((difference % (1000 * 60)) / 1000)
+
+  return { days, hours, minutes, seconds }
 }
 
 export function compareValues(a: number, b: number) {
