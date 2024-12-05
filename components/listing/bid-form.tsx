@@ -17,6 +17,8 @@ import {
 import { Input } from "@/components/ui/input"
 import { handleErrors } from "@/lib/handle-errors"
 import { toast } from "sonner"
+import { useTransition } from "react"
+import { RefreshCw } from "lucide-react"
 
 const FormSchema = z.object({
   amount: z.coerce.number({ message: "Bid value is required" }),
@@ -29,6 +31,7 @@ type props = {
 }
 
 export default function BidForm({ id, minBid, seller }: props) {
+  const [isPending, startTransition] = useTransition()
   const bidAmount = minBid ? minBid + 1 : 1
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -37,21 +40,24 @@ export default function BidForm({ id, minBid, seller }: props) {
     },
   })
 
-  async function onSubmit(data: z.infer<typeof FormSchema>) {
-    const { success, error, source } = await bidOnListing({ data, id: id, seller })
-    if (!success) handleErrors(error, source, form)
-    if (success) {
-      toast.success("Your bid has been added")
-      form.setValue("amount", 0)
-    }
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    startTransition(async () => {
+      const { success, error, source } = await bidOnListing({
+        data,
+        id: id,
+        seller,
+      })
+      if (!success) handleErrors(error, source, form)
+      if (success) {
+        toast.success("Your bid has been added")
+        form.setValue("amount", 0)
+      }
+    })
   }
 
   return (
     <Form {...form}>
-      <form
-        className="space-y-4"
-        onSubmit={form.handleSubmit(onSubmit)}
-      >
+      <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name="amount"
@@ -75,7 +81,9 @@ export default function BidForm({ id, minBid, seller }: props) {
             </FormItem>
           )}
         />
-        <Button className="w-full">Bid Ω</Button>
+        <Button disabled={isPending} className="w-full disabled:bg-primary">
+          {isPending ? <RefreshCw className="animate-spin" /> : "Bid Ω"}
+        </Button>
       </form>
     </Form>
   )
