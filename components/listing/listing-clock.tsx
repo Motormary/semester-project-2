@@ -1,6 +1,7 @@
 import getListing from "@/app/actions/listings/get"
 import { Countdown } from "./countdown"
 import { Dot } from "lucide-react"
+import { calculateTimeDifference } from "@/lib/utils"
 
 type props = {
   id: string
@@ -30,5 +31,7 @@ export default async function ListingClock({ id, revalidate, user }: props) {
     )
   }
 
-  return <Countdown endsAt={data.data.endsAt} user={user} id={id} />
+  // Calculate default time value on server instead of client to make rendering of clock smooth.
+  const defaultTime = calculateTimeDifference(data.data.endsAt.toString())
+  return <Countdown defaultTime={defaultTime} endsAt={data.data.endsAt} user={user} id={id} />
 }

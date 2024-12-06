@@ -24,8 +24,8 @@ export default async function SimilarListing({
   if (!success) return null
 
   return (
-    <Card className="grid p-6">
-      <h4 className="text-sm font-semibold">Similar listings</h4>
+    <Card className="grid p-[5%] md:p-6">
+      <h4 className="text-sm font-semibold">You might also like</h4>
       <ScrollArea className="rounded-md pb-4">
         <div className="shrink-1 flex w-full max-w-[1400px] gap-4">
           {data.data.map((listing, index) => {

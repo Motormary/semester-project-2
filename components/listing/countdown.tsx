@@ -11,20 +11,24 @@ interface CountdownProps {
   endsAt: Date
   id: string
   user?: string
+  defaultTime: {
+    days: number
+    hours: number
+    minutes: number
+    seconds: number
+  }
 }
 
 /**
  * @description - Calculates time to end of auction and shows a dynamic clock.
  * - When time reaches 00:00 all post + id of post will be revalidated.
  */
-export function Countdown({ endsAt, id, user }: CountdownProps) {
+export function Countdown({ endsAt, id, user, defaultTime }: CountdownProps) {
   const searchParams = useSearchParams()
   const isSearchQuery = searchParams.get("search")
   const isListingQuery = searchParams.get("user_listings")
-  const [timeLeft, setTimeLeft] = useState(() =>
-    calculateTimeDifference(endsAt.toString()),
-  )
-  const [isLessThanHour, setIsLessThanHour] = useState(false)
+  const [timeLeft, setTimeLeft] = useState(defaultTime)
+  const [isLessThanHour, setIsLessThanHour] = useState(() => defaultTime.days === 0 && defaultTime.hours === 0)
   const [ended, setIsEnded] = useState(false)
 
   useEffect(() => {
