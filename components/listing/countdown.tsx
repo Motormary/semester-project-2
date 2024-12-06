@@ -62,7 +62,8 @@ export function Countdown({ endsAt, id, user, defaultTime }: CountdownProps) {
     }, 1000)
 
     return () => clearInterval(timer)
-  }, [endsAt, id, ended, isSearchQuery, isListingQuery, user])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ended, isSearchQuery, isListingQuery])
 
   const formatTime = (value: number) => value.toString().padStart(2, "0")
 
