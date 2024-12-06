@@ -1,13 +1,13 @@
 import { Card } from "@/components/ui/card"
 import {
-    Pagination,
-    PaginationContent,
-    PaginationFirst,
-    PaginationItem,
-    PaginationLast,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
+  Pagination,
+  PaginationContent,
+  PaginationFirst,
+  PaginationItem,
+  PaginationLast,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
 } from "@/components/ui/pagination"
 import ProfileListingSearch from "@/components/ui/profile-listing-search-bar"
 
@@ -15,7 +15,7 @@ type props = {
   children: React.ReactNode
 }
 
-export default async function ListingWrapper({ children }: props) {
+export default function ListingWrapper({ children }: props) {
   return (
     <Card className="h-full w-full space-y-4 p-4 xs:has-[.listings]:rounded-tl-none [&>.listings]:has-[[data-pending]]:animate-pulse">
       <ProfileListingSearch />

@@ -33,6 +33,7 @@ export default async function SimilarListing({
             return (
               <div key={listing.id} className="flex shrink-0 basis-72">
                 <Listing
+                  revalidate
                   data={listing}
                   classname="shadow-none hover:bg-muted"
                   id={index.toString()}

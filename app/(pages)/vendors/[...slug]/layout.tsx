@@ -18,7 +18,7 @@ export default function Layout({ children }: props) {
           <ProfileInfo />
         </ErrorBoundary>
       </Suspense>
-      <div className="w-full">
+      <div className="h-full w-full">
         <aside>
           <ProfileNav />
         </aside>

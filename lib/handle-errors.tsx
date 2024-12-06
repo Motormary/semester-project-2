@@ -68,6 +68,12 @@ export function translateAndDisplayErrors<T extends FieldValues>(
   })
 }
 
+/**
+ * @param error 
+ * @param source 
+ * @param form 
+ * @description = Error handling for forms - Will set form errors / display toast
+ */
 export function handleErrors<T extends FieldValues>(
   error: string | TYPE_API_ERROR[],
   source: ErrorSource,

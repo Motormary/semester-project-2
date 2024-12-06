@@ -1,15 +1,19 @@
-"use client"
+import { TYPE_USER } from "@/lib/definitions"
 import { User } from "lucide-react"
 import Link from "next/link"
-import { useParams } from "next/navigation"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Button } from "../ui/button"
 import { Card } from "../ui/card"
 
-export default function ProfileInfo() {
-  const { slug } = useParams()
+type props = {
+  user?: TYPE_USER
+}
+
+export default function ProfileInfo({ user }: props) {
+  if (!user) return null
+
   return (
-    <Card className="mx-auto h-fit space-y-6 overflow-hidden p-4 py-5 sm:mt-[2rem] sm:max-w-[274px]">
+    <Card className="mx-auto w-full h-fit space-y-6 overflow-hidden p-4 py-5 sm:mt-[2rem] sm:max-w-[274px]">
       <Avatar className="mx-auto h-full max-h-[258px] w-full max-w-[258px]">
         <AvatarImage
           className="aspect-square"
@@ -21,39 +25,35 @@ export default function ProfileInfo() {
         </AvatarFallback>
       </Avatar>
       <div className="text-center">
-        <p className="break-words text-lg">{slug?.[0]}</p>
+        <p className="break-words text-lg">{user.name}</p>
         <Link
           href="mailto:username@stud.noroff.no"
           className="text-sm text-muted-foreground"
         >
-          username@stud.noroff.com
+          {user.email}
         </Link>
       </div>
-      <div className="text-center">
-        <p className="text-sm font-semibold">About</p>
-        <p className="text-pretty break-words text-sm">
-          It looks like readable English. Many desktop publishing packages and
-          web page editors now use Lorem Ipsum as their default model text, and
-          a search for will uncover many web sites still in their infancy.
-          Various versions have evolved over the years, sometimes by accident,
-          sometimes on purpose (injected humour and the like).
-        </p>
-      </div>
+      {user.bio ? (
+        <div className="text-center">
+          <p className="text-sm font-semibold">About</p>
+          <p className="text-pretty break-words text-sm">{user.bio}</p>
+        </div>
+      ) : null}
       <Button className="w-full" variant="outline">
         Edit profile
       </Button>
       <div className="grid grid-cols-2 gap-4 [&>div]:space-y-2">
         <div className="col-span-2 text-center">
           <p className="text-sm font-semibold">Total credits</p>
-          <p>1000 Ω</p>
+          <p>{user.credits} Ω</p>
         </div>
         <div className="col-span-1 text-center">
-          <p className="text-sm font-semibold">Active listings</p>
-          <p>49</p>
+          <p className="text-sm font-semibold">Listings</p>
+          <p>{user._count.listings}</p>
         </div>
         <div className="col-span-1 text-center">
-          <p className="text-sm font-semibold">Inactive listings</p>
-          <p>104</p>
+          <p className="text-sm font-semibold">Wins</p>
+          <p>{user._count.wins}</p>
         </div>
       </div>
     </Card>
