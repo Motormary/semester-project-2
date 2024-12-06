@@ -12,9 +12,10 @@ type props = {
   id?: string
   classname?: string
   data: TYPE_LISTING
+  revalidate: boolean
 }
 
-export default function Listing({ data, classname }: props) {
+export default function Listing({ data, classname, revalidate }: props) {
   return (
     <li
       id={data.id}
@@ -43,7 +44,7 @@ export default function Listing({ data, classname }: props) {
         </Suspense>
         <div className="flex items-center text-pretty text-sm text-muted-foreground">
           {data._count.bids} bids{" "}
-          <ListingClock revalidate id={data.id} />
+          <ListingClock revalidate={revalidate} id={data.id} />
         </div>
       </div>
     </li>

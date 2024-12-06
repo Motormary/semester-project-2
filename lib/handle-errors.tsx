@@ -87,7 +87,12 @@ export function handleErrors<T extends FieldValues>(
 }
 
 
-// Server
+/**
+ * 
+ * @param error 
+ * @param source 
+ * @description - Error handling for server, i.e Pages
+ */
 export function checkAndThrowError(error: TYPE_API_ERROR[] | string, source: ErrorSource) {
   if (source === ErrorSource.CAUGHT) {
     throw new Error("Something went wrong, contact support or try again.")

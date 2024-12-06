@@ -24,6 +24,7 @@ export default async function Home({ searchParams }: props) {
           data.data.map((listing) => {
             return (
               <Listing
+                revalidate
                 key={listing.id}
                 data={listing}
                 classname="hover:shadow-md focus-within:outline outline-2 outline-primary border"

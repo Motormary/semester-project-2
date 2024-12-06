@@ -1,3 +1,6 @@
+import getUserListings from "@/app/actions/user/get-listings"
+import { SearchParams } from "@/lib/definitions"
+import { checkAndThrowError } from "@/lib/handle-errors"
 import wait from "@/lib/wait"
 import BidsTab from "./(bids)/bids"
 import InactiveTab from "./(inactive)/inactive"
@@ -5,8 +8,10 @@ import WinsTab from "./(wins)/wins"
 
 export default async function ProfileListings({
   params,
+  searchParams
 }: {
   params: Promise<{ slug: string }>
+  searchParams: SearchParams
 }) {
   const slug = (await params).slug
   await wait(1000)
@@ -23,16 +28,17 @@ export default async function ProfileListings({
         throw new Error("Not Found")
     }
   } else if (slug.length === 1) {
+    const { data, success, error, source } = await getUserListings({
+      user: slug[0],
+    })
+    if (!success) checkAndThrowError(error, source)
     return (
       <>
-        <h1 className="sr-only listings">My Listings</h1>
-{/*         <Listing
+        <h1 className="listings sr-only">My Listings</h1>
+     {/*    <Listing
+          revalidate
           classname="md:basis-1/2 xl:basis-1/3 shadow-none focus-within:bg-muted"
-          id="1"
-        />
-        <Listing classname="md:basis-1/2 xl:basis-1/3 shadow-none" id="1" />
-        <Listing classname="md:basis-1/2 xl:basis-1/3 shadow-none" id="1" />
-        <Listing classname="md:basis-1/2 xl:basis-1/3 shadow-none" id="1" /> */}
+        /> */}
       </>
     )
   }

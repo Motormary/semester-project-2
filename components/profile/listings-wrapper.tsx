@@ -19,9 +19,9 @@ export default async function ListingWrapper({ children }: props) {
   return (
     <Card className="h-full w-full space-y-4 p-4 xs:has-[.listings]:rounded-tl-none [&>.listings]:has-[[data-pending]]:animate-pulse">
       <ProfileListingSearch />
-      <div id="listings" className="flex flex-wrap">
+      <ul id="listings" className="flex flex-wrap">
         {children}
-      </div>
+      </ul>
       <Pagination>
         <PaginationContent>
           <PaginationItem>

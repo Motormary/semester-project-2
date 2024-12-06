@@ -67,7 +67,7 @@ export default async function OtherListings({ user, currentListingId }: props) {
                   </div>
                 </div>
                 <div className="flex shrink-0 basis-72 xl:hidden">
-                  <Listing data={listing} />
+                  <Listing revalidate data={listing} />
                 </div>
                 {index !== dataList.length - 1 ? (
                   <Separator className="hidden xl:block" />
