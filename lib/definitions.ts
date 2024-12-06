@@ -4,7 +4,7 @@ export enum CacheOptions {
   NoStore = "no-store",
   ForceCache = "force-cache",
   NoCache = "no-cache",
-  Default = "default"
+  Default = "default",
 }
 
 /**
@@ -14,9 +14,10 @@ export enum CacheOptions {
 export enum CacheTags {
   ALL_LISTINGS = "listings",
   LISTING = "listing-id-", //! + listing uuid
+  USER = "user-", //! + username
   USER_LISTINGS = "user-listings-", //! + username
   USER_BIDS = "user-bids-", //! + username
-  USER_WINS = "user-wins-" //! + username
+  USER_WINS = "user-wins-", //! + username
 }
 
 export enum ErrorSource {
@@ -73,7 +74,7 @@ const listingSchema = z.object({
           url: z.string(),
         }),
       }),
-      created: z.date()
+      created: z.date(),
     }),
   ),
 })
@@ -82,7 +83,10 @@ const multipleListingSchema = z.array(listingSchema)
 
 export const newListingSchema = z.object({
   title: z.string().min(4, { message: "Minimum 4 characters required" }),
-  description: z.string().max(280, {message: "Maximum 280 characters"}).optional(),
+  description: z
+    .string()
+    .max(280, { message: "Maximum 280 characters" })
+    .optional(),
   media: z.array(mediaSchema).optional(),
   tags: z.array(z.string()).optional(),
   endsAt: z.date({ required_error: "A date and time is required." }),
@@ -141,6 +145,7 @@ export const RegisterUserSchema = z
       .max(20, {
         message: "Name cannot contain more than 20 characters.",
       }),
+    bio: z.string(),
     avatar: z.object({
       url: z.string(),
       alt: z.string().optional(),
@@ -159,6 +164,14 @@ export const RegisterUserSchema = z
     message: "Passwords must match.",
     path: ["confirm"],
   })
+
+export const EditUserSchema = z.object({
+  bio: z.string().max(160, {message: "Bio cannot be greater than 160 characters"}).optional(),
+  avatar: z.object({
+    url: z.string(),
+    alt: z.string().optional(),
+  }),
+})
 
 export const LoginUserSchema = z.object({
   email: z.string().endsWith("@stud.noroff.no", {
@@ -210,6 +223,8 @@ export type TYPE_USER_REGISTER = z.infer<typeof RegisterUserSchema>
 
 export type TYPE_USER_LOGIN = z.infer<typeof LoginUserSchema>
 
+export type TYPE_USER_EDIT = z.infer<typeof EditUserSchema>
+
 // User request types
 export type TYPE_GET_USER_BIDS = z.infer<typeof getUserBidsSchema>
 
@@ -219,6 +234,7 @@ export type TYPE_GET_USER = z.infer<typeof getProfileSchema>
 export type TYPE_LISTING = z.infer<typeof listingSchema>
 
 export type TYPE_CREATE_LISTING = z.infer<typeof newListingSchema>
+
 
 // Listing requests
 export type TYPE_GET_LISTING = z.infer<typeof getListingSchema>

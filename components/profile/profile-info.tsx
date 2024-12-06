@@ -1,15 +1,14 @@
 import { getUser } from "@/app/actions/user/get"
 import { checkAndThrowError } from "@/lib/handle-errors"
 import Link from "next/link"
-import { Button } from "../ui/button"
 import { Card } from "../ui/card"
 import ProfileImage from "./profile-image"
+import EditProfileDialog from "./edit-profile"
 
 type props = {
   params: { slug: string[] }
 }
 export default async function ProfileInfo({ params }: props) {
-  console.log("rerun")
   const slug = params.slug
 
   const { data, success, error, source } = await getUser(slug[0])
@@ -35,9 +34,7 @@ export default async function ProfileInfo({ params }: props) {
           <p className="text-pretty break-words text-sm">{user.bio}</p>
         </div>
       ) : null}
-      <Button className="w-full" variant="outline">
-        Edit profile
-      </Button>
+      <EditProfileDialog user={user} />
       <div className="grid grid-cols-2 gap-4 [&>div]:space-y-2">
         <div className="col-span-2 text-center">
           <p className="text-sm font-semibold">Total credits</p>
