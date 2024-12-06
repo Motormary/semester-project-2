@@ -1,29 +1,25 @@
-import { TYPE_USER } from "@/lib/definitions"
-import { User } from "lucide-react"
+import { getUser } from "@/app/actions/user/get"
+import { checkAndThrowError } from "@/lib/handle-errors"
 import Link from "next/link"
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Button } from "../ui/button"
 import { Card } from "../ui/card"
+import ProfileImage from "./profile-image"
 
 type props = {
-  user?: TYPE_USER
+  params: { slug: string[] }
 }
+export default async function ProfileInfo({ params }: props) {
+  console.log("rerun")
+  const slug = params.slug
 
-export default function ProfileInfo({ user }: props) {
-  if (!user) return null
+  const { data, success, error, source } = await getUser(slug[0])
+
+  if (!success) checkAndThrowError(error, source)
+  const user = data.data
 
   return (
-    <Card className="mx-auto w-full h-fit space-y-6 overflow-hidden p-4 py-5 sm:mt-[2rem] sm:max-w-[274px]">
-      <Avatar className="mx-auto h-full max-h-[258px] w-full max-w-[258px]">
-        <AvatarImage
-          className="aspect-square"
-          src="https://github.com/shadcn.png"
-          alt="Avatar"
-        />
-        <AvatarFallback className="p-5">
-          <User strokeWidth={1} stroke={"#696969"} className="h-full w-full" />
-        </AvatarFallback>
-      </Avatar>
+    <Card className="mx-auto h-fit w-full space-y-6 overflow-hidden p-4 py-5 sm:mt-[2rem] sm:max-w-[274px]">
+      <ProfileImage url={user.avatar.url} />
       <div className="text-center">
         <p className="break-words text-lg">{user.name}</p>
         <Link

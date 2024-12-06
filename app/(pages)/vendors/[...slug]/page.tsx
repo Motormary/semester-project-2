@@ -1,7 +1,6 @@
 import getUserListings from "@/app/actions/user/get-listings"
 import { SearchParams } from "@/lib/definitions"
 import { checkAndThrowError } from "@/lib/handle-errors"
-import wait from "@/lib/wait"
 import BidsTab from "./(bids)/bids"
 import InactiveTab from "./(inactive)/inactive"
 import WinsTab from "./(wins)/wins"
@@ -14,7 +13,6 @@ export default async function ProfileListings({
   searchParams: SearchParams
 }) {
   const slug = (await params).slug
-  await wait(1000)
 
   if (slug.length === 2) {
     switch (slug[1].toLowerCase()) {

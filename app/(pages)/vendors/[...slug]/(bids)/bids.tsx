@@ -1,4 +1,3 @@
-import wait from "@/lib/wait"
 
 type bids = {
   username: string
@@ -6,7 +5,6 @@ type bids = {
 
 export default async function BidsTab({ username }: bids) {
   console.log(username)
-  await wait(1000)
 
   return (
     <>

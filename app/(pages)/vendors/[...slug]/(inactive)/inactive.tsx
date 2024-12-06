@@ -1,12 +1,9 @@
-import wait from "@/lib/wait"
 
 type props = {
   username: string
 }
 
 export default async function InactiveTab({username}: props) {
-  await wait(1000)
-  console.log(username)
 
   return (
     <>
