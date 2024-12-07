@@ -15,7 +15,7 @@ export default async function WinsTab({
   return (
     <>
       <h1 className="sr-only">My wins</h1>
-      {data.data.map((listing) => {
+      {data.data?.length ? data.data.map((listing) => {
         return (
           <Listing
             key={listing.id}
@@ -24,7 +24,7 @@ export default async function WinsTab({
             classname="md:basis-1/2 xl:basis-1/3 shadow-none focus-within:bg-muted outline-none"
           />
         )
-      })}
+      }) : <div className="w-full h-full p-5 text-center"><p className="m-auto">No results.</p></div>}
       <ListingPagination meta={data.meta} />
     </>
   )

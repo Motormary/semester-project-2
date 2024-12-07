@@ -15,14 +15,20 @@ export default async function InactiveTab({
   return (
     <>
       <h1 className="sr-only">My inactive listings</h1>
-      {data.data.map((listing, index) => (
-        <Listing
-          key={listing.id+index}
-          data={listing}
-          revalidate={false}
-          classname="md:basis-1/2 xl:basis-1/3 shadow-none focus-within:bg-muted"
-        />
-      ))}
+      {data.data?.length ? (
+        data.data.map((listing, index) => (
+          <Listing
+            key={listing.id + index}
+            data={listing}
+            revalidate={false}
+            classname="md:basis-1/2 xl:basis-1/3 shadow-none focus-within:bg-muted"
+          />
+        ))
+      ) : (
+        <div className="h-full w-full p-5 text-center">
+          <p className="m-auto">No results.</p>
+        </div>
+      )}
       <ListingPagination meta={data.meta} />
     </>
   )

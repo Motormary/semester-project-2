@@ -15,21 +15,27 @@ export default async function BidsTab({
   return (
     <>
       <h1 className="sr-only">My bids</h1>
-      {data.data.map(async (bid) => {
-        const { data: listing, success } = await getListing(bid.listing.id)
-        if (!success) {
-          return null
-        }
-        return (
-          <Listing
-            useMyBid={bid.amount}
-            key={bid.id}
-            data={listing.data}
-            revalidate={false}
-            classname="md:basis-1/2 xl:basis-1/3 shadow-none focus-within:bg-muted"
-          />
-        )
-      })}
+      {data.data?.length ? (
+        data.data.map(async (bid) => {
+          const { data: listing, success } = await getListing(bid.listing.id)
+          if (!success) {
+            return null
+          }
+          return (
+            <Listing
+              useMyBid={bid.amount}
+              key={bid.id}
+              data={listing.data}
+              revalidate={false}
+              classname="md:basis-1/2 xl:basis-1/3 shadow-none focus-within:bg-muted"
+            />
+          )
+        })
+      ) : (
+        <div className="h-full w-full p-5 text-center">
+          <p className="m-auto">No results.</p>
+        </div>
+      )}
       <ListingPagination meta={data.meta} />
     </>
   )

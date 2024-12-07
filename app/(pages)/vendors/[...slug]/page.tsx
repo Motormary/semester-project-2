@@ -24,46 +24,58 @@ export default async function ProfileListings({
       case "inactive": {
         const res = await getUserListings({
           user: slug[0],
-          params: {...paramsQ, _active: "false", limit: "12", _seller: "true"},
+          params: {
+            ...paramsQ,
+            _active: "false",
+            limit: "12",
+            _seller: "true",
+          },
         })
         return <InactiveTab resData={res} />
       }
       case "bids": {
         const res = await getUserBids({
           user: slug[0],
-          params: {...paramsQ, limit: "12", _listings: "true"},
+          params: { ...paramsQ, limit: "12", _listings: "true" },
         })
         return <BidsTab bidsData={res} />
       }
       case "wins": {
-        const res = await getUserWins({params: {...paramsQ, limit: "12", }, user: slug[0]})
+        const res = await getUserWins({
+          params: { ...paramsQ, limit: "12" },
+          user: slug[0],
+        })
         return <WinsTab winData={res} />
       }
       default:
         throw new Error("Not Found")
     }
   } else if (slug.length === 1) {
-    
     const { data, success, error, source } = await getUserListings({
       user: slug[0],
-      params: {...paramsQ, _active: "true", limit: "12", _seller: "true"},
+      params: { ...paramsQ, _active: "true", limit: "12", _seller: "true" },
     })
     if (!success) checkAndThrowError(error, source)
 
-      
     return (
       <>
         <h1 className="listings sr-only">My Listings</h1>
-        {data.data.map((listing) => {
-          return (
-            <Listing
-              key={listing.id}
-              data={listing}
-              revalidate={true}
-              classname="md:basis-1/2 xl:basis-1/3 shadow-none focus-within:bg-muted"
-            />
-          )
-        })}
+        {data.data?.length ? (
+          data.data.map((listing) => {
+            return (
+              <Listing
+                key={listing.id}
+                data={listing}
+                revalidate={true}
+                classname="md:basis-1/2 xl:basis-1/3 shadow-none focus-within:bg-muted"
+              />
+            )
+          })
+        ) : (
+          <div className="h-full w-full p-5 text-center">
+            <p className="m-auto">No results.</p>
+          </div>
+        )}
         <ListingPagination meta={data.meta} />
       </>
     )
