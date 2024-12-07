@@ -71,6 +71,7 @@ export default function ProfileListingSearch() {
           <X className="size-5" />
         </button>
       </label>
+      {param === "bids" ? <div className="text-xs text-destructive w-full text-center mt-2">Search filters current page *</div> : null}
     </Form>
   )
 }
