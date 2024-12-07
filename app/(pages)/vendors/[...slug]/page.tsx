@@ -7,6 +7,7 @@ import WinsTab from "./(wins)/wins"
 import Listing from "@/components/listing/listing"
 import ListingPagination from "@/components/listing/pagination"
 import getUserBids from "@/app/actions/user/get-bids"
+import getUserWins from "@/app/actions/user/get-wins"
 
 export default async function ProfileListings({
   params,
@@ -34,8 +35,10 @@ export default async function ProfileListings({
         })
         return <BidsTab bidsData={res} />
       }
-      case "wins":
-        return <WinsTab winData={""} />
+      case "wins": {
+        const res = await getUserWins({params: {...paramsQ, limit: "12", }, user: slug[0]})
+        return <WinsTab winData={res} />
+      }
       default:
         throw new Error("Not Found")
     }

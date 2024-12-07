@@ -2,6 +2,7 @@ import getListing from "@/app/actions/listings/get"
 import Listing from "@/components/listing/listing"
 import ListingPagination from "@/components/listing/pagination"
 import { TYPE_GET_USER_BIDS } from "@/lib/definitions"
+import { checkAndThrowError } from "@/lib/handle-errors"
 
 type props = {
   bidsData: TYPE_GET_USER_BIDS
@@ -10,7 +11,7 @@ type props = {
 export default async function BidsTab({
   bidsData: { data, success, error, source },
 }: props) {
-  if (!success) return null
+  if (!success) checkAndThrowError(error, source)
   return (
     <>
       <h1 className="sr-only">My bids</h1>
