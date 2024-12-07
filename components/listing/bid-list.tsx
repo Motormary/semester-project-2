@@ -50,6 +50,7 @@ type bidsProps = {
 
 function List({ bids }: bidsProps) {
   const sortedBids = useMemo(() => bids.toSorted((a, b) => compareValues(a.amount, b.amount)), [bids])
+  console.log("🚀 ~ List ~ sortedBids:", sortedBids)
   return (
     <ScrollArea className="relative mt-8 h-[30rem] pr-2 sm:h-96">
       <Table>
@@ -64,7 +65,7 @@ function List({ bids }: bidsProps) {
           {sortedBids.map((bid, index) => (
             <TableRow key={bid.bidder.name + index}>
               <TableCell>
-                <Link href={`/profile/${bid.bidder.name}`}>
+                <Link href={`/vendors/${bid.bidder.name}`}>
                   <div className="flex items-center gap-2">
                     <Avatar className="max-h-5 max-w-5">
                       <AvatarImage src={bid.bidder.avatar.url} alt="Avatar" />
