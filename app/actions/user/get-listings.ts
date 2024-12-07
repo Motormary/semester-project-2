@@ -93,7 +93,7 @@ const getUserListings = cache(
         searchQuery,
         page,
         tag,
-        query.get("_active") == "true" ? true : false,
+        query.get("_active") === "true",
       )
     }
 

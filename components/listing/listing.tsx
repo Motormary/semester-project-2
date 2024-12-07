@@ -15,6 +15,12 @@ type props = {
   revalidate: boolean
 }
 
+/**
+ * 
+ * @description - Displays provided listing data
+ * - Passes listing id to PriceTag component which fetches and caches the listing details/price.
+ * - Contains a dynamic clock which automatically revalidates the cached listings depending on revalidate prop and if auction has ended.
+ */
 export default function Listing({ data, classname, revalidate }: props) {
   return (
     <li
