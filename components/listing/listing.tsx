@@ -26,7 +26,7 @@ export default function Listing({ data, classname, revalidate, useMyBid }: props
   return (
     <li
       id={data.id}
-      className={cn(classname ?? "shadow-sm", "relative flex w-full flex-col gap-4 overflow-hidden rounded-lg bg-card/70 p-4 backdrop-blur-sm outline-1 has-[[data-lost]]:outline has-[[data-lost]]:outline-destructive has-[[data-lead]]:outline has-[[data-lead]]:outline-primary")}
+      className={cn(classname ?? "shadow-sm", "relative flex w-full flex-col gap-4 overflow-hidden rounded-lg bg-card/70 p-4 backdrop-blur-sm")}
     >
       <Link className="absolute inset-0" href={`/listing/${data.id}`}></Link>
       <picture

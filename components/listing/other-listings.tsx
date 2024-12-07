@@ -46,14 +46,14 @@ export default async function OtherListings({ user, currentListingId }: props) {
                     className="absolute inset-0"
                     href={`/listing/${listing.id}`}
                   ></Link>
-                  <picture className="flex aspect-square size-20 overflow-hidden rounded-md border bg-muted">
+                  <picture className="flex aspect-square shrink-0 size-20 overflow-hidden rounded-md border bg-muted">
                     <img
                       src={listing.media?.[0]?.url ?? image.src}
                       alt="Listing"
                       className="h-full w-full object-cover"
                     />
                   </picture>
-                  <div className="space-y-3 [&>p]:leading-none">
+                  <div className="space-y-3 [&>p]:leading-none w-full">
                     <p className="max-w-[14.5rem] overflow-hidden truncate text-pretty text-sm">
                       {listing.title}
                     </p>
