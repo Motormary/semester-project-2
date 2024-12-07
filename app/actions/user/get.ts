@@ -22,7 +22,6 @@ export const getUser = cache(async (user: string): Promise<TYPE_GET_USER> => {
       console.error("⚡ getUser ~ Error fetching user:", res)
       return { ...res }
     }
-    console.log("🚀 ~ getUser ~ res:", res)
   
     return { ...res }
   })

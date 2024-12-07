@@ -21,7 +21,7 @@ export default async function WinsTab({
             key={listing.id}
             data={listing}
             revalidate={false}
-            classname="md:basis-1/2 xl:basis-1/3 shadow-none focus-within:bg-muted"
+            classname="md:basis-1/2 xl:basis-1/3 shadow-none focus-within:bg-muted outline-none"
           />
         )
       })}

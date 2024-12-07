@@ -157,7 +157,7 @@ export const RegisterUserSchema = z
       .max(20, {
         message: "Name cannot contain more than 20 characters.",
       }),
-    bio: z.string(),
+    bio: z.string().optional(),
     avatar: z.object({
       url: z.string(),
       alt: z.string().optional(),

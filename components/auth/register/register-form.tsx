@@ -28,6 +28,7 @@ import { Input } from "../../ui/input"
 import { useRouter } from "next/navigation"
 import { handleErrors } from "@/lib/handle-errors"
 import { cn } from "@/lib/utils"
+import { z } from "zod"
 
 type props = {
   className?: string
@@ -50,7 +51,7 @@ export default function RegisterCard({ className, closeModal }: props) {
     },
   })
 
-  async function onSubmit(formData: TYPE_USER_REGISTER) {
+  async function onSubmit(formData: z.infer<typeof RegisterUserSchema>) {
     const { error, source, success } = await createUser(formData)
 
     if (!success) handleErrors<TYPE_USER_REGISTER>(error, source, form)
