@@ -25,8 +25,8 @@ interface CountdownProps {
  */
 export function Countdown({ endsAt, id, user, defaultTime }: CountdownProps) {
   const searchParams = useSearchParams()
-  const isSearchQuery = searchParams.get("search")
-  const isListingQuery = searchParams.get("user_listings")
+  const isSearchQuery = searchParams.has("search")
+  const isListingQuery = searchParams.has("user_listings")
   const [timeLeft, setTimeLeft] = useState(defaultTime)
   const [isLessThanHour, setIsLessThanHour] = useState(() => defaultTime.days === 0 && defaultTime.hours === 0)
   const [ended, setIsEnded] = useState(false)
@@ -39,8 +39,6 @@ export function Countdown({ endsAt, id, user, defaultTime }: CountdownProps) {
       RevalidateCache(CacheTags.ALL_LISTINGS)
       RevalidateCache(CacheTags.LISTING + id)
       if (user) {
-        console.log("🚀 ~ handleRevalidate ~ user:", user)
-        
         RevalidateCache(CacheTags.USER_LISTINGS + user)
       }
     }
@@ -57,7 +55,7 @@ export function Countdown({ endsAt, id, user, defaultTime }: CountdownProps) {
         setIsEnded(true)
         clearInterval(timer)
 
-        if (!isSearchQuery || !isListingQuery) {
+        if (!isSearchQuery && !isListingQuery) {
           handleRevalidate()
         }
       }
