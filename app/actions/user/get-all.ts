@@ -7,7 +7,7 @@ import { failedToVerify } from "@/lib/utils"
 import { cache } from "react"
 import superFetch from "../fetch"
 
-export const getAllUsers = cache(async (): Promise<TYPE_GET_USER> => {
+const getAllUsers = cache(async (): Promise<TYPE_GET_USER> => {
     const session = await verifySession()
     if (!session.accessToken) return failedToVerify()
     const res = await superFetch<TYPE_GET_USER>({
@@ -25,3 +25,5 @@ export const getAllUsers = cache(async (): Promise<TYPE_GET_USER> => {
   
     return { ...res }
   })
+
+export default getAllUsers

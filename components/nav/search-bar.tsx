@@ -1,5 +1,5 @@
 "use client"
-import { Check, ChevronsUpDown, Plus, Search } from "lucide-react"
+import { Check, ChevronsUpDown, Plus, RefreshCw, Search, X } from "lucide-react"
 import { Input } from "../ui/input"
 import {
   Command,
@@ -15,88 +15,85 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { Button } from "../ui/button"
-import { useState } from "react"
+import { useState, useTransition } from "react"
 import { cn } from "@/lib/utils"
 import { useMediaQuery } from "@/hooks/use-media-query"
-
-const tags = [
-  {
-    value: "apple products",
-    label: "Apple Products",
-  },
-  {
-    value: "technology",
-    label: "Technology",
-  },
-  {
-    value: "sports",
-    label: "Sports",
-  },
-  {
-    value: "art",
-    label: "Art",
-  },
-  {
-    value: "antiques",
-    label: "Antiques",
-  },
-  {
-    value: "jewelry",
-    label: "Jewelry",
-  },
-  {
-    value: "collectibles",
-    label: "Collectibles",
-  },
-  {
-    value: "furniture",
-    label: "Furniture",
-  },
-  {
-    value: "vehicles",
-    label: "Vehicles",
-  },
-  {
-    value: "real estate",
-    label: "Real Estate",
-  },
-  {
-    value: "rare books",
-    label: "Rare Books",
-  },
-  {
-    value: "vintage clothing",
-    label: "Vintage Clothing",
-  },
-  {
-    value: "clothing",
-    label: "Clothing",
-  },
-]
+import { useRouter, useSearchParams } from "next/navigation"
+import debounce from "lodash.debounce"
+import { tags } from "@/lib/data/tags"
 
 export default function SearchBar() {
-  const [open, setOpen] = useState(false)
-  const [value, setValue] = useState("")
   const isMobile = useMediaQuery("(max-width: 480px)")
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const [isPending, startTransition] = useTransition()
+  const [openTagSelect, setOpenTagSelect] = useState(false)
+  const [tag, setTag] = useState(searchParams.get("_tag") ?? "")
+  const [searchValue, setSearchValue] = useState(
+    searchParams.get("search") ?? "",
+  )
+
+  // Debounced search (500ms)
+  const handleSearch = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
+    const newSearchParams = new URLSearchParams(searchParams.toString())
+    if (!e.target.value) newSearchParams.delete("search")
+    else newSearchParams.set("search", e.target.value.trim().toLowerCase())
+    newSearchParams.delete("_tag") // Delete tag because it won't work with search anyways
+    newSearchParams.delete("page")
+
+    startTransition(() => {
+      setTag("")
+      router.push(`/?${newSearchParams.toString()}`, { scroll: false })
+    })
+  }, 500)
 
   return (
-    <div className="flex justify-center gap-2">
+    <div
+      data-search={isPending ? "" : undefined}
+      className="flex justify-center gap-2"
+    >
       <label className="group flex h-10 items-center rounded-md border border-input bg-background pl-3 text-base focus-within:outline-none focus-within:ring-2 focus-within:ring-ring md:w-1/3 md:text-sm">
         <label htmlFor="search">
-          <Search className="size-5 text-muted-foreground group-focus-within:text-secondary-foreground" />
+          {isPending ? (
+            <RefreshCw className="size-5 animate-spin text-muted-foreground" />
+          ) : (
+            <Search className="size-5 text-muted-foreground group-focus-within:text-secondary-foreground" />
+          )}
         </label>
         <Input
           name="search"
           id="search"
           className="ml-3 h-full border-none p-0 focus-visible:ring-0 focus-visible:ring-offset-0"
           placeholder="Search all listings"
+          value={searchValue}
+          onChange={(e) => {
+            setSearchValue(e.target.value)
+            handleSearch(e)
+          }}
         />
+        <button
+          type="reset"
+          className={cn(
+            searchValue ? "flex" : "hidden",
+            "mr-2 size-6 items-center justify-center rounded-full text-muted-foreground transition-opacity focus-within:ring-1 focus-within:ring-border hover:bg-transparent hover:text-secondary-foreground focus:text-secondary-foreground focus:outline-none",
+          )}
+          onClick={() => {
+            setSearchValue("")
+            startTransition(() =>
+              router.push("/", {
+                scroll: false,
+              }),
+            )
+          }}
+        >
+          <X className="size-5" />
+        </button>
       </label>
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover open={openTagSelect} onOpenChange={setOpenTagSelect}>
         <PopoverTrigger asChild>
           <Button
             role="combobox"
-            aria-expanded={open}
+            aria-expanded={openTagSelect}
             className="xs:hidden"
             variant="outline"
             size="icon"
@@ -110,12 +107,12 @@ export default function SearchBar() {
             <Button
               variant="outline"
               role="combobox"
-              aria-expanded={open}
-              className="justify-between max-xs:hidden sm:w-[180px]"
+              aria-expanded={openTagSelect}
+              className="justify-between max-xs:hidden sm:w-fit"
             >
-              {value
-                ? tags.find((framework) => framework.value === value)?.label
-                : "Select category"}
+              {tag
+                ? tags.find((label) => label.label === tag)?.label
+                : "Select Category"}
               <ChevronsUpDown className="opacity-50" />
             </Button>
           </PopoverTrigger>
@@ -126,21 +123,30 @@ export default function SearchBar() {
             <CommandList style={{ scrollbarWidth: "thin" }}>
               <CommandEmpty>No results</CommandEmpty>
               <CommandGroup>
-                {tags.map((framework) => (
+                {tags.map((options) => (
                   <CommandItem
                     className="py-3 text-xl sm:py-1.5 sm:text-sm"
-                    key={framework.value}
-                    value={framework.value}
+                    key={options.value}
+                    value={options.label}
                     onSelect={(currentValue) => {
-                      setValue(currentValue === value ? "" : currentValue)
-                      setOpen(false)
+                      startTransition(() => {
+                        if (currentValue === tag) {
+                          setTag("")
+                          router.push("/")
+                        } else {
+                          setTag(currentValue === tag ? "" : currentValue)
+                          setSearchValue("")
+                          router.push(`/?_tag=${currentValue}`)
+                        }
+                        setOpenTagSelect(false)
+                      })
                     }}
                   >
-                    {framework.label}
+                    {options.label}
                     <Check
                       className={cn(
                         "ml-auto",
-                        value === framework.value ? "opacity-100" : "opacity-0",
+                        tag === options.label ? "opacity-100" : "opacity-0",
                       )}
                     />
                   </CommandItem>

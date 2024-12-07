@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react"
-import { Calendar, Check, ImagePlus, List } from "lucide-react"
-import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { DialogFooter, DialogTrigger } from "@/components/ui/dialog"
 import { DrawerFooter, DrawerTrigger } from "@/components/ui/drawer"
+import { useMediaQuery } from "@/hooks/use-media-query"
+import { TYPE_CREATE_LISTING } from "@/lib/definitions"
+import { cn } from "@/lib/utils"
+import { Calendar, Check, ImagePlus, List, RefreshCw } from "lucide-react"
+import { useEffect, useState } from "react"
+import { UseFormReturn } from "react-hook-form"
 
 const steps = [
   { id: 1, title: "Step 1", description: "Enter details" },
@@ -13,12 +16,13 @@ const steps = [
 
 type props = {
   children: React.ReactNode
-  isDesktop: boolean
-  form: any
+  form: UseFormReturn<TYPE_CREATE_LISTING>
+  isPending: boolean
 }
 
-export default function Stepper({ children, isDesktop, form }: props) {
+export default function Stepper({ children, form, isPending }: props) {
   const [currentStep, setCurrentStep] = useState(1)
+  const isDesktop = useMediaQuery("(min-width: 768px)")
 
   const nextStep = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault()
@@ -34,13 +38,15 @@ export default function Stepper({ children, isDesktop, form }: props) {
     }
   }
 
+  // Direct user back to step 1 if
   useEffect(() => {
     const errors = Object.entries(form.formState.errors)
     if (errors?.length) {
       const errorKey = errors[0][0]
-      if (errorKey === "title") setCurrentStep(1)
+      if (errorKey === "title" || errorKey === "description") setCurrentStep(1)
+      if (errorKey === "media") setCurrentStep(2)
     }
-  }, [form.formState.errors])
+  }, [form.formState])
 
   return (
     <div
@@ -119,7 +125,13 @@ export default function Stepper({ children, isDesktop, form }: props) {
                 Next
               </Button>
             ) : (
-              <Button type="submit">Submit</Button>
+              <Button disabled={isPending} type="submit">
+                {isPending ? (
+                  <RefreshCw className="mx-3 size-5 animate-spin" />
+                ) : (
+                  "Submit"
+                )}
+              </Button>
             )}
           </div>
         </DialogFooter>
@@ -147,7 +159,13 @@ export default function Stepper({ children, isDesktop, form }: props) {
                 Next
               </Button>
             ) : (
-              <Button type="submit">Submit</Button>
+              <Button disabled={isPending} type="submit">
+                {isPending ? (
+                  <RefreshCw className="size-5 animate-spin" />
+                ) : (
+                  "Submit"
+                )}
+              </Button>
             )}
           </div>
         </DrawerFooter>

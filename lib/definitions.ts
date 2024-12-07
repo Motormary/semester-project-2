@@ -3,11 +3,21 @@ import { z } from "zod"
 export enum CacheOptions {
   NoStore = "no-store",
   ForceCache = "force-cache",
+  NoCache = "no-cache",
+  Default = "default",
 }
 
+/**
+ * @description Cache tags for fetching data -
+ * Add {+ username} to USER members of enum
+ */
 export enum CacheTags {
   ALL_LISTINGS = "listings",
-  LISTING = "listing-id-",
+  LISTING = "listing-id-", //! + listing uuid
+  USER = "user-", //! + username
+  USER_LISTINGS = "user-listings-", //! + username
+  USER_BIDS = "user-bids-", //! + username
+  USER_WINS = "user-wins-", //! + username
 }
 
 export enum ErrorSource {
@@ -24,9 +34,21 @@ export enum Method {
   GET = "GET",
 }
 
-const mediaSchema = z.object({
-  url: z.string().url(),
+export type SearchParams = Promise<{
+  [key: string]: string | string[] | undefined
+}>
+
+export const mediaSchema = z.object({
+  url: z.string().url({ message: "Must be a valid URL" }),
   alt: z.string(),
+})
+
+const userSchema = z.object({
+  name: z.string(),
+  email: z.string().email(),
+  bio: z.string(),
+  avatar: mediaSchema,
+  banner: mediaSchema,
 })
 
 const listingSchema = z.object({
@@ -35,19 +57,36 @@ const listingSchema = z.object({
   description: z.string(),
   media: z.array(mediaSchema),
   tags: z.array(z.string()),
-  created: z.string().datetime(),
-  updated: z.string().datetime(),
-  endsAt: z.string().datetime(),
+  created: z.date(),
+  updated: z.date(),
+  endsAt: z.date(),
   _count: z.object({
     bids: z.number().int().nonnegative(),
   }),
+  seller: userSchema,
+  bids: z.array(
+    z.object({
+      id: z.string(),
+      amount: z.number(),
+      bidder: z.object({
+        name: z.string(),
+        avatar: z.object({
+          url: z.string(),
+        }),
+      }),
+      created: z.date(),
+    }),
+  ),
 })
 
 const multipleListingSchema = z.array(listingSchema)
 
 export const newListingSchema = z.object({
   title: z.string().min(4, { message: "Minimum 4 characters required" }),
-  description: z.string().optional(),
+  description: z
+    .string()
+    .max(280, { message: "Maximum 280 characters" })
+    .optional(),
   media: z.array(mediaSchema).optional(),
   tags: z.array(z.string()).optional(),
   endsAt: z.date({ required_error: "A date and time is required." }),
@@ -82,18 +121,30 @@ const ProfileSchema = z.object({
   accessToken: z.string().optional(),
 })
 
-const BidsSchema = z.object({
-  id: z.string(),
-  amount: z.number(),
-  bidder: z.object({
-    name: z.string(),
-    email: z.string().email(),
-    bio: z.string(),
-    avatar: mediaSchema,
-    banner: mediaSchema,
+const BidsSchema = z.array(
+  z.object({
+    id: z.string(),
+    amount: z.number(),
+    bidder: z.object({
+      name: z.string(),
+      email: z.string().email(),
+      bio: z.string(),
+      avatar: mediaSchema,
+      banner: mediaSchema,
+    }),
+    created: z.date(),
+    listing: z.object({
+      id: z.string(),
+      title: z.string(),
+      description: z.string(),
+      media: z.array(mediaSchema),
+      tags: z.array(z.string()),
+      created: z.date(),
+      updated: z.date(),
+      endsAt: z.date(),
+    })
   }),
-  created: z.date(),
-})
+)
 
 // Export it for the zodresolver in the register-form
 export const RegisterUserSchema = z
@@ -106,6 +157,7 @@ export const RegisterUserSchema = z
       .max(20, {
         message: "Name cannot contain more than 20 characters.",
       }),
+    bio: z.string(),
     avatar: z.object({
       url: z.string(),
       alt: z.string().optional(),
@@ -125,6 +177,17 @@ export const RegisterUserSchema = z
     path: ["confirm"],
   })
 
+export const EditUserSchema = z.object({
+  bio: z
+    .string()
+    .max(160, { message: "Bio cannot be greater than 160 characters" })
+    .optional(),
+  avatar: z.object({
+    url: z.string(),
+    alt: z.string().optional(),
+  }),
+})
+
 export const LoginUserSchema = z.object({
   email: z.string().endsWith("@stud.noroff.no", {
     message: "Email must be a valid Noroff email",
@@ -141,7 +204,7 @@ const errorSchema = z.object({
   path: z.array(z.string()).optional(),
 })
 
-// Dynamic zod schema, takes a zod schema as params and uses it as the type for data in the response object.
+// Dynamic zod schema, takes a zod schema as params and uses it as the TYPE for "data" in the response object.
 const responseSchema = <T>(dataSchema: z.ZodType<T>) =>
   z.object({
     success: z.boolean(),
@@ -159,11 +222,14 @@ const responseSchema = <T>(dataSchema: z.ZodType<T>) =>
 const getProfileSchema = responseSchema(ProfileSchema)
 const getUserBidsSchema = responseSchema(BidsSchema)
 const getListingsSchema = responseSchema(multipleListingSchema)
+const getListingSchema = responseSchema(listingSchema)
 
 export type TYPE_FETCH<T> = z.infer<ReturnType<typeof responseSchema<T>>>
 
 // Misc
 export type TYPE_API_ERROR = z.infer<typeof errorSchema>
+
+export type TYPE_META = z.infer<typeof metaSchema>
 
 // Flat user types
 export type TYPE_USER = z.infer<typeof ProfileSchema>
@@ -172,9 +238,21 @@ export type TYPE_USER_REGISTER = z.infer<typeof RegisterUserSchema>
 
 export type TYPE_USER_LOGIN = z.infer<typeof LoginUserSchema>
 
+export type TYPE_USER_EDIT = z.infer<typeof EditUserSchema>
+
+export type TYPE_USER_BIDS = z.infer<typeof BidsSchema>
 // User request types
 export type TYPE_GET_USER_BIDS = z.infer<typeof getUserBidsSchema>
+
 export type TYPE_GET_USER = z.infer<typeof getProfileSchema>
 
-// Listings types
+
+// flat listings types
+export type TYPE_LISTING = z.infer<typeof listingSchema>
+
+export type TYPE_CREATE_LISTING = z.infer<typeof newListingSchema>
+
+// Listing requests
+export type TYPE_GET_LISTING = z.infer<typeof getListingSchema>
+
 export type TYPE_GET_LISTINGS = z.infer<typeof getListingsSchema>

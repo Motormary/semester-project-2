@@ -19,6 +19,15 @@ const config: Config = {
       screens: {
         xs: "480px",
       },
+      animation: {
+        "fade-up": 'up 1s ease'
+      },
+      keyframes: {
+        "up": {
+          "0%": { transform: "translateY(10%)", opacity: '0' },
+          "100%": { transformn: "translateY(0%)", opacity: '1' },
+        },
+      },
       transitionDuration: {
         "1500": "1500ms",
         "2000": "2000ms",

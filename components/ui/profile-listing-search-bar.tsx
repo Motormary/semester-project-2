@@ -1,6 +1,6 @@
 "use client"
 
-import { RefreshCw, Search, X } from "lucide-react"
+import { Info, RefreshCw, Search, X } from "lucide-react"
 import { Input } from "./input"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import Form from "next/form"
@@ -22,8 +22,10 @@ export default function ProfileListingSearch() {
 
   // Debounced search (500ms)
   const handleSearch = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
-    const newSearchParams = new URLSearchParams(searchParams.toString())
-    newSearchParams.set("user_listings", e.target.value.trim().toLowerCase())
+    const newSearchParams = new URLSearchParams()
+    if (!e.target.value) newSearchParams.delete("user_listings")
+    else
+      newSearchParams.set("user_listings", e.target.value.trim().toLowerCase())
 
     startTransition(() =>
       router.push(`?${newSearchParams.toString()}`, { scroll: false }),
@@ -69,6 +71,7 @@ export default function ProfileListingSearch() {
           <X className="size-5" />
         </button>
       </label>
+      {(param === "bids" || param === "wins") ? <div className="text-xs text-destructive w-full text-center mt-2">Search filters current page <Info className="inline size-3"/></div> : null}
     </Form>
   )
 }

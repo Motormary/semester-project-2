@@ -1,62 +1,82 @@
+import getUserListings from "@/app/actions/user/get-listings"
+import image from "assets/svg/alt.svg"
 import Link from "next/link"
-import { Dot } from "lucide-react"
-import image from "assets/images/pokemon.png"
-import Listing from "./listing"
 import { Fragment } from "react"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
+import Listing from "./listing"
+import PriceTag from "./price"
+import { Separator } from "../ui/separator"
+import ListingClock from "./listing-clock"
+import { TYPE_LISTING } from "@/lib/definitions"
 
 const containerStyles = {
   default: "flex gap-4 w-full shrink-1 max-w-[1400px]",
-  xl: " mx-auto xl:w-fit xl:flex-col xl:justify-center xl:border-t",
+  xl: " mx-auto xl:w-full xl:flex-col xl:justify-center xl:border-t",
 }
 
-export default async function OtherListings({ id }: { id: string }) {
+type props = {
+  user: string
+  currentListingId: string // currently listing view
+}
+
+export default async function OtherListings({ user, currentListingId }: props) {
+  const { data, success } = await getUserListings({ user: user })
+
+  if (!success || data?.data?.length <= 1) return null
+
+  const dataList = data.data.reduce<TYPE_LISTING[]>((acc, item, index) => {
+    const currentDate = new Date()
+    const endDate = new Date(item.endsAt)
+    if (index < 5 && endDate > currentDate) acc.push(item)
+    return acc
+  }, [])
+
   return (
-    <div className="w-full space-y-4 max-md:grid">
+    <div className="w-full space-y-4 max-md:grid xl:max-w-[30%]">
       <h3 className="text-sm font-semibold xl:text-center">
         Other listings from this user
       </h3>
       <ScrollArea className="rounded-md pb-4">
         <div className={`${containerStyles.default} xl:${containerStyles.xl}`}>
-          {Array.from({ length: 5 }).map((_, index) => (
-            <Fragment key={index}>
-              <div className="relative hidden w-full items-center gap-4 overflow-hidden rounded-md border-b p-4 hover:bg-muted xl:flex">
-                <Link
-                  className="absolute inset-0"
-                  href={`/listing/${id}`}
-                ></Link>
-                <picture className="flex aspect-square size-20 overflow-hidden rounded-md border bg-muted">
-                  <img
-                    src={image.src}
-                    alt="Listing"
-                    className="h-full w-full object-cover"
-                  />
-                </picture>
-                <div className="space-y-3 [&>p]:leading-none">
-                  <p className="max-w-[14.5rem] overflow-hidden truncate text-pretty text-sm">
-                    Official pokemon cards
-                  </p>
-                  <div>
-                    <p>10 Ω</p>
-                    <p className="flex items-center text-pretty text-xs text-muted-foreground">
-                      11 bids{" "}
-                      <Dot
-                        stroke="rgb(34 197 94)"
-                        fill="rgb(34 197 94)"
-                        strokeWidth="3"
-                      />
-                      2d 7h
+          {dataList.map((listing, index) => {
+            return (
+              <Fragment key={listing.id}>
+                <div className="relative hidden w-full items-center gap-4 overflow-hidden rounded-md p-4 hover:bg-muted xl:flex">
+                  <Link
+                    className="absolute inset-0"
+                    href={`/listing/${listing.id}`}
+                  ></Link>
+                  <picture className="flex aspect-square size-20 overflow-hidden rounded-md border bg-muted">
+                    <img
+                      src={listing.media?.[0]?.url ?? image.src}
+                      alt="Listing"
+                      className="h-full w-full object-cover"
+                    />
+                  </picture>
+                  <div className="space-y-3 [&>p]:leading-none">
+                    <p className="max-w-[14.5rem] overflow-hidden truncate text-pretty text-sm">
+                      {listing.title}
                     </p>
+                    <PriceTag className={"text-sm"} id={listing.id} />
+                    <div className="flex items-center">
+                      <span className="flex items-center text-pretty text-xs text-muted-foreground">
+                        {listing._count.bids} Bids
+                        <ListingClock revalidate id={listing.id} user={user} />
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="flex shrink-0 basis-72 xl:hidden">
-                <Listing id={index.toString()} />
-              </div>
-            </Fragment>
-          ))}
+                <div className="flex shrink-0 basis-72 xl:hidden">
+                  <Listing revalidate data={listing} />
+                </div>
+                {index !== dataList.length - 1 ? (
+                  <Separator className="hidden xl:block" />
+                ) : null}
+              </Fragment>
+            )
+          })}
         </div>
-        <ScrollBar orientation="horizontal" className="xl:hidden"/>
+        <ScrollBar orientation="horizontal" className="xl:hidden" />
       </ScrollArea>
     </div>
   )

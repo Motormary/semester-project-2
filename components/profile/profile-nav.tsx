@@ -8,7 +8,6 @@ import { cn } from "@/lib/utils"
 export function ProfileNav() {
   const pathname = usePathname()
   const { slug } = useParams()
-  console.log("🚀 ~ ProfileNav ~ slug:", slug)
 
   const items = [
     {

@@ -6,6 +6,7 @@ import { ModeToggle } from "@/components/theme-toggle-button"
 import TopNav from "@/components/nav/top-nav"
 import Footer from "@/components/footer"
 import { Toaster } from "sonner"
+import FloatingBoxes from "@/components/boxes"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -25,15 +26,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-  modal
 }: Readonly<{
-  children: React.ReactNode,
-  modal: React.ReactNode
+  children: React.ReactNode
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} relative min-h-svh flex flex-col items-center bg-muted antialiased dark:bg-background`}
+        className={`${geistSans.variable} ${geistMono.variable} relative flex min-h-svh flex-col items-center bg-muted antialiased dark:bg-background`}
       >
         <ThemeProvider
           attribute="class"
@@ -42,14 +41,14 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <TopNav />
-          <main className="relative h-full flex w-full max-w-content px-4 mb-[15rem]">
+          <main className="relative mb-[15rem] flex h-full w-full max-w-content px-4 peer-has-[[data-search]]:animate-pulse">
             {children}
             <ModeToggle />
-            {modal}
           </main>
           <Toaster richColors />
           <Footer />
         </ThemeProvider>
+        <FloatingBoxes />
       </body>
     </html>
   )

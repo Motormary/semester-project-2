@@ -1,39 +1,70 @@
-import Listing from "@/components/listing/listing"
-import wait from "@/lib/wait"
+import getUserListings from "@/app/actions/user/get-listings"
+import { SearchParams } from "@/lib/definitions"
+import { checkAndThrowError } from "@/lib/handle-errors"
 import BidsTab from "./(bids)/bids"
 import InactiveTab from "./(inactive)/inactive"
 import WinsTab from "./(wins)/wins"
+import Listing from "@/components/listing/listing"
+import ListingPagination from "@/components/listing/pagination"
+import getUserBids from "@/app/actions/user/get-bids"
+import getUserWins from "@/app/actions/user/get-wins"
 
 export default async function ProfileListings({
   params,
+  searchParams,
 }: {
   params: Promise<{ slug: string }>
+  searchParams: SearchParams
 }) {
   const slug = (await params).slug
-  await wait(1000)
+  const paramsQ = await searchParams
 
   if (slug.length === 2) {
     switch (slug[1].toLowerCase()) {
-      case "inactive":
-        return <InactiveTab username={slug[0]} />
-      case "bids":
-        return <BidsTab username={slug[0]} />
-      case "wins":
-        return <WinsTab username={slug[0]} />
+      case "inactive": {
+        const res = await getUserListings({
+          user: slug[0],
+          params: {...paramsQ, _active: "false", limit: "12", _seller: "true"},
+        })
+        return <InactiveTab resData={res} />
+      }
+      case "bids": {
+        const res = await getUserBids({
+          user: slug[0],
+          params: {...paramsQ, limit: "12", _listings: "true"},
+        })
+        return <BidsTab bidsData={res} />
+      }
+      case "wins": {
+        const res = await getUserWins({params: {...paramsQ, limit: "12", }, user: slug[0]})
+        return <WinsTab winData={res} />
+      }
       default:
         throw new Error("Not Found")
     }
   } else if (slug.length === 1) {
+    
+    const { data, success, error, source } = await getUserListings({
+      user: slug[0],
+      params: {...paramsQ, _active: "true", limit: "12", _seller: "true"},
+    })
+    if (!success) checkAndThrowError(error, source)
+
+      
     return (
       <>
-        <h1 className="sr-only listings">My Listings</h1>
-        <Listing
-          classname="md:basis-1/2 xl:basis-1/3 shadow-none focus-within:bg-muted"
-          id="1"
-        />
-        <Listing classname="md:basis-1/2 xl:basis-1/3 shadow-none" id="1" />
-        <Listing classname="md:basis-1/2 xl:basis-1/3 shadow-none" id="1" />
-        <Listing classname="md:basis-1/2 xl:basis-1/3 shadow-none" id="1" />
+        <h1 className="listings sr-only">My Listings</h1>
+        {data.data.map((listing) => {
+          return (
+            <Listing
+              key={listing.id}
+              data={listing}
+              revalidate={true}
+              classname="md:basis-1/2 xl:basis-1/3 shadow-none focus-within:bg-muted"
+            />
+          )
+        })}
+        <ListingPagination meta={data.meta} />
       </>
     )
   }

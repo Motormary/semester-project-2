@@ -30,12 +30,10 @@ import { getCurrentUser } from "@/app/actions/user/get"
 import { logoutUser } from "@/app/actions/user/login"
 
 export default async function NavMenu() {
-  let user
+  let user = null
   const { data, success } = await getCurrentUser()
 
   if (success) user = data.data
-
-  // TODO: Components to fetch wins/bids/listings
 
   return (
     <>
@@ -76,7 +74,7 @@ export default async function NavMenu() {
                 variant="ghost"
                 className="group px-0 hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
               >
-                <span className="max-w-36 truncate">{}</span>
+                <span className="max-w-36 truncate mb-[2px]">{user.name}</span>
                 <Avatar className="max-h-8 max-w-8 outline-primary ring-primary ring-offset-2 group-focus:ring">
                   <AvatarImage
                     height={32}
@@ -119,7 +117,7 @@ export default async function NavMenu() {
                   href={`/vendors/${user.name}/bids`}
                 >
                   Bids{" "}
-                  <UserBidsCounter name={user.name} className="p-0.5 text-xs" />
+                  <UserBidsCounter user={user.name} className="p-0.5 text-xs" />
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
@@ -250,7 +248,7 @@ export default async function NavMenu() {
                       <p>Bids</p>
                       <UserBidsCounter
                         className="p-0.5 text-xs"
-                        name={user.name}
+                        user={user.name}
                       />
                     </Link>
                   </SheetTrigger>

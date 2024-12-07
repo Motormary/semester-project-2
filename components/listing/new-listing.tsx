@@ -4,6 +4,7 @@ import React, { useState } from "react"
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -19,12 +20,14 @@ import {
 import ListingForm from "./new-listing-form"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
+import { TYPE_LISTING } from "@/lib/definitions"
 
 type props = {
   children: React.ReactNode
+  initialData?: TYPE_LISTING
 }
 
-export default function NewListing({ children }: props) {
+export default function NewListing({ children, initialData }: props) {
   const [open, setOpen] = useState(false)
   const isDesktop = useMediaQuery("(min-width: 768px)")
 
@@ -35,8 +38,9 @@ export default function NewListing({ children }: props) {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>New listing</DialogTitle>
+            <DialogDescription className="sr-only">Form</DialogDescription>
           </DialogHeader>
-          <ListingForm isDesktop={isDesktop} />
+          <ListingForm initialData={initialData} closeModal={setOpen} />
         </DialogContent>
       </Dialog>
     )
@@ -53,9 +57,9 @@ export default function NewListing({ children }: props) {
             </DrawerDescription>
           </DrawerHeader>
           <div className="px-4">
-            <ListingForm isDesktop={isDesktop} />
+            <ListingForm initialData={initialData} closeModal={setOpen} />
           </div>
-          <ScrollBar orientation="vertical"/>
+          <ScrollBar orientation="vertical" />
         </ScrollArea>
       </DrawerContent>
     </Drawer>

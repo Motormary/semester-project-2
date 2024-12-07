@@ -66,8 +66,10 @@ export function DateTimePicker24hForm({ form }: any) {
                               : "ghost"
                           }
                           className="aspect-square shrink-0 sm:w-full"
-                          onClick={() =>
+                          onClick={(e) => {
+                            e.preventDefault()
                             handleTimeChange("hour", hour.toString())
+                          } 
                           }
                         >
                           {hour}
@@ -89,8 +91,10 @@ export function DateTimePicker24hForm({ form }: any) {
                               : "ghost"
                           }
                           className="aspect-square shrink-0 sm:w-full"
-                          onClick={() =>
+                          onClick={(e) => {
+                            e.preventDefault()
                             handleTimeChange("minute", minute.toString())
+                          }
                           }
                         >
                           {minute.toString().padStart(2, "0")}

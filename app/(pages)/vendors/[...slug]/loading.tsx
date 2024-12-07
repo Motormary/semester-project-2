@@ -37,7 +37,7 @@ export function ProfileLoading() {
 export default async function LoadingList() {
   return (
     <>
-      {Array.from({ length: 6 }).map((_, index) => (
+      {Array.from({ length: 3 }).map((_, index) => (
         <ListingLoading key={index} />
       ))}
     </>

@@ -7,7 +7,7 @@ import { Skeleton } from "../ui/skeleton"
 
 export default async function TopNav() {
   return (
-    <div className="mb-4 flex w-full flex-col gap-4">
+    <div className="peer mb-4 flex w-full flex-col gap-4">
       <div className="flex h-[64px] justify-center bg-background shadow-sm dark:border-b">
         <nav className="flex w-full max-w-content items-center justify-between bg-background px-4">
           <Link href="/">
@@ -22,14 +22,18 @@ export default async function TopNav() {
             </picture>
           </Link>
           <div className="flex items-center gap-5">
-            <Suspense fallback={<Skeleton className="size-10 md:size-8 rounded-full"/>}>
+            <Suspense
+              fallback={<Skeleton className="size-10 rounded-full md:size-8" />}
+            >
               <NavMenu />
             </Suspense>
           </div>
         </nav>
       </div>
       <div className="mx-auto w-full max-w-content px-4">
-        <SearchBar />
+        <Suspense fallback={null}>
+          <SearchBar />
+        </Suspense>
       </div>
     </div>
   )
