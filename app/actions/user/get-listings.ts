@@ -22,6 +22,7 @@ const getUserListings = cache(
   async ({ params, user }: props): Promise<TYPE_GET_LISTINGS> => {
     const session = await verifySession()
     if (!session.accessToken) return failedToVerify()
+    const isRecursion = params?.recursion
     const isInactiveQuery = params?._active === "false"
     const query = new URLSearchParams(params)
     const searchQuery = params?.user_listings
@@ -30,7 +31,7 @@ const getUserListings = cache(
     const page = params?.page ? Number(params.page) : 1
     const tag = params?._tags ? params._tags : undefined
 
-    if (searchQuery || isInactiveQuery) {
+    if (searchQuery || isRecursion || isInactiveQuery) {
       // Remove queries from API call and handle them on server
       query.delete("user_listings")
       query.delete("limit")
@@ -52,22 +53,23 @@ const getUserListings = cache(
     }
 
     if (searchQuery || query.get("_active") === "false") {
-      //! This is not a in any way "best practice". It is just for fun, don't do this. ⚡
+      //! This is not a in any way "good practice", it's not even a good idea. It is just for fun, don't do this. ⚡
 
       // Backend can't handle search queries for user listings, so we handle it on the frontend
       const newRes = { ...res, data: { ...res.data, data: [...res.data.data] } }
 
       if (res.data.meta.nextPage) {
         const newParams = new URLSearchParams(query)
-
+        
         // Recursion - since we're limited to 100 results per page #yolo
         const fetchAllPages = async () => {
           try {
             newParams.set(
               "page",
-              res.data.meta.nextPage?.toString() ?? "9999", // Just to make TS shut up as we've already checked nextpage, 99999 will return nothing anyways.
+              res.data.meta.nextPage?.toString() ?? "99999", // Just to make TS shut up as we've already checked nextpage, 99999 will return nothing anyways.
             )
             newParams.delete("_active")
+            newParams.set("recursion", "true")
             const { data, success } = await getUserListings({
               params: newParams,
               user,
