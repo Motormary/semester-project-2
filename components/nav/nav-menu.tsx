@@ -119,7 +119,7 @@ export default async function NavMenu() {
                   href={`/vendors/${user.name}/bids`}
                 >
                   Bids{" "}
-                  <UserBidsCounter name={user.name} className="p-0.5 text-xs" />
+                  <UserBidsCounter user={user.name} className="p-0.5 text-xs" />
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
@@ -250,7 +250,7 @@ export default async function NavMenu() {
                       <p>Bids</p>
                       <UserBidsCounter
                         className="p-0.5 text-xs"
-                        name={user.name}
+                        user={user.name}
                       />
                     </Link>
                   </SheetTrigger>

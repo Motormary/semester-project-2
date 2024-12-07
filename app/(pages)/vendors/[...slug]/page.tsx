@@ -6,6 +6,7 @@ import InactiveTab from "./(inactive)/inactive"
 import WinsTab from "./(wins)/wins"
 import Listing from "@/components/listing/listing"
 import ListingPagination from "@/components/listing/pagination"
+import getUserBids from "@/app/actions/user/get-bids"
 
 export default async function ProfileListings({
   params,
@@ -26,10 +27,15 @@ export default async function ProfileListings({
         })
         return <InactiveTab resData={res} />
       }
-      case "bids": 
-        return <BidsTab username={slug[0]} />
+      case "bids": {
+        const res = await getUserBids({
+          user: slug[0],
+          params: {...paramsQ, limit: "12", _listings: "true"},
+        })
+        return <BidsTab bidsData={res} />
+      }
       case "wins":
-        return <WinsTab username={slug[0]} />
+        return <WinsTab winData={""} />
       default:
         throw new Error("Not Found")
     }

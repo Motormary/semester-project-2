@@ -121,18 +121,30 @@ const ProfileSchema = z.object({
   accessToken: z.string().optional(),
 })
 
-const BidsSchema = z.object({
-  id: z.string(),
-  amount: z.number(),
-  bidder: z.object({
-    name: z.string(),
-    email: z.string().email(),
-    bio: z.string(),
-    avatar: mediaSchema,
-    banner: mediaSchema,
+const BidsSchema = z.array(
+  z.object({
+    id: z.string(),
+    amount: z.number(),
+    bidder: z.object({
+      name: z.string(),
+      email: z.string().email(),
+      bio: z.string(),
+      avatar: mediaSchema,
+      banner: mediaSchema,
+    }),
+    created: z.date(),
+    listing: z.object({
+      id: z.string(),
+      title: z.string(),
+      description: z.string(),
+      media: z.array(mediaSchema),
+      tags: z.array(z.string()),
+      created: z.date(),
+      updated: z.date(),
+      endsAt: z.date(),
+    })
   }),
-  created: z.date(),
-})
+)
 
 // Export it for the zodresolver in the register-form
 export const RegisterUserSchema = z
@@ -166,7 +178,10 @@ export const RegisterUserSchema = z
   })
 
 export const EditUserSchema = z.object({
-  bio: z.string().max(160, {message: "Bio cannot be greater than 160 characters"}).optional(),
+  bio: z
+    .string()
+    .max(160, { message: "Bio cannot be greater than 160 characters" })
+    .optional(),
   avatar: z.object({
     url: z.string(),
     alt: z.string().optional(),
@@ -225,16 +240,17 @@ export type TYPE_USER_LOGIN = z.infer<typeof LoginUserSchema>
 
 export type TYPE_USER_EDIT = z.infer<typeof EditUserSchema>
 
+export type TYPE_USER_BIDS = z.infer<typeof BidsSchema>
 // User request types
 export type TYPE_GET_USER_BIDS = z.infer<typeof getUserBidsSchema>
 
 export type TYPE_GET_USER = z.infer<typeof getProfileSchema>
 
+
 // flat listings types
 export type TYPE_LISTING = z.infer<typeof listingSchema>
 
 export type TYPE_CREATE_LISTING = z.infer<typeof newListingSchema>
-
 
 // Listing requests
 export type TYPE_GET_LISTING = z.infer<typeof getListingSchema>

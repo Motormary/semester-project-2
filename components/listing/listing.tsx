@@ -13,6 +13,7 @@ type props = {
   classname?: string
   data: TYPE_LISTING
   revalidate: boolean
+  useMyBid?: number
 }
 
 /**
@@ -21,7 +22,7 @@ type props = {
  * - Passes listing id to PriceTag component which fetches and caches the listing details/price.
  * - Contains a dynamic clock which automatically revalidates the cached listings depending on revalidate prop and if auction has ended.
  */
-export default function Listing({ data, classname, revalidate }: props) {
+export default function Listing({ data, classname, revalidate, useMyBid }: props) {
   return (
     <li
       id={data.id}
@@ -46,7 +47,7 @@ export default function Listing({ data, classname, revalidate }: props) {
         {data.tags?.[0] ? <Badge>{data.tags?.[0]}</Badge> : null}
         <p className="text-pretty">{data.title}</p>
         <Suspense fallback={<Skeleton className="h-5 w-20" />}>
-          <PriceTag id={data.id} />
+          <PriceTag myBid={useMyBid} id={data.id} />
         </Suspense>
         <div className="flex items-center text-pretty text-sm text-muted-foreground">
           {data._count.bids} bids{" "}

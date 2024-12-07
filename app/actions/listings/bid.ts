@@ -35,6 +35,7 @@ export default async function bidOnListing({
   revalidateTag(CacheTags.ALL_LISTINGS)
   revalidateTag(CacheTags.LISTING + id)
   revalidateTag(CacheTags.USER_LISTINGS + seller)
+  revalidateTag(CacheTags.USER_BIDS + session.user)
 
   return { ...res }
 }
