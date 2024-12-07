@@ -11,7 +11,7 @@ import { TYPE_LISTING } from "@/lib/definitions"
 
 const containerStyles = {
   default: "flex gap-4 w-full shrink-1 max-w-[1400px]",
-  xl: " mx-auto xl:w-full xl:flex-col xl:justify-center xl:border-t",
+  xl: " mx-auto xl:w-full xl:flex-col xl:justify-center xl:border-t xl:pt-4",
 }
 
 type props = {
@@ -32,12 +32,12 @@ export default async function OtherListings({ user, currentListingId }: props) {
   }, [])
 
   return (
-    <div className="w-full space-y-4 max-md:grid xl:max-w-[30%]">
+    <div className="w-full space-y-4 max-md:grid xl:max-w-[380px]">
       <h3 className="text-sm font-semibold xl:text-center">
         Other listings from this user
       </h3>
       <ScrollArea className="rounded-md pb-4">
-        <div className={`${containerStyles.default} xl:${containerStyles.xl}`}>
+        <div className={`${containerStyles.default} xl:${containerStyles.xl} py-1`}>
           {dataList.map((listing, index) => {
             return (
               <Fragment key={listing.id}>
@@ -66,7 +66,7 @@ export default async function OtherListings({ user, currentListingId }: props) {
                     </div>
                   </div>
                 </div>
-                <div className="flex shrink-0 basis-72 xl:hidden">
+                <div className="flex shrink-0 basis-72 xl:hidden px-1">
                   <Listing revalidate data={listing} />
                 </div>
                 {index !== dataList.length - 1 ? (
@@ -76,7 +76,7 @@ export default async function OtherListings({ user, currentListingId }: props) {
             )
           })}
         </div>
-        <ScrollBar orientation="horizontal" className="xl:hidden" />
+        <ScrollBar orientation="horizontal" className="visible xl:hidden" />
       </ScrollArea>
     </div>
   )

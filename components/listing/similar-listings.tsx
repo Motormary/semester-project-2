@@ -27,11 +27,11 @@ export default async function SimilarListing({
     <Card className="grid p-[5%] md:p-6">
       <h4 className="text-sm font-semibold">You might also like</h4>
       <ScrollArea className="rounded-md pb-4">
-        <div className="shrink-1 flex w-full max-w-[1400px] gap-4">
+        <div className="shrink-1 flex w-full max-w-[1400px] gap-4 py-1">
           {data.data.map((listing, index) => {
             if (listing.id === currentListingId) return
             return (
-              <div key={listing.id} className="flex shrink-0 basis-72">
+              <div key={listing.id} className="flex shrink-0 basis-72 px-1">
                 <Listing
                   revalidate
                   data={listing}
