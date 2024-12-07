@@ -30,12 +30,10 @@ import { getCurrentUser } from "@/app/actions/user/get"
 import { logoutUser } from "@/app/actions/user/login"
 
 export default async function NavMenu() {
-  let user
+  let user = null
   const { data, success } = await getCurrentUser()
 
   if (success) user = data.data
-
-  // TODO: Components to fetch wins/bids/listings
 
   return (
     <>
