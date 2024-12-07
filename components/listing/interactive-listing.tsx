@@ -81,7 +81,7 @@ export default async function InteractiveListing({ listing }: props) {
                   {listing._count.bids} Bids
                 </Button>
               </BidListDialog>
-              <ListingClock revalidate={false} id={listing.id} />
+              <ListingClock user={listing.seller.name} revalidate={false} id={listing.id} />
             </div>
           </div>
           <BidForm

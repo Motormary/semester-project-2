@@ -19,7 +19,7 @@ export default function Listing({ data, classname, revalidate }: props) {
   return (
     <li
       id={data.id}
-      className={`${classname} relative flex w-full flex-col gap-4 overflow-hidden rounded-lg bg-card/70 p-4 shadow-sm backdrop-blur-sm`}
+      className={`${classname ?? "shadow-sm"} relative flex w-full flex-col gap-4 overflow-hidden rounded-lg bg-card/70 p-4 backdrop-blur-sm`}
     >
       <Link className="absolute inset-0" href={`/listing/${data.id}`}></Link>
       <picture
@@ -44,7 +44,7 @@ export default function Listing({ data, classname, revalidate }: props) {
         </Suspense>
         <div className="flex items-center text-pretty text-sm text-muted-foreground">
           {data._count.bids} bids{" "}
-          <ListingClock revalidate={revalidate} id={data.id} />
+          <ListingClock user={data?.seller?.name} revalidate={revalidate} id={data.id} />
         </div>
       </div>
     </li>

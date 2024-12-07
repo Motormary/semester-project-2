@@ -23,6 +23,7 @@ const getAllListings = cache(
     query.set("limit", "12")
     query.set("_active", "true")
     query.set("sort", "created")
+    query.set("_seller", "true")
     const hasSearch = params?.search
 
     if (hasSearch) {

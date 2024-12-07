@@ -22,7 +22,7 @@ export default function ProfileListingSearch() {
 
   // Debounced search (500ms)
   const handleSearch = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
-    const newSearchParams = new URLSearchParams(searchParams.toString())
+    const newSearchParams = new URLSearchParams()
     if (!e.target.value) newSearchParams.delete("user_listings")
     else
       newSearchParams.set("user_listings", e.target.value.trim().toLowerCase())

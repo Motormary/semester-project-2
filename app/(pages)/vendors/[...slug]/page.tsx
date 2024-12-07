@@ -4,21 +4,29 @@ import { checkAndThrowError } from "@/lib/handle-errors"
 import BidsTab from "./(bids)/bids"
 import InactiveTab from "./(inactive)/inactive"
 import WinsTab from "./(wins)/wins"
+import Listing from "@/components/listing/listing"
+import ListingPagination from "@/components/listing/pagination"
 
 export default async function ProfileListings({
   params,
-  searchParams
+  searchParams,
 }: {
   params: Promise<{ slug: string }>
   searchParams: SearchParams
 }) {
   const slug = (await params).slug
+  const paramsQ = await searchParams
 
   if (slug.length === 2) {
     switch (slug[1].toLowerCase()) {
-      case "inactive":
-        return <InactiveTab username={slug[0]} />
-      case "bids":
+      case "inactive": {
+        const res = await getUserListings({
+          user: slug[0],
+          params: {...paramsQ, _active: "false", limit: "12", _seller: "true"},
+        })
+        return <InactiveTab resData={res} />
+      }
+      case "bids": 
         return <BidsTab username={slug[0]} />
       case "wins":
         return <WinsTab username={slug[0]} />
@@ -26,17 +34,28 @@ export default async function ProfileListings({
         throw new Error("Not Found")
     }
   } else if (slug.length === 1) {
+    
     const { data, success, error, source } = await getUserListings({
       user: slug[0],
+      params: {...paramsQ, _active: "true", limit: "12", _seller: "true"},
     })
     if (!success) checkAndThrowError(error, source)
+
+      
     return (
       <>
         <h1 className="listings sr-only">My Listings</h1>
-     {/*    <Listing
-          revalidate
-          classname="md:basis-1/2 xl:basis-1/3 shadow-none focus-within:bg-muted"
-        /> */}
+        {data.data.map((listing) => {
+          return (
+            <Listing
+              key={listing.id}
+              data={listing}
+              revalidate={true}
+              classname="md:basis-1/2 xl:basis-1/3 shadow-none focus-within:bg-muted"
+            />
+          )
+        })}
+        <ListingPagination meta={data.meta} />
       </>
     )
   }

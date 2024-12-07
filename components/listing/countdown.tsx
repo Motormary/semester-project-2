@@ -39,6 +39,8 @@ export function Countdown({ endsAt, id, user, defaultTime }: CountdownProps) {
       RevalidateCache(CacheTags.ALL_LISTINGS)
       RevalidateCache(CacheTags.LISTING + id)
       if (user) {
+        console.log("🚀 ~ handleRevalidate ~ user:", user)
+        
         RevalidateCache(CacheTags.USER_LISTINGS + user)
       }
     }
