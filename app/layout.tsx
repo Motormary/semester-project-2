@@ -7,6 +7,7 @@ import TopNav from "@/components/nav/top-nav"
 import Footer from "@/components/footer"
 import { Toaster } from "sonner"
 import FloatingBoxes from "@/components/boxes"
+import BackgroundImage from "@/components/background"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -48,8 +49,9 @@ export default function RootLayout({
           <Toaster richColors />
           <Footer />
         </ThemeProvider>
-        <div className="fixed pointer-events-none -z-50 w-screen h-screen bg-cross bg-cover bg-no-repeat" />
+        <div className="bg-cross pointer-events-none fixed -z-50 h-screen w-screen bg-cover bg-no-repeat" />
         <FloatingBoxes />
+        <BackgroundImage />
       </body>
     </html>
   )
