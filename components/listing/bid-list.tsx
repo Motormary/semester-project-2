@@ -47,19 +47,21 @@ type bidsProps = {
   bids: TYPE_LISTING["bids"]
 }
 
-
 function List({ bids }: bidsProps) {
-  const sortedBids = useMemo(() => bids.toSorted((a, b) => compareValues(a.amount, b.amount)), [bids])
+  const sortedBids = useMemo(
+    () => bids.toSorted((a, b) => compareValues(a.amount, b.amount)),
+    [bids],
+  )
   return (
-    <ScrollArea className="relative mt-8 h-[30rem] pr-2 sm:h-96">
-      <Table>
-        <TableHeader className="relative">
-          <TableRow className="fixed left-0 z-[999] flex h-8 w-full -translate-y-8 justify-between bg-background px-5 hover:bg-background">
-            <TableHead className="w-1/3">User</TableHead>
-            <TableHead className="text-center">Date</TableHead>
-            <TableHead className="text-right">Amount</TableHead>
-          </TableRow>
-        </TableHeader>
+    <Table className="grid w-full">
+      <TableHeader className="w-full">
+        <TableRow className="bg-background flex h-8 justify-between hover:bg-background">
+          <TableHead className="w-1/3">User</TableHead>
+          <TableHead>Date</TableHead>
+          <TableHead>Amount</TableHead>
+        </TableRow>
+      </TableHeader>
+      <ScrollArea className="h-[30rem] pr-2">
         <TableBody>
           {sortedBids.map((bid, index) => (
             <TableRow key={bid.bidder.name + index}>
@@ -85,8 +87,9 @@ function List({ bids }: bidsProps) {
             </TableRow>
           ))}
         </TableBody>
-      </Table>
-    </ScrollArea>
+        <ScrollBar orientation="vertical" />
+      </ScrollArea>
+    </Table>
   )
 }
 
