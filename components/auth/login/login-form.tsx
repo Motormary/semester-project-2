@@ -24,9 +24,11 @@ import { handleErrors } from "@/lib/handle-errors"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import logo from "assets/images/logo_filled.png"
+import { RefreshCw } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 
 type props = {
@@ -35,6 +37,7 @@ type props = {
 }
 
 export default function LoginCard({ className, closeModal }: props) {
+  const [isPending, setIsPending] = useState(false)
   const router = useRouter()
   const form = useForm<TYPE_USER_LOGIN>({
     resolver: zodResolver(LoginUserSchema),
@@ -45,7 +48,9 @@ export default function LoginCard({ className, closeModal }: props) {
   })
 
   async function onSubmit(formData: TYPE_USER_LOGIN) {
+    setIsPending(true)
     const { success, source, error } = await loginUser(formData)
+    setIsPending(false)
 
     if (!success) {
       handleErrors<TYPE_USER_LOGIN>(error, source, form)
@@ -61,7 +66,8 @@ export default function LoginCard({ className, closeModal }: props) {
   return (
     <Card
       className={cn(
-        className ?? "mx-auto flex flex-col justify-center sm:w-1/2 lg:w-1/3 bg-card/70 backdrop-blur-sm",
+        className ??
+          "mx-auto flex flex-col justify-center bg-card/70 backdrop-blur-sm sm:w-1/2 lg:w-1/3",
       )}
     >
       <CardHeader>
@@ -105,7 +111,11 @@ export default function LoginCard({ className, closeModal }: props) {
           </CardContent>
           <CardFooter className="flex flex-col gap-4">
             <Button className="flex w-full" type="submit">
-              Submit
+              {isPending ? (
+                <RefreshCw className="size-5 animate-spin" />
+              ) : (
+                "Submit"
+              )}
             </Button>
             <CardDescription>
               Not registered yet?{" "}

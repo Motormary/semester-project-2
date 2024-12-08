@@ -29,6 +29,8 @@ import { useRouter } from "next/navigation"
 import { handleErrors } from "@/lib/handle-errors"
 import { cn } from "@/lib/utils"
 import { z } from "zod"
+import { useState } from "react"
+import { RefreshCw } from "lucide-react"
 
 type props = {
   className?: string
@@ -36,6 +38,7 @@ type props = {
 }
 
 export default function RegisterCard({ className, closeModal }: props) {
+  const [isPending, setIsPending] = useState(false)
   const router = useRouter()
   const form = useForm<TYPE_USER_REGISTER>({
     resolver: zodResolver(RegisterUserSchema),
@@ -52,7 +55,9 @@ export default function RegisterCard({ className, closeModal }: props) {
   })
 
   async function onSubmit(formData: z.infer<typeof RegisterUserSchema>) {
+    setIsPending(true)
     const { error, source, success } = await createUser(formData)
+    setIsPending(false)
 
     if (!success) handleErrors<TYPE_USER_REGISTER>(error, source, form)
     if (success) {
@@ -65,7 +70,8 @@ export default function RegisterCard({ className, closeModal }: props) {
   return (
     <Card
       className={cn(
-        className ?? "mx-auto flex flex-col justify-center sm:w-1/2 lg:w-1/3 bg-card/70 backdrop-blur-sm",
+        className ??
+          "mx-auto flex flex-col justify-center bg-card/70 backdrop-blur-sm sm:w-1/2 lg:w-1/3",
       )}
     >
       <CardHeader>
@@ -152,8 +158,12 @@ export default function RegisterCard({ className, closeModal }: props) {
             />
           </CardContent>
           <CardFooter className="flex flex-col gap-4">
-            <Button className="flex w-full" type="submit">
-              Submit
+            <Button disabled={isPending} className="flex w-full" type="submit">
+              {isPending ? (
+                <RefreshCw className="size-5 animate-spin" />
+              ) : (
+                "Submit"
+              )}
             </Button>
             <CardDescription>
               Not registered yet?{" "}
