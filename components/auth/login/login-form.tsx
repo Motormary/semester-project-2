@@ -62,7 +62,6 @@ export default function LoginCard({ className, closeModal }: props) {
     }
   }
 
-  // TODO: UPDATE CARD TO TAKE CLASSNAME
   return (
     <Card
       className={cn(
