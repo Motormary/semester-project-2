@@ -61,7 +61,7 @@ export default function LoginCard({ className, closeModal }: props) {
   return (
     <Card
       className={cn(
-        className ?? "mx-auto flex flex-col justify-center sm:w-1/2 lg:w-1/3",
+        className ?? "mx-auto flex flex-col justify-center sm:w-1/2 lg:w-1/3 bg-card/70 backdrop-blur-sm",
       )}
     >
       <CardHeader>

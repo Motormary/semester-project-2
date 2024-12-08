@@ -48,6 +48,7 @@ export default function RootLayout({
           <Toaster richColors />
           <Footer />
         </ThemeProvider>
+        <div className="fixed pointer-events-none -z-50 w-screen h-screen bg-cross bg-cover bg-no-repeat" />
         <FloatingBoxes />
       </body>
     </html>
