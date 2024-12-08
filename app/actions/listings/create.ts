@@ -30,6 +30,7 @@ export default async function createListing(
   }
 
   revalidateTag(CacheTags.ALL_LISTINGS)
+  revalidateTag(CacheTags.USER_LISTINGS + session.user)
 
   return { ...res }
 }

@@ -20,14 +20,17 @@ type props = {
 }
 
 export default async function OtherListings({ user, currentListingId }: props) {
-  const { data, success } = await getUserListings({ user: user })
+  const { data, success } = await getUserListings({
+    user: user,
+    params: { _active: "true" },
+  })
 
-  if (!success || data?.data?.length <= 1) return null
+  if (!success && data?.data?.length <= 1) return null
 
   const dataList = data.data.reduce<TYPE_LISTING[]>((acc, item, index) => {
     const currentDate = new Date()
     const endDate = new Date(item.endsAt)
-    if (index < 5 && endDate > currentDate) acc.push(item)
+    if (acc.length < 5 && endDate > currentDate) acc.push(item)
     return acc
   }, [])
 
@@ -37,7 +40,9 @@ export default async function OtherListings({ user, currentListingId }: props) {
         Other listings from this user
       </h3>
       <ScrollArea className="rounded-md pb-4">
-        <div className={`${containerStyles.default} xl:${containerStyles.xl} py-1`}>
+        <div
+          className={`${containerStyles.default} xl:${containerStyles.xl} py-1`}
+        >
           {dataList.map((listing, index) => {
             return (
               <Fragment key={listing.id}>
@@ -46,14 +51,14 @@ export default async function OtherListings({ user, currentListingId }: props) {
                     className="absolute inset-0"
                     href={`/listing/${listing.id}`}
                   ></Link>
-                  <picture className="flex aspect-square shrink-0 size-20 overflow-hidden rounded-md border bg-muted">
+                  <picture className="flex aspect-square size-20 shrink-0 overflow-hidden rounded-md border bg-muted">
                     <img
                       src={listing.media?.[0]?.url ?? image.src}
                       alt="Listing"
                       className="h-full w-full object-cover"
                     />
                   </picture>
-                  <div className="space-y-3 [&>p]:leading-none w-full">
+                  <div className="w-full space-y-3 [&>p]:leading-none">
                     <p className="max-w-[14.5rem] overflow-hidden truncate text-pretty text-sm">
                       {listing.title}
                     </p>
@@ -66,7 +71,7 @@ export default async function OtherListings({ user, currentListingId }: props) {
                     </div>
                   </div>
                 </div>
-                <div className="flex shrink-0 basis-72 xl:hidden px-1">
+                <div className="flex shrink-0 basis-72 px-1 xl:hidden">
                   <Listing revalidate data={listing} />
                 </div>
                 {index !== dataList.length - 1 ? (
