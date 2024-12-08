@@ -55,40 +55,43 @@ function List({ bids }: bidsProps) {
   return (
     <Table className="grid w-full">
       <TableHeader className="w-full">
-        <TableRow className="bg-background flex h-8 justify-between hover:bg-background">
+        <TableRow className="flex h-8 justify-between bg-background hover:bg-background">
           <TableHead className="w-1/3">User</TableHead>
           <TableHead>Date</TableHead>
           <TableHead>Amount</TableHead>
         </TableRow>
       </TableHeader>
-      <ScrollArea className="h-[30rem] pr-2">
-        <TableBody>
-          {sortedBids.map((bid, index) => (
-            <TableRow key={bid.bidder.name + index}>
-              <TableCell>
-                <Link href={`/vendors/${bid.bidder.name}`}>
-                  <div className="flex items-center gap-2">
-                    <Avatar className="max-h-5 max-w-5">
-                      <AvatarImage src={bid.bidder.avatar.url} alt="Avatar" />
-                      <AvatarFallback>
-                        <User className="size-5" />
-                      </AvatarFallback>
-                    </Avatar>
-                    <span className="max-w-20 text-sm max-sm:break-all sm:max-w-32 sm:overflow-hidden sm:truncate">
-                      {bid.bidder.name}
-                    </span>
-                  </div>
-                </Link>
-              </TableCell>
-              <TableCell className="text-center">
-                {datefn.format(bid.created, "PPp", { locale: nb })}
-              </TableCell>
-              <TableCell className="text-right">{bid.amount}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-        <ScrollBar orientation="vertical" />
-      </ScrollArea>
+      <TableBody
+        className="max-h-[30rem] overflow-y-auto"
+        style={{ scrollbarWidth: "thin" }}
+      >
+        {sortedBids.map((bid, index) => (
+          <TableRow
+            key={bid.bidder.name + index}
+            className="flex w-full justify-between"
+          >
+            <TableCell>
+              <Link href={`/vendors/${bid.bidder.name}`}>
+                <div className="flex items-center gap-2">
+                  <Avatar className="max-h-5 max-w-5">
+                    <AvatarImage src={bid.bidder.avatar.url} alt="Avatar" />
+                    <AvatarFallback>
+                      <User className="size-5" />
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="max-w-20 text-sm max-sm:break-all sm:max-w-32 sm:overflow-hidden sm:truncate">
+                    {bid.bidder.name}
+                  </span>
+                </div>
+              </Link>
+            </TableCell>
+            <TableCell className="text-center">
+              {datefn.format(bid.created, "PPp", { locale: nb })}
+            </TableCell>
+            <TableCell className="text-right">{bid.amount}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
     </Table>
   )
 }
