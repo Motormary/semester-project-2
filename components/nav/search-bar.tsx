@@ -42,7 +42,7 @@ export default function SearchBar() {
     searchParams.get("search") ?? "",
   )
 
-  // Debounced search function, useCallback to prevent rerendering while searching
+  // Wrapped debounce to avoid multiple searches/rerendering
   const debouncedSearch = useCallback(
     (value: string) => {
       const newSearchParams = new URLSearchParams(searchParams.toString())
@@ -60,13 +60,11 @@ export default function SearchBar() {
     [searchParams, router, setTag],
   )
 
-  // Wrapped debounce in useMemo, Makes TS shut up because of unknown useCallback dependencies
   const debouncedSearchHandler = useMemo(
     () => debounce(debouncedSearch, 500),
     [debouncedSearch],
   )
 
-  // Handle input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value
     setSearchValue(newValue)
