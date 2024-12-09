@@ -5,15 +5,39 @@ import SimilarListing from "@/components/listing/similar-listings"
 import { Card } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { checkAndThrowError } from "@/lib/handle-errors"
+import { Metadata } from "next"
 import { Suspense } from "react"
 import { LoadingInteractive, LoadingOthers } from "./loading"
 
-export default async function ListingPage({
-  params,
-}: {
+type props = {
   params: Promise<{ id: string }>
-}) {
+}
 
+export async function generateMetadata({ params }: props): Promise<Metadata> {
+  const id = (await params).id
+
+  const { data, success } = await getListing(id)
+
+  if (!success) {
+    return {
+      title: "Listing Not Found",
+      description: "The requested listing could not be found.",
+    }
+  }
+
+  return {
+    title: data.data.title,
+    description: data.data.description,
+    openGraph: {
+      title: data.data.title,
+      tags: data.data.tags,
+      description: data.data.description,
+      images: [data.data.media?.[0]?.url ?? "/public/logo_filled_white.png"],
+    },
+  }
+}
+
+export default async function ListingPage({ params }: props) {
   const id = (await params).id
   const { data, success, error, source } = await getListing(id)
 
@@ -28,7 +52,7 @@ export default async function ListingPage({
           <InteractiveListing listing={data.data} />
         </Suspense>
         <Separator className="xl:hidden" />
-        <Suspense fallback={<LoadingOthers/>}>
+        <Suspense fallback={<LoadingOthers />}>
           <OtherListings
             currentListingId={data.data.id}
             user={data.data.seller.name}

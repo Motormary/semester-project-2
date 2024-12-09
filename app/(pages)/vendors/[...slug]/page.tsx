@@ -1,22 +1,24 @@
+import getUserBids from "@/app/actions/user/get-bids"
 import getUserListings from "@/app/actions/user/get-listings"
+import getUserWins from "@/app/actions/user/get-wins"
+import Listing from "@/components/listing/listing"
+import ListingPagination from "@/components/listing/pagination"
+import ListingResults from "@/components/profile/listing-results"
 import { SearchParams } from "@/lib/definitions"
 import { checkAndThrowError } from "@/lib/handle-errors"
 import BidsTab from "./(bids)/bids"
 import InactiveTab from "./(inactive)/inactive"
 import WinsTab from "./(wins)/wins"
-import Listing from "@/components/listing/listing"
-import ListingPagination from "@/components/listing/pagination"
-import getUserBids from "@/app/actions/user/get-bids"
-import getUserWins from "@/app/actions/user/get-wins"
-import ListingResults from "@/components/profile/listing-results"
+
+type props = {
+  params: Promise<{ slug: string }>
+  searchParams: SearchParams
+}
 
 export default async function ProfileListings({
   params,
   searchParams,
-}: {
-  params: Promise<{ slug: string }>
-  searchParams: SearchParams
-}) {
+}: props) {
   const slug = (await params).slug
   const paramsQ = await searchParams
 

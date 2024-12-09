@@ -5,6 +5,12 @@ import { SearchParams } from "@/lib/definitions"
 import { checkAndThrowError } from "@/lib/handle-errors"
 import getAllListings from "./actions/listings/get-all"
 import { cn } from "@/lib/utils"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "EBOX",
+  description: "BOX up and sell your stuff on EBOX",
+}
 
 type props = {
   searchParams: SearchParams
