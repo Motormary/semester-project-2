@@ -25,6 +25,7 @@ export async function generateMetadata({ params }: props): Promise<Metadata> {
     }
   }
 
+  
   return {
     title: data.data.title,
     description: data.data.description,
@@ -32,6 +33,7 @@ export async function generateMetadata({ params }: props): Promise<Metadata> {
       name: data.data.seller.name
     },
     openGraph: {
+      creators: data.data.seller.name,
       title: data.data.title,
       tags: data.data.tags,
       description: data.data.description,
