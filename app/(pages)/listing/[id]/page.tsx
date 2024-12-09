@@ -5,27 +5,39 @@ import SimilarListing from "@/components/listing/similar-listings"
 import { Card } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { checkAndThrowError } from "@/lib/handle-errors"
+import { Suspense } from "react"
+import { LoadingInteractive, LoadingOthers } from "./loading"
 
 export default async function ListingPage({
   params,
 }: {
   params: Promise<{ id: string }>
 }) {
+
   const id = (await params).id
   const { data, success, error, source } = await getListing(id)
 
   if (!success) checkAndThrowError(error, source)
 
   return (
-    <section className="space-y-4 w-full overflow-hidden h-fit">
+    <section className="h-fit w-full space-y-4 overflow-hidden">
       <Separator />
       <h1>Listing</h1>
       <Card className="flex flex-col gap-y-6 p-[5%] pb-8 md:p-6 xl:flex-row xl:gap-6">
-        <InteractiveListing listing={data.data} />
+        <Suspense fallback={<LoadingInteractive />}>
+          <InteractiveListing listing={data.data} />
+        </Suspense>
         <Separator className="xl:hidden" />
-        <OtherListings currentListingId={data.data.id} user={data.data.seller.name} />
+        <Suspense fallback={<LoadingOthers/>}>
+          <OtherListings
+            currentListingId={data.data.id}
+            user={data.data.seller.name}
+          />
+        </Suspense>
       </Card>
-      <SimilarListing currentListingId={data.data.id} tags={data.data.tags} />
+      <Suspense fallback={null}>
+        <SimilarListing currentListingId={data.data.id} tags={data.data.tags} />
+      </Suspense>
     </section>
   )
 }
