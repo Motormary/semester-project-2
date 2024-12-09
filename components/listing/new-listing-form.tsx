@@ -67,7 +67,7 @@ export default function ListingForm({ closeModal, initialData }: props) {
           description: "",
           tags: [],
           media: [],
-          endsAt: new Date(now.getTime() + 10 * 1000),
+          endsAt: new Date(now.getTime() + 30 * 1000),
         },
   })
 

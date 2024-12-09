@@ -2,10 +2,9 @@
 
 import { API_AH_USERS } from "@/lib/constants"
 import {
-  CacheOptions,
   CacheTags,
   Method,
-  TYPE_GET_LISTINGS,
+  TYPE_GET_LISTINGS
 } from "@/lib/definitions"
 import { cache } from "react"
 import superFetch from "../fetch"
@@ -30,7 +29,6 @@ const getUserWins = cache(
       method: Method.GET,
       url: API_AH_USERS + `/${user}/wins?${query.toString()}`,
       token: session.accessToken,
-      cache: CacheOptions.ForceCache,
       tags: [CacheTags.USER_WINS + user],
       revalidate: 60
     })
