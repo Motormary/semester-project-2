@@ -123,7 +123,6 @@ export default function BidListDialog({ listing, children }: props) {
       <DrawerTrigger asChild>{children}</DrawerTrigger>
       <DrawerContent>
         <ScrollArea className="flex h-[90svh] items-end justify-end">
-          <div className="flex h-[90svh] flex-col justify-end">
             <DrawerHeader>
               <DrawerTitle>Bids</DrawerTitle>
               <DrawerDescription>
@@ -138,7 +137,6 @@ export default function BidListDialog({ listing, children }: props) {
                 <Button variant="outline">Close</Button>
               </DrawerTrigger>
             </DrawerFooter>
-          </div>
           <ScrollBar orientation="vertical" />
         </ScrollArea>
       </DrawerContent>
