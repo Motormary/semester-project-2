@@ -84,11 +84,13 @@ export default async function InteractiveListing({ listing }: props) {
               <ListingClock user={listing.seller.name} revalidate={false} id={listing.id} />
             </div>
           </div>
+          {user?.name !== listing.seller.name ? (
           <BidForm
             seller={listing.seller.name}
             minBid={minBid}
             id={listing.id}
           />
+          ): null}
           <div className="text-pretty">
             <p className="mb-1 font-semibold">Description</p>
             <p className="text-pretty text-sm">{listing.description}</p>
