@@ -1,5 +1,6 @@
 import Listing from "@/components/listing/listing"
 import ListingPagination from "@/components/listing/pagination"
+import ListingResults from "@/components/profile/listing-results"
 import { TYPE_GET_LISTINGS } from "@/lib/definitions"
 import { checkAndThrowError } from "@/lib/handle-errors"
 
@@ -15,11 +16,7 @@ export default async function InactiveTab({
   return (
     <>
       <h1 className="sr-only">My inactive listings</h1>
-      <div className="w-full text-center">
-        <small className="text-muted-foreground">
-          Showing {data.data.length} out of {data.meta.totalCount}
-        </small>
-      </div>
+      <ListingResults meta={data.meta}/>
       {data.data?.length ? (
         data.data.map((listing, index) => (
           <Listing
@@ -30,9 +27,7 @@ export default async function InactiveTab({
           />
         ))
       ) : (
-        <div className="h-full w-full p-5 text-center">
-          <p className="m-auto">No results.</p>
-        </div>
+       null
       )}
       <ListingPagination meta={data.meta} />
     </>

@@ -8,6 +8,7 @@ import Listing from "@/components/listing/listing"
 import ListingPagination from "@/components/listing/pagination"
 import getUserBids from "@/app/actions/user/get-bids"
 import getUserWins from "@/app/actions/user/get-wins"
+import ListingResults from "@/components/profile/listing-results"
 
 export default async function ProfileListings({
   params,
@@ -60,11 +61,7 @@ export default async function ProfileListings({
     return (
       <>
         <h1 className="listings sr-only">My Listings</h1>
-        <div className="w-full text-center">
-          <small className="text-muted-foreground">
-            Showing {data.data.length} out of {data.meta.totalCount}
-          </small>
-        </div>
+        <ListingResults meta={data.meta} />
         {data.data?.length ? (
           data.data.map((listing) => {
             return (
