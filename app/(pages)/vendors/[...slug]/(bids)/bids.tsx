@@ -15,6 +15,11 @@ export default async function BidsTab({
   return (
     <>
       <h1 className="sr-only">My bids</h1>
+      <div className="w-full text-center">
+        <small className="text-muted-foreground">
+          Showing {data.data.length} out of {data.meta.totalCount}
+        </small>
+      </div>
       {data.data?.length ? (
         data.data.map(async (bid) => {
           const { data: listing, success } = await getListing(bid.listing.id)

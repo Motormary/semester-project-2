@@ -34,9 +34,14 @@ export function ProfileLoading() {
   )
 }
 
-export default async function LoadingList() {
+export default async function LoadingProfileList() {
   return (
     <>
+      <div className="w-full text-center opacity-0">
+        <small className="text-muted-foreground">
+          Showing 0 out of 0
+        </small>
+      </div>
       {Array.from({ length: 3 }).map((_, index) => (
         <ListingLoading key={index} />
       ))}

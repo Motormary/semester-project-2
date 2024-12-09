@@ -15,16 +15,27 @@ export default async function WinsTab({
   return (
     <>
       <h1 className="sr-only">My wins</h1>
-      {data.data?.length ? data.data.map((listing) => {
-        return (
-          <Listing
-            key={listing.id}
-            data={listing}
-            revalidate={false}
-            classname="md:basis-1/2 xl:basis-1/3 shadow-none focus-within:bg-muted outline-none"
-          />
-        )
-      }) : <div className="w-full h-full p-5 text-center"><p className="m-auto">No results.</p></div>}
+      <div className="w-full text-center">
+        <small className="text-muted-foreground">
+          Showing {data.data.length} out of {data.meta.totalCount}
+        </small>
+      </div>
+      {data.data?.length ? (
+        data.data.map((listing) => {
+          return (
+            <Listing
+              key={listing.id}
+              data={listing}
+              revalidate={false}
+              classname="md:basis-1/2 xl:basis-1/3 shadow-none focus-within:bg-muted outline-none"
+            />
+          )
+        })
+      ) : (
+        <div className="h-full w-full p-5 text-center">
+          <p className="m-auto">No results.</p>
+        </div>
+      )}
       <ListingPagination meta={data.meta} />
     </>
   )
