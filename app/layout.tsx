@@ -8,6 +8,7 @@ import Footer from "@/components/footer"
 import { Toaster } from "sonner"
 import FloatingBoxes from "@/components/boxes"
 import BackgroundImage from "@/components/background"
+import logo from "public/logo_filled_white.png"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -23,8 +24,15 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "EBOX",
   description: "BOX up and sell your stuff on EBOX",
+  icons: ["/public/favico_white.png"],
   openGraph: {
-    images: ["/public/logo_filled_white.png"]
+    images: {
+      url: logo.src,
+      alt: "Home",
+      type: "image/png",
+      width: 1200,
+      height: 630
+    }
   }
 }
 
