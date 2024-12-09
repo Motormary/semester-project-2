@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -28,9 +29,10 @@ type props = {
   id: string
   minBid: number | undefined
   seller: string
+  credits: number
 }
 
-export default function BidForm({ id, minBid, seller }: props) {
+export default function BidForm({ id, minBid, seller, credits }: props) {
   const [isPending, startTransition] = useTransition()
   const bidAmount = minBid ? minBid + 1 : 1
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -77,6 +79,7 @@ export default function BidForm({ id, minBid, seller }: props) {
                   }}
                 />
               </FormControl>
+              <FormDescription>You have {credits} credits left</FormDescription>
               <FormMessage />
             </FormItem>
           )}
