@@ -30,7 +30,7 @@ export default async function OtherListings({ user, currentListingId }: props) {
   const dataList = data.data.reduce<TYPE_LISTING[]>((acc, item, index) => {
     const currentDate = new Date()
     const endDate = new Date(item.endsAt)
-    if (acc.length < 5 && endDate > currentDate) acc.push(item)
+    if (acc.length < 5 && endDate > currentDate && item.id !== currentListingId) acc.push(item)
     return acc
   }, [])
 
