@@ -27,12 +27,14 @@ export default async function OtherListings({ user, currentListingId }: props) {
 
   if (!success && data?.data?.length <= 1) return null
 
-  const dataList = data.data.reduce<TYPE_LISTING[]>((acc, item, index) => {
+  const otherActiveListings = data.data.reduce<TYPE_LISTING[]>((acc, item, index) => {
     const currentDate = new Date()
     const endDate = new Date(item.endsAt)
     if (acc.length < 5 && endDate > currentDate && item.id !== currentListingId) acc.push(item)
     return acc
   }, [])
+
+  if (!otherActiveListings?.length) return null
 
   return (
     <div className="w-full space-y-4 max-md:grid xl:max-w-[380px]">
@@ -43,7 +45,7 @@ export default async function OtherListings({ user, currentListingId }: props) {
         <div
           className={`${containerStyles.default} xl:${containerStyles.xl} py-1`}
         >
-          {dataList.map((listing, index) => {
+          {otherActiveListings.map((listing, index) => {
             return (
               <Fragment key={listing.id}>
                 <div className="relative hidden w-full items-center gap-4 overflow-hidden rounded-md p-4 hover:bg-muted xl:flex">
@@ -74,7 +76,7 @@ export default async function OtherListings({ user, currentListingId }: props) {
                 <div className="flex shrink-0 basis-72 px-1 xl:hidden">
                   <Listing revalidate data={listing} />
                 </div>
-                {index !== dataList.length - 1 ? (
+                {index !== otherActiveListings.length - 1 ? (
                   <Separator className="hidden xl:block" />
                 ) : null}
               </Fragment>

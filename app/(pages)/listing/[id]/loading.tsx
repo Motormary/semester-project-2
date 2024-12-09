@@ -27,34 +27,6 @@ export default function Loading() {
             <div className="w-full space-y-6 lg:min-w-80">
               {/* Title + tag */}
               <Skeleton className="h-7 w-40" />
-              <Skeleton className="h-5 w-20 rounded-full" />
-              <div>
-                {/* bid */}
-                <Skeleton className="my-2.5 h-6 w-10" />
-                <div className="flex items-center">
-                  <Skeleton className="h-4 w-9" />
-                  <>
-                    <Dot strokeWidth="3" className="text-muted-foreground" />
-                    <Skeleton className="h-4 w-10" />
-                  </>
-                </div>
-              </div>
-              <div className="space-y-6 pt-3.5">
-                <div className="space-y-2">
-                  <p className="mb-1 text-sm font-medium leading-none">
-                    Amount
-                  </p>
-                  <Skeleton className="h-10 w-full" />
-                  <Skeleton className="h-4 w-20" />
-                </div>
-                <Skeleton className="h-10 w-full" />
-              </div>
-              <div className="space-y-2">
-                <p className="mb-1 font-semibold">Description</p>
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-full" />
-                <Skeleton className="h-4 w-full" />
-              </div>
             </div>
           </div>
         </div>
@@ -82,32 +54,6 @@ export function LoadingInteractive() {
         <div className="w-full space-y-6 lg:min-w-80">
           {/* Title + tag */}
           <Skeleton className="h-7 w-40" />
-          <Skeleton className="h-5 w-20 rounded-full" />
-          <div>
-            {/* bid */}
-            <Skeleton className="my-2.5 h-6 w-10" />
-            <div className="flex items-center">
-              <Skeleton className="h-4 w-9" />
-              <>
-                <Dot strokeWidth="3" className="text-muted" />
-                <Skeleton className="h-4 w-10" />
-              </>
-            </div>
-          </div>
-          <div className="space-y-6 pt-3.5">
-            <div className="space-y-2">
-              <p className="mb-1 text-sm font-medium leading-none">Amount</p>
-              <Skeleton className="h-10 w-full" />
-              <Skeleton className="h-4 w-20" />
-            </div>
-            <Skeleton className="h-10 w-full" />
-          </div>
-          <div className="space-y-2">
-            <p className="mb-1 font-semibold">Description</p>
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-full" />
-          </div>
         </div>
       </div>
     </div>
