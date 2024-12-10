@@ -6,6 +6,7 @@ import { verifySession } from "@/lib/session"
 import { failedToVerify } from "@/lib/utils"
 import { revalidateTag } from "next/cache"
 import superFetch from "../fetch"
+import { pusherServer } from "@/lib/pusher"
 
 type props = {
   data: { amount: number }
@@ -16,7 +17,7 @@ type props = {
 export default async function bidOnListing({
   data,
   id,
-  seller
+  seller,
 }: props): Promise<TYPE_GET_LISTING> {
   const session = await verifySession()
   if (!session.accessToken) return failedToVerify()
@@ -37,6 +38,13 @@ export default async function bidOnListing({
   revalidateTag(CacheTags.USER_LISTINGS + seller)
   revalidateTag(CacheTags.USER_BIDS + session.user)
   revalidateTag(CacheTags.USER + session.user)
+
+  // If the seller is online, trigger a notification on their end.
+  pusherServer.trigger(seller, "incoming-notification", {
+    title: `You have receive a bid for ${data.amount} credits`,
+    description: res.data.data.title,
+    id: res.data.data.id
+  })
 
   return { ...res }
 }

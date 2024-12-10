@@ -1,14 +1,14 @@
-import type { Metadata } from "next"
-import localFont from "next/font/local"
-import "./globals.css"
+import BackgroundImage from "@/components/background"
+import FloatingBoxes from "@/components/boxes"
+import Footer from "@/components/footer"
+import TopNav from "@/components/nav/top-nav"
 import { ThemeProvider } from "@/components/theme-provider"
 import { ModeToggle } from "@/components/theme-toggle-button"
-import TopNav from "@/components/nav/top-nav"
-import Footer from "@/components/footer"
-import { Toaster } from "sonner"
-import FloatingBoxes from "@/components/boxes"
-import BackgroundImage from "@/components/background"
+import type { Metadata } from "next"
+import localFont from "next/font/local"
 import logo from "public/logo_filled_white.png"
+import { Toaster } from "sonner"
+import "./globals.css"
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -22,18 +22,25 @@ const geistMono = localFont({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://mkm-semester-project-2.netlify.app/"),
+  alternates: {
+    canonical: "/",
+    languages: {
+      "en-US": "/en-US",
+    },
+  },
   title: "EBOX",
   description: "BOX up and sell your stuff on EBOX",
   icons: ["/public/favico_white.png"],
   openGraph: {
     images: {
       url: logo.src,
-      alt: "Home",
+      alt: "Logo",
       type: "image/png",
       width: 1200,
-      height: 630
-    }
-  }
+      height: 630,
+    },
+  },
 }
 
 export default function RootLayout({
