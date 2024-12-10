@@ -23,6 +23,7 @@ interface CountdownProps {
 /**
  * @description - Calculates time to end of auction and shows a dynamic clock.
  * - When time reaches 00:00 all post + id of post will be revalidated.
+ * ! This should not be handled on front-end like this, but we use what we got
  */
 export function Countdown({
   endsAt,
