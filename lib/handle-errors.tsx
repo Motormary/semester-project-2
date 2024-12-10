@@ -105,7 +105,7 @@ export function checkAndThrowError(error: TYPE_API_ERROR[] | string, source: Err
   } 
   if (source === ErrorSource.API) {
     const translatedErrors = translateErrors(error as TYPE_API_ERROR[])
-    throw new Error(`Error: ${translatedErrors[0].message}`)
+    console.error(`Error: ${translatedErrors[0].message}`)
   }
   if (source === ErrorSource.SESSION) {
     redirect("/login")
