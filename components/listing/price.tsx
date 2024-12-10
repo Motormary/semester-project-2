@@ -17,7 +17,7 @@ export default async function PriceTag({ id, className, myBid }: props) {
   const { data: userData } = await getCurrentUser()
   if (!success) return null
   if (!data.data.bids?.length) return null
-  const sortedBids = data.data?.bids?.toSorted((a, b) => {
+  const sortedBids = data.data?.bids?.sort((a, b) => {
     return a.amount - b.amount
   })
   const higestBid = sortedBids?.[0] ?? []

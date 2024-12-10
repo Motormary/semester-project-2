@@ -35,7 +35,7 @@ export default async function ListingClock({ id, revalidate, user }: props) {
 
   if (data.data?.bids?.length) {
     topBidder =
-      data.data?.bids?.toSorted((a, b) => {
+      data.data?.bids?.sort((a, b) => {
         return a.amount - b.amount
       })?.[0]?.bidder.name ?? undefined
   }
