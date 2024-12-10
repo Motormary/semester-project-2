@@ -30,7 +30,7 @@ const getUserWins = cache(
       url: API_AH_USERS + `/${user}/wins?${query.toString()}`,
       token: session.accessToken,
       tags: [CacheTags.USER_WINS + user],
-      revalidate: 60
+      revalidate: 30
     })
 
     if (!res.success) {
