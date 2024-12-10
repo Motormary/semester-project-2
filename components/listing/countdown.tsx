@@ -11,7 +11,7 @@ interface CountdownProps {
   endsAt: Date
   id: string
   user: string
-  topBidder: string
+  topBidder?: string
   defaultTime: {
     days: number
     hours: number

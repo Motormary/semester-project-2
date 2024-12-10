@@ -49,7 +49,7 @@ type bidsProps = {
 
 function List({ bids }: bidsProps) {
   const sortedBids = useMemo(
-    () => bids.toSorted((a, b) => compareValues(a.amount, b.amount)),
+    () => bids?.toSorted((a, b) => compareValues(a.amount, b.amount)),
     [bids],
   )
   return (
@@ -99,6 +99,7 @@ function List({ bids }: bidsProps) {
 export default function BidListDialog({ listing, children }: props) {
   const [open, setOpen] = useState(false)
   const isDesktop = useMediaQuery("(min-width: 768px)")
+  if (!listing.bids?.length) return null
   if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
@@ -123,20 +124,18 @@ export default function BidListDialog({ listing, children }: props) {
       <DrawerTrigger asChild>{children}</DrawerTrigger>
       <DrawerContent>
         <ScrollArea className="flex h-[90svh] items-end justify-end">
-            <DrawerHeader>
-              <DrawerTitle>Bids</DrawerTitle>
-              <DrawerDescription>
-                All recent bids on this item
-              </DrawerDescription>
-            </DrawerHeader>
-            <div className="px-4">
-              <List bids={listing.bids} />
-            </div>
-            <DrawerFooter>
-              <DrawerTrigger asChild>
-                <Button variant="outline">Close</Button>
-              </DrawerTrigger>
-            </DrawerFooter>
+          <DrawerHeader>
+            <DrawerTitle>Bids</DrawerTitle>
+            <DrawerDescription>All recent bids on this item</DrawerDescription>
+          </DrawerHeader>
+          <div className="px-4">
+            <List bids={listing.bids} />
+          </div>
+          <DrawerFooter>
+            <DrawerTrigger asChild>
+              <Button variant="outline">Close</Button>
+            </DrawerTrigger>
+          </DrawerFooter>
           <ScrollBar orientation="vertical" />
         </ScrollArea>
       </DrawerContent>

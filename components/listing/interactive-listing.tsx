@@ -76,6 +76,7 @@ export default async function InteractiveListing({ listing }: props) {
             <div className="flex items-center">
               <BidListDialog listing={listing}>
                 <Button
+                  disabled={!listing.bids?.length}
                   variant="link"
                   className="px-0 text-muted-foreground underline hover:text-secondary-foreground"
                 >

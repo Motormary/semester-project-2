@@ -21,7 +21,7 @@ export default async function ListingClock({ id, revalidate, user }: props) {
 
   const currentTime = new Date()
   const endOfTimes = new Date(data.data.endsAt)
-  
+
   if (currentTime > endOfTimes && !revalidate) {
     return (
       <>
@@ -31,9 +31,24 @@ export default async function ListingClock({ id, revalidate, user }: props) {
     )
   }
 
-  const topBidder = data.data?.bids?.toSorted((a, b) => { return a.amount - b.amount})?.[0]?.bidder.name ?? undefined
+  let topBidder
+
+  if (data.data?.bids?.length) {
+    topBidder =
+      data.data?.bids?.toSorted((a, b) => {
+        return a.amount - b.amount
+      })?.[0]?.bidder.name ?? undefined
+  }
 
   // Calculate default time value on server instead of client to make rendering of clock smooth.
   const defaultTime = calculateTimeDifference(data.data.endsAt.toString())
-  return <Countdown defaultTime={defaultTime} endsAt={data.data.endsAt} user={data.data.seller.name} topBidder={topBidder} id={id} />
+  return (
+    <Countdown
+      defaultTime={defaultTime}
+      endsAt={data.data.endsAt}
+      user={data.data.seller.name}
+      topBidder={topBidder}
+      id={id}
+    />
+  )
 }
