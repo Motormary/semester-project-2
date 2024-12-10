@@ -28,6 +28,7 @@ import MobileLogoutButton from "./logout-button"
 import UserBidsCounter from "./bids-counter"
 import { getCurrentUser } from "@/app/actions/user/get"
 import { logoutUser } from "@/app/actions/user/login"
+import Notifications from "@/hooks/pusher"
 
 export default async function NavMenu() {
   let user = null
@@ -37,6 +38,7 @@ export default async function NavMenu() {
 
   return (
     <>
+      {!user ? null : <Notifications />}
       {user ? (
         <NewListing>
           <Button className="relative max-md:size-10 max-md:rounded-full max-md:p-0">
@@ -74,7 +76,7 @@ export default async function NavMenu() {
                 variant="ghost"
                 className="group px-0 hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
               >
-                <span className="max-w-36 truncate mb-[2px]">{user.name}</span>
+                <span className="mb-[2px] max-w-36 truncate">{user.name}</span>
                 <Avatar className="max-h-8 max-w-8 outline-primary ring-primary ring-offset-2 group-focus:ring">
                   <AvatarImage
                     height={32}
@@ -179,7 +181,7 @@ export default async function NavMenu() {
             />
           </Button>
         </SheetTrigger>
-        <SheetContent className="top-[65px] max-h-[calc(100%-64px)] w-full pt-0 grid items-stretch overflow-y-auto">
+        <SheetContent className="top-[65px] grid max-h-[calc(100%-64px)] w-full items-stretch overflow-y-auto pt-0">
           <div>
             <SheetHeader className="sr-only">
               <SheetTitle>Mobile Menu</SheetTitle>
