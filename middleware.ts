@@ -5,11 +5,16 @@ import { decrypt } from "./lib/session"
 // Nextjs docs
 
 const publicRoutes = ["/login", "/register", "/"]
+const redirectWhenAuth = ["/login", "/register"]
 
 export default async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname
   const isPublicRoute = publicRoutes.includes(path)
+  const isRedirectRoute = redirectWhenAuth.includes(path)
   const hasSession = (await cookies()).has("_ebox_session")
+
+  if (hasSession && isRedirectRoute)
+    return NextResponse.redirect(new URL("/", req.nextUrl))
 
   if (!isPublicRoute) {
     if (!hasSession) {

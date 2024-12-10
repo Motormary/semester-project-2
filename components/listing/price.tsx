@@ -17,15 +17,15 @@ export default async function PriceTag({ id, className, myBid }: props) {
   const { data: userData } = await getCurrentUser()
   if (!success) return null
   if (!data.data.bids?.length) return null
-  const sortedBids = data.data.bids.toSorted((a, b) =>
+  const sortedBids = data.data?.bids?.toSorted((a, b) =>
     compareValues(a.amount, b.amount),
   )
-  const higestBid = sortedBids[0]
-  const isHighestBidder = higestBid.bidder.name === userData.data.name
-  const hasBidIndex = sortedBids.findIndex(
+  const higestBid = sortedBids?.[0] ?? []
+  const isHighestBidder = higestBid?.bidder?.name === userData.data.name ? true : false
+  const hasBidIndex = sortedBids?.findIndex(
     (item) => item.bidder.name === userData.data.name,
-  )
-  const hasBidButLost = hasBidIndex > 0
+  ) ?? 0
+  const hasBidButLost = hasBidIndex > 0 ? true : false
 
   return (
     <div
@@ -34,7 +34,7 @@ export default async function PriceTag({ id, className, myBid }: props) {
         "flex w-full justify-between pricetag",
       )}
     >
-      <p>{higestBid.amount} Ω</p>
+      <p>{higestBid?.amount} Ω</p>
       {isHighestBidder ? (
         <span className="text-sm">Highest bid <CircleCheck className="size-5 text-primary inline" /></span>
       ) : hasBidButLost ? (
