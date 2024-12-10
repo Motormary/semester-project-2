@@ -34,10 +34,9 @@ export default async function ListingClock({ id, revalidate, user }: props) {
   let topBidder
 
   if (data.data?.bids?.length) {
-    topBidder =
-      data.data?.bids?.sort((a, b) => {
-        return a.amount - b.amount
-      })?.[0]?.bidder.name ?? undefined
+    topBidder = data.data.bids.sort((a, b) => {
+      return a.amount - b.amount
+    })[0].bidder.name
   }
 
   // Calculate default time value on server instead of client to make rendering of clock smooth.

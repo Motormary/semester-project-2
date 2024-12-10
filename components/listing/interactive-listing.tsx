@@ -30,7 +30,7 @@ export default async function InteractiveListing({ listing }: props) {
   if (!success) redirect("/login")
   const user = data.data
   if (listing.bids?.length) {
-    minBid = listing.bids?.toSorted((a, b) => b.amount - a.amount)[0].amount
+    minBid = listing.bids?.sort((a, b) => b.amount - a.amount)[0].amount
   }
   return (
     <div className="space-y-4">

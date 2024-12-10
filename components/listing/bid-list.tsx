@@ -1,6 +1,14 @@
 "use client"
 
+import { useMediaQuery } from "@/hooks/use-media-query"
+import { TYPE_LISTING } from "@/lib/definitions"
+import * as datefn from "date-fns"
+import { nb } from "date-fns/locale"
+import { User } from "lucide-react"
+import Link from "next/link"
 import { useMemo, useState } from "react"
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
+import { Button } from "../ui/button"
 import {
   Dialog,
   DialogContent,
@@ -10,7 +18,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../ui/dialog"
-import { useMediaQuery } from "@/hooks/use-media-query"
 import {
   Drawer,
   DrawerContent,
@@ -20,7 +27,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "../ui/drawer"
-import { Button } from "../ui/button"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 import {
   Table,
@@ -30,13 +36,6 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table"
-import Link from "next/link"
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
-import { TYPE_LISTING } from "@/lib/definitions"
-import { User } from "lucide-react"
-import * as datefn from "date-fns"
-import { nb } from "date-fns/locale"
-import { compareValues } from "@/lib/utils"
 
 type props = {
   children: React.ReactNode
@@ -49,7 +48,10 @@ type bidsProps = {
 
 function List({ bids }: bidsProps) {
   const sortedBids = useMemo(
-    () => bids?.toSorted((a, b) => compareValues(a.amount, b.amount)),
+    () =>
+      bids?.sort((a, b) => {
+        return a.amount - b.amount
+      }),
     [bids],
   )
   return (
