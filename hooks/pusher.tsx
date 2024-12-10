@@ -2,7 +2,7 @@
 
 import { pusherClient } from "@/lib/pusher"
 import { useRouter } from "next/navigation"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect } from "react"
 import { toast } from "sonner"
 
 type NotificationProps = {
@@ -13,7 +13,6 @@ type NotificationProps = {
 
 export default function Notifications({ user }: { user: string }) {
   const router = useRouter()
-  const [isMounted, setIsMounted] = useState(false)
 
   const handleNotification = useCallback(
     (notification: NotificationProps) => {
@@ -30,11 +29,7 @@ export default function Notifications({ user }: { user: string }) {
   )
 
   useEffect(() => {
-    setIsMounted(true)
-  }, [])
-
-  useEffect(() => {
-    if (!isMounted || !user) return
+    if (!user) return
 
     pusherClient.subscribe(user)
     pusherClient.bind("incoming-notification", handleNotification)
@@ -44,10 +39,8 @@ export default function Notifications({ user }: { user: string }) {
       pusherClient.unbind("incoming-notification", handleNotification)
       pusherClient.disconnect()
     }
-  }, [handleNotification, user, isMounted])
-
-  if (!isMounted) return null
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return null
 }
-
