@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator"
 import { checkAndThrowError } from "@/lib/handle-errors"
 import { Suspense } from "react"
 import { LoadingInteractive, LoadingOthers } from "./loading"
+import ClientMetadata from "@/components/metadata-listing"
 
 type props = {
   params: Promise<{ id: string }>
@@ -37,6 +38,7 @@ export default async function ListingPage({ params }: props) {
       <Suspense fallback={null}>
         <SimilarListing currentListingId={data.data.id} tags={data.data.tags} />
       </Suspense>
+      <ClientMetadata id={id} />
     </section>
   )
 }
