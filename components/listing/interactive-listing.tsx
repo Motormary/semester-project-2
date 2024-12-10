@@ -1,8 +1,7 @@
 import { getCurrentUser } from "@/app/actions/user/get"
 import { TYPE_LISTING } from "@/lib/definitions"
-import { Edit, User } from "lucide-react"
+import { Edit } from "lucide-react"
 import Link from "next/link"
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
 import { CardTitle } from "../ui/card"
@@ -20,6 +19,7 @@ import PriceTag from "./price"
 import ListingClock from "./listing-clock"
 import { redirect } from "next/navigation"
 import { getTopBid } from "@/lib/utils"
+import Avatar from "../next-avatar"
 
 type props = {
   listing: TYPE_LISTING
@@ -41,12 +41,7 @@ export default async function InteractiveListing({ listing }: props) {
           href={`/vendors/${listing.seller.name}`}
           className="flex items-center gap-2"
         >
-          <Avatar className="max-h-7 max-w-7">
-            <AvatarImage src={listing.seller.avatar?.url} alt="Avatar" />
-            <AvatarFallback>
-              <User className="size-5" />
-            </AvatarFallback>
-          </Avatar>
+          <Avatar src={listing.seller.avatar.url} alt="avatar" size={32} />
           <span className="text-sm">{listing.seller.name}</span>
         </Link>
         {user && user.name === listing.seller.name ? (

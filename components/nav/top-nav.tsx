@@ -4,22 +4,21 @@ import SearchBar from "./search-bar"
 import NavMenu from "./nav-menu"
 import { Suspense } from "react"
 import { Skeleton } from "../ui/skeleton"
+import Image from "next/image"
 
 export default async function TopNav() {
   return (
     <div className="peer mb-4 flex w-full flex-col gap-4">
-      <div className="flex h-[64px] justify-center bg-background/70 backdrop-blur-sm shadow-sm dark:border-b">
+      <div className="flex h-[64px] justify-center bg-background/70 shadow-sm backdrop-blur-sm dark:border-b">
         <nav className="flex w-full max-w-content items-center justify-between px-4">
           <Link href="/">
-            <picture>
-              <img
-                width={40}
-                height={40}
-                src={logo.src}
-                alt="NavLogo"
-                className="dark:invert"
-              />
-            </picture>
+            <Image
+              width={40}
+              height={40}
+              src={logo.src}
+              alt="NavLogo"
+              className="dark:invert"
+            />
           </Link>
           <div className="flex items-center gap-5">
             <Suspense

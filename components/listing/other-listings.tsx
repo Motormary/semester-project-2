@@ -8,6 +8,7 @@ import PriceTag from "./price"
 import { Separator } from "../ui/separator"
 import ListingClock from "./listing-clock"
 import { TYPE_LISTING } from "@/lib/definitions"
+import Image from "next/image"
 
 const containerStyles = {
   default: "flex gap-4 w-full shrink-1 max-w-[1400px]",
@@ -27,12 +28,20 @@ export default async function OtherListings({ user, currentListingId }: props) {
 
   if (!success && data?.data?.length <= 1) return null
 
-  const otherActiveListings = data.data.reduce<TYPE_LISTING[]>((acc, item, index) => {
-    const currentDate = new Date()
-    const endDate = new Date(item.endsAt)
-    if (acc.length < 5 && endDate > currentDate && item.id !== currentListingId) acc.push(item)
-    return acc
-  }, [])
+  const otherActiveListings = data.data.reduce<TYPE_LISTING[]>(
+    (acc, item, index) => {
+      const currentDate = new Date()
+      const endDate = new Date(item.endsAt)
+      if (
+        acc.length < 5 &&
+        endDate > currentDate &&
+        item.id !== currentListingId
+      )
+        acc.push(item)
+      return acc
+    },
+    [],
+  )
 
   if (!otherActiveListings?.length) return null
 
@@ -53,13 +62,15 @@ export default async function OtherListings({ user, currentListingId }: props) {
                     className="absolute inset-0"
                     href={`/listing/${listing.id}`}
                   ></Link>
-                  <picture className="flex aspect-square size-20 shrink-0 overflow-hidden rounded-md border bg-muted">
-                    <img
+                  <div className="flex aspect-square w-20 shrink-0 overflow-hidden rounded-md border bg-muted">
+                    <Image
+                      height={64}
+                      width={64}
                       src={listing.media?.[0]?.url ?? image.src}
                       alt="Listing"
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-contain"
                     />
-                  </picture>
+                  </div>
                   <div className="w-full space-y-3 [&>p]:leading-none">
                     <p className="max-w-[14.5rem] overflow-hidden truncate text-pretty text-sm">
                       {listing.title}

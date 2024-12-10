@@ -14,7 +14,6 @@ import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu"
 import { Box, Home, Menu, User } from "lucide-react"
 import Link from "next/link"
 import NewListing from "../listing/new-listing"
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,6 +28,7 @@ import UserBidsCounter from "./bids-counter"
 import { getCurrentUser } from "@/app/actions/user/get"
 import { logoutUser } from "@/app/actions/user/login"
 import Notifications from "@/hooks/pusher"
+import Avatar from "../next-avatar"
 
 export default async function NavMenu() {
   let user = null
@@ -77,17 +77,7 @@ export default async function NavMenu() {
                 className="group px-0 hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
               >
                 <span className="mb-[2px] max-w-36 truncate">{user.name}</span>
-                <Avatar className="max-h-8 max-w-8 outline-primary ring-primary ring-offset-2 group-focus:ring">
-                  <AvatarImage
-                    height={32}
-                    width={32}
-                    src={user.avatar.url}
-                    alt="Avatar"
-                  />
-                  <AvatarFallback>
-                    <User />
-                  </AvatarFallback>
-                </Avatar>
+                <Avatar src={user.avatar.url} alt="avatar" size={32} />
               </Button>
             </div>
           </DropdownMenuTrigger>
@@ -194,17 +184,7 @@ export default async function NavMenu() {
                     href={`/vendors/${user.name}`}
                     className="flex items-center gap-4 py-2 text-left sm:self-center"
                   >
-                    <Avatar className="max-h-10 max-w-10">
-                      <AvatarImage
-                        height={40}
-                        width={40}
-                        src={user.avatar.url}
-                        alt="Avatar"
-                      />
-                      <AvatarFallback>
-                        <User />
-                      </AvatarFallback>
-                    </Avatar>
+                    <Avatar size={40} src={user.avatar.url} alt="Avatar" />
                     <div className="overflow-hidden truncate whitespace-nowrap">
                       <p className="text-sm font-semibold">{user.name}</p>
                       <p className="truncate text-sm">{user.email}</p>

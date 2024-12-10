@@ -42,6 +42,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 import Stepper from "./stepper"
 import updateListing from "@/app/actions/listings/update"
+import Image from "next/image"
 
 type props = {
   closeModal: (state: boolean) => void
@@ -282,18 +283,20 @@ export default function ListingForm({ closeModal, initialData }: props) {
                       >
                         <X />
                       </Button>
-                      <picture
+                      <div
                         className={cn(
                           index === 0 ? "outline outline-primary" : "",
-                          "flex aspect-video max-w-20 rounded-md bg-muted",
+                          "flex aspect-video max-w-20 rounded-md overflow-hidden bg-muted",
                         )}
                       >
-                        <img
-                          className="h-full w-full rounded-md object-cover"
+                        <Image
+                          height={80}
+                          width={80}
+                          className="object-cover"
                           src={image.url}
                           alt="thumbnail"
                         />
-                      </picture>
+                      </div>
                     </div>
                   ))
                 : null}

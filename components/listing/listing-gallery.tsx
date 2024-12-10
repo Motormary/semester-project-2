@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils"
 import { useEffect, useMemo, useRef, useState } from "react"
 import Link from "next/link"
 import altImg from "assets/svg/alt.svg"
+import Image from "next/image"
 
 type props = {
   listing: TYPE_LISTING
@@ -14,13 +15,13 @@ type props = {
 export default function ListingGallery({ listing }: props) {
   const scrollRef = useRef<HTMLDivElement | null>(null)
   const overflowRef = useRef<HTMLDivElement | null>(null)
-  const lastImageRef = useRef<HTMLElement | null>(null)
-  const firstImageRef = useRef<HTMLElement | null>(null)
+  const lastImageRef = useRef<HTMLDivElement | null>(null)
+  const firstImageRef = useRef<HTMLDivElement | null>(null)
   const [isOverflowing, setIsOverflowing] = useState(false)
   const [isLastImageInView, setIsLastImageInView] = useState(false)
   const [isFirstImageInView, setIsFirstImageInView] = useState(false)
-  const [image, setImage] = useState<string | undefined>(
-    listing && listing?.media?.length ? listing?.media?.[0]?.url.trim() : altImg.src,
+  const [image, setImage] = useState<string>(
+    listing.media?.[0]?.url ?? altImg.src,
   )
   const gallery = useMemo(
     () => (listing && listing?.media?.length ? listing.media : []),
@@ -77,9 +78,15 @@ export default function ListingGallery({ listing }: props) {
   return (
     <div className="space-y-4">
       <Link href={image ?? "#"} target="_blank">
-        <picture className="aspect-square flex basis-[600px] w-full lg:w-[600px]">
-          <img className="rounded-md object-contain bg-muted h-full w-full" src={image} alt="Listing img" />
-        </picture>
+        <div className="flex aspect-square w-full basis-[600px] lg:w-[600px]">
+          <Image
+            height={600}
+            width={600}
+            src={image}
+            alt="listing img"
+            className="h-full w-full rounded-md bg-muted object-contain"
+          />
+        </div>
       </Link>
       <ScrollArea
         ref={scrollRef}
@@ -88,7 +95,7 @@ export default function ListingGallery({ listing }: props) {
         <div ref={overflowRef} className="flex w-full gap-4 px-2 py-1">
           {gallery?.length && gallery.length > 1
             ? gallery?.map((media, index) => (
-                <picture
+                <div
                   ref={
                     index === gallery?.length - 1
                       ? lastImageRef
@@ -96,19 +103,21 @@ export default function ListingGallery({ listing }: props) {
                         ? firstImageRef
                         : null
                   }
-                  key={media.url+index}
+                  key={media.url + index}
                   onClick={() => setImage(media.url)}
                   className={cn(
                     image === media.url ? "outline outline-green-500" : "",
-                    "flex aspect-square w-28 rounded-md bg-muted overflow-hidden",
+                    "flex aspect-square overflow-hidden rounded-md bg-muted",
                   )}
                 >
-                  <img
-                    className="h-full w-full object-cover"
+                  <Image
+                    height={112}
+                    width={112}
+                    className="object-cover"
                     src={media.url}
                     alt="Listing img"
                   />
-                </picture>
+                </div>
               ))
             : null}
         </div>
