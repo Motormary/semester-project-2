@@ -16,7 +16,7 @@ export default function Avatar({ src, alt, size = 64, className }: AvatarProps) 
         alt={alt}
         width={size}
         height={size}
-        className={cn(className, "object-cover")}
+        className={cn(className, "object-cover w-full h-full")}
       />
     </div>
   )
