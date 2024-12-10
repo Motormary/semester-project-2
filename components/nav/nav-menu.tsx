@@ -38,7 +38,7 @@ export default async function NavMenu() {
 
   return (
     <>
-      {!user ? null : <Notifications />}
+      {!user ? null : <Notifications user={user.name} />}
       {user ? (
         <NewListing>
           <Button className="relative max-md:size-10 max-md:rounded-full max-md:p-0">

@@ -1,10 +1,9 @@
 "use client"
 
-import { getCurrentUser } from "@/app/actions/user/get"
+import { pusherClient } from "@/lib/pusher"
 import { useRouter } from "next/navigation"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect } from "react"
 import { toast } from "sonner"
-import useWebsocket from "./websocket"
 
 type NotificationProps = {
   title: string
@@ -12,10 +11,8 @@ type NotificationProps = {
   id: string
 }
 
-export default function Notifications() {
+export default function Notifications({ user }: { user: string }) {
   const router = useRouter()
-  const [user, setUser] = useState("")
-  const { subscribe, bind, unsubscribe, unbind } = useWebsocket(user)
 
   const handleNotification = useCallback(
     (notification: NotificationProps) => {
@@ -32,26 +29,17 @@ export default function Notifications() {
   )
 
   useEffect(() => {
-    const getUser = async () => {
-      const { data, success } = await getCurrentUser()
-      if (success && data.data.name) {
-        setUser(data.data.name)
-      }
-    }
-    getUser()
-  }, [])
-
-  useEffect(() => {
     if (!user) return
 
-    subscribe()
-    bind("incoming-notification", handleNotification)
+    pusherClient.subscribe(user)
+    pusherClient.bind("incoming-notification", handleNotification)
 
     return () => {
-      unsubscribe()
-      unbind("incoming-notification", handleNotification)
+      pusherClient.unsubscribe(user)
+      pusherClient.unbind("incoming-notification", handleNotification)
+      pusherClient.disconnect()
     }
-  }, [bind, handleNotification, subscribe, unbind, unsubscribe, user])
+  }, [handleNotification, user])
 
   return null
 }
