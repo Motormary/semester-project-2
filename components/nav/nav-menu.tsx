@@ -189,7 +189,7 @@ export default async function NavMenu() {
               {user ? (
                 <SheetTrigger asChild>
                   <Link
-                    href={"/vendors/user "}
+                    href={`/vendors/${user.name}`}
                     className="flex items-center gap-4 py-2 text-left sm:self-center"
                   >
                     <Avatar className="max-h-10 max-w-10">

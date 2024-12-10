@@ -36,7 +36,7 @@ export function ProfileNav() {
           className={cn(
             /* Hides the rounded corner of the parent card when hovering/focusing the first button */
             index === 0 &&
-              `relative hover:before:absolute hover:before:bottom-[-8px] hover:before:left-0 hover:before:h-2 hover:before:w-3 hover:before:border-l hover:before:border-t hover:before:bg-card focus-within:before:absolute focus-within:before:bottom-[-8px] focus-within:before:left-0 focus-within:before:h-2 focus-within:before:w-3 focus-within:before:border-l focus-within:before:border-t focus-within:before:bg-card max-xs:before:content-none`,
+              `relative hover:before:absolute hover:before:bottom-[-8px] hover:before:left-0 hover:before:h-2 hover:before:w-3 hover:before:border-l hover:before:border-t hover:before:dark:border-border hover:before:bg-card focus-within:before:absolute focus-within:before:bottom-[-8px] focus-within:before:left-0 focus-within:before:h-2 focus-within:before:w-3 focus-within:before:border-l focus-within:before:border-t focus-within:before:bg-card max-xs:before:content-none`,
           )}
           key={item.href}
         >

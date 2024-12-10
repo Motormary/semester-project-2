@@ -1,7 +1,7 @@
 "use server"
 
 import { API_AH_USERS } from "@/lib/constants"
-import { TYPE_GET_USER, Method, CacheOptions, CacheTags } from "@/lib/definitions"
+import { TYPE_GET_USER, Method, CacheTags } from "@/lib/definitions"
 import { verifySession } from "@/lib/session"
 import { failedToVerify } from "@/lib/utils"
 import { cache } from "react"
@@ -14,15 +14,14 @@ export const getUser = cache(async (user: string): Promise<TYPE_GET_USER> => {
       method: Method.GET,
       url: API_AH_USERS + `/${user}`,
       token: session.accessToken,
-      cache: CacheOptions.ForceCache,
       tags: [CacheTags.USER + user],
+      revalidate: 60
     })
   
     if (!res.success) {
       console.error("⚡ getUser ~ Error fetching user:", res)
       return { ...res }
     }
-    console.log("🚀 ~ getUser ~ res:", res)
   
     return { ...res }
   })

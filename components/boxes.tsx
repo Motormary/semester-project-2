@@ -19,7 +19,7 @@ export default function FloatingBoxes() {
             top: `${box.y}%`,
             width: `${box.size}px`,
             height: `${box.size}px`,
-            opacity: 0.3,
+            opacity: 0.2,
             transform: `rotate(${box.rotation}deg)`,
             transition: "all 0.5s ease-in-out",
           }}

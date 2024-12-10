@@ -5,7 +5,7 @@ import { calculateTimeDifference } from "@/lib/utils"
 
 type props = {
   id: string
-  user?: string
+  user: string
   revalidate: boolean // Required so we don't forget to set it
 }
 
@@ -31,7 +31,9 @@ export default async function ListingClock({ id, revalidate, user }: props) {
     )
   }
 
+  const topBidder = data.data.bids.toSorted((a, b) => { return a.amount - b.amount})?.[0]?.bidder.name
+
   // Calculate default time value on server instead of client to make rendering of clock smooth.
   const defaultTime = calculateTimeDifference(data.data.endsAt.toString())
-  return <Countdown defaultTime={defaultTime} endsAt={data.data.endsAt} user={user} id={id} />
+  return <Countdown defaultTime={defaultTime} endsAt={data.data.endsAt} user={data.data.seller.name} topBidder={topBidder} id={id} />
 }

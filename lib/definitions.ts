@@ -142,7 +142,7 @@ const BidsSchema = z.array(
       created: z.date(),
       updated: z.date(),
       endsAt: z.date(),
-    })
+    }),
   }),
 )
 
@@ -156,8 +156,12 @@ export const RegisterUserSchema = z
       })
       .max(20, {
         message: "Name cannot contain more than 20 characters.",
+      })
+      .regex(/^[a-zA-Z0-9_]+$/, {
+        message:
+          "Name can only contain letters (a-Z), numbers (0-9), and underscores (_).",
       }),
-    bio: z.string(),
+    bio: z.string().optional(),
     avatar: z.object({
       url: z.string(),
       alt: z.string().optional(),
@@ -245,7 +249,6 @@ export type TYPE_USER_BIDS = z.infer<typeof BidsSchema>
 export type TYPE_GET_USER_BIDS = z.infer<typeof getUserBidsSchema>
 
 export type TYPE_GET_USER = z.infer<typeof getProfileSchema>
-
 
 // flat listings types
 export type TYPE_LISTING = z.infer<typeof listingSchema>

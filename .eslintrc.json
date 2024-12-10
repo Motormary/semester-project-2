@@ -9,5 +9,5 @@
     "tailwindcss/no-contradicting-classname": "warn",
     "unused-imports/no-unused-imports": "error"
   },
-  "ignorePatterns":["/node_modules"]
+  "ignorePatterns":["/node_modules", "node_modules", "/.pnpm/**/**"]
 }

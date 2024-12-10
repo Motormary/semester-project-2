@@ -10,7 +10,8 @@ import { useEffect, useState } from "react"
 interface CountdownProps {
   endsAt: Date
   id: string
-  user?: string
+  user: string
+  topBidder: string
   defaultTime: {
     days: number
     hours: number
@@ -22,13 +23,22 @@ interface CountdownProps {
 /**
  * @description - Calculates time to end of auction and shows a dynamic clock.
  * - When time reaches 00:00 all post + id of post will be revalidated.
+ * ! This should not be handled on front-end like this, but we use what we got
  */
-export function Countdown({ endsAt, id, user, defaultTime }: CountdownProps) {
+export function Countdown({
+  endsAt,
+  id,
+  user,
+  defaultTime,
+  topBidder,
+}: CountdownProps) {
   const searchParams = useSearchParams()
-  const isSearchQuery = searchParams.get("search")
-  const isListingQuery = searchParams.get("user_listings")
+  const isSearchQuery = searchParams.has("search")
+  const isListingQuery = searchParams.has("user_listings")
   const [timeLeft, setTimeLeft] = useState(defaultTime)
-  const [isLessThanHour, setIsLessThanHour] = useState(() => defaultTime.days === 0 && defaultTime.hours === 0)
+  const [isLessThanHour, setIsLessThanHour] = useState(
+    () => defaultTime.days === 0 && defaultTime.hours === 0,
+  )
   const [ended, setIsEnded] = useState(false)
 
   useEffect(() => {
@@ -36,12 +46,14 @@ export function Countdown({ endsAt, id, user, defaultTime }: CountdownProps) {
     // todo: remove this
     console.log("useEffect is running amok!")
     async function handleRevalidate() {
+      // Revalidate relevant caches associated with listing
       RevalidateCache(CacheTags.ALL_LISTINGS)
       RevalidateCache(CacheTags.LISTING + id)
-      if (user) {
-        console.log("🚀 ~ handleRevalidate ~ user:", user)
-        
-        RevalidateCache(CacheTags.USER_LISTINGS + user)
+      RevalidateCache(CacheTags.USER_LISTINGS + user)
+      RevalidateCache(CacheTags.USER + user)
+      if (topBidder) {
+        RevalidateCache(CacheTags.USER_WINS + topBidder)
+        RevalidateCache(CacheTags.USER + topBidder)
       }
     }
 
@@ -57,14 +69,14 @@ export function Countdown({ endsAt, id, user, defaultTime }: CountdownProps) {
         setIsEnded(true)
         clearInterval(timer)
 
-        if (!isSearchQuery || !isListingQuery) {
+        if (!isSearchQuery && !isListingQuery) {
           handleRevalidate()
         }
       }
     }, 1000)
 
     return () => clearInterval(timer)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ended, isSearchQuery, isListingQuery])
 
   const formatTime = (value: number) => value.toString().padStart(2, "0")

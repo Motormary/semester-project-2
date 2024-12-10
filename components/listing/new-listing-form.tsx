@@ -50,6 +50,7 @@ type props = {
 
 export default function ListingForm({ closeModal, initialData }: props) {
   // TODO: REMOVE THIS LATER - DEV VALUE
+  const isInitialData = !!initialData
   const now = new Date() // Current date and time
   const router = useRouter()
   const [isPending, setIspending] = useState(false)
@@ -66,7 +67,7 @@ export default function ListingForm({ closeModal, initialData }: props) {
           description: "",
           tags: [],
           media: [],
-          endsAt: new Date(now.getTime() + 10 * 1000),
+          endsAt: new Date(now.getTime() + 30 * 1000),
         },
   })
 
@@ -298,7 +299,7 @@ export default function ListingForm({ closeModal, initialData }: props) {
                 : null}
             </div>
           </div>
-          <DateTimePicker24hForm form={form} />
+          <DateTimePicker24hForm initialData={isInitialData} form={form} />
         </Stepper>
       </form>
     </Form>

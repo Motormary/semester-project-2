@@ -1,13 +1,14 @@
 "use client"
+
 import { Check, ChevronsUpDown, Plus, RefreshCw, Search, X } from "lucide-react"
 import { Input } from "../ui/input"
 import {
   Command,
   CommandEmpty,
   CommandGroup,
-  CommandInput,
   CommandItem,
   CommandList,
+  CommandInput,
 } from "@/components/ui/command"
 import {
   Popover,
@@ -15,7 +16,14 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { Button } from "../ui/button"
-import { useState, useTransition } from "react"
+import {
+  useState,
+  useTransition,
+  useCallback,
+  useMemo,
+  useEffect,
+  useRef,
+} from "react"
 import { cn } from "@/lib/utils"
 import { useMediaQuery } from "@/hooks/use-media-query"
 import { useRouter, useSearchParams } from "next/navigation"
@@ -23,6 +31,7 @@ import debounce from "lodash.debounce"
 import { tags } from "@/lib/data/tags"
 
 export default function SearchBar() {
+  const searchRef = useRef<HTMLInputElement>(null)
   const isMobile = useMediaQuery("(max-width: 480px)")
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -33,19 +42,41 @@ export default function SearchBar() {
     searchParams.get("search") ?? "",
   )
 
-  // Debounced search (500ms)
-  const handleSearch = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
-    const newSearchParams = new URLSearchParams(searchParams.toString())
-    if (!e.target.value) newSearchParams.delete("search")
-    else newSearchParams.set("search", e.target.value.trim().toLowerCase())
-    newSearchParams.delete("_tag") // Delete tag because it won't work with search anyways
-    newSearchParams.delete("page")
-
-    startTransition(() => {
+  // Wrapped debounce to avoid multiple searches/rerendering
+  const debouncedSearch = useCallback(
+    (value: string) => {
+      const newSearchParams = new URLSearchParams(searchParams.toString())
+      if (!value) newSearchParams.delete("search")
+      else newSearchParams.set("search", value.trim().toLowerCase())
+      newSearchParams.delete("_tag") // Delete tag because it won't work with search anyways
       setTag("")
-      router.push(`/?${newSearchParams.toString()}`, { scroll: false })
-    })
-  }, 500)
+      newSearchParams.delete("page")
+
+      startTransition(() => {
+        router.push(`/?${newSearchParams.toString()}`, { scroll: false })
+        if (searchRef.current) searchRef.current.focus()
+      })
+    },
+    [searchParams, router, setTag],
+  )
+
+  const debouncedSearchHandler = useMemo(
+    () => debounce(debouncedSearch, 500),
+    [debouncedSearch],
+  )
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value
+    setSearchValue(newValue)
+    debouncedSearchHandler(newValue)
+  }
+
+  // Throw any pending debounces when unmounting
+  useEffect(() => {
+    return () => {
+      debouncedSearchHandler.cancel()
+    }
+  }, [debouncedSearchHandler])
 
   return (
     <div
@@ -61,15 +92,13 @@ export default function SearchBar() {
           )}
         </label>
         <Input
+          ref={searchRef}
           name="search"
           id="search"
           className="ml-3 h-full border-none p-0 focus-visible:ring-0 focus-visible:ring-offset-0"
           placeholder="Search all listings"
           value={searchValue}
-          onChange={(e) => {
-            setSearchValue(e.target.value)
-            handleSearch(e)
-          }}
+          onChange={handleInputChange}
         />
         <button
           type="reset"
@@ -79,11 +108,7 @@ export default function SearchBar() {
           )}
           onClick={() => {
             setSearchValue("")
-            startTransition(() =>
-              router.push("/", {
-                scroll: false,
-              }),
-            )
+            debouncedSearchHandler("")
           }}
         >
           <X className="size-5" />
@@ -98,10 +123,9 @@ export default function SearchBar() {
             variant="outline"
             size="icon"
           >
-            <Plus />
+            {tag ? <Check /> : <Plus />}
           </Button>
         </PopoverTrigger>
-        {/* Statecheck prevents popover content misalignment as it tries to align to the last trigger, hidden prevents layout shift. Warn: Trigger only takes a single child, conditionally rendering them inside will create a layout shift */}
         {isMobile ? null : (
           <PopoverTrigger asChild>
             <Button

@@ -1,5 +1,7 @@
 import getListing from "@/app/actions/listings/get"
+import { getCurrentUser } from "@/app/actions/user/get"
 import { cn, compareValues } from "@/lib/utils"
+import { CircleCheck, CircleX } from "lucide-react"
 
 type props = {
   id: string
@@ -9,21 +11,35 @@ type props = {
 
 export default async function PriceTag({ id, className, myBid }: props) {
   if (myBid) {
-    return (
-      <p className={cn(className ? className : "text-xl")}>
-        {myBid} Ω
-      </p>
-    )
+    return <p className={cn(className ? className : "text-xl")}>{myBid} Ω</p>
   }
   const { data, success } = await getListing(id)
+  const { data: userData } = await getCurrentUser()
   if (!success) return null
   if (!data.data.bids?.length) return null
   const sortedBids = data.data.bids.toSorted((a, b) =>
     compareValues(a.amount, b.amount),
   )
+  const higestBid = sortedBids[0]
+  const isHighestBidder = higestBid.bidder.name === userData.data.name
+  const hasBidIndex = sortedBids.findIndex(
+    (item) => item.bidder.name === userData.data.name,
+  )
+  const hasBidButLost = hasBidIndex > 0
+
   return (
-    <p className={cn(className ? className : "text-xl")}>
-      {sortedBids[0].amount} Ω
-    </p>
+    <div
+      className={cn(
+        className ? className : "text-xl",
+        "flex w-full justify-between pricetag",
+      )}
+    >
+      <p>{higestBid.amount} Ω</p>
+      {isHighestBidder ? (
+        <span className="text-sm">Highest bid <CircleCheck className="size-5 text-primary inline" /></span>
+      ) : hasBidButLost ? (
+        <span className="text-sm">Lost bid <CircleX className="size-5 text-destructive inline" /></span>
+      ) : null}
+    </div>
   )
 }
