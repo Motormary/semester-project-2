@@ -36,6 +36,7 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table"
+import { getTopBid } from "@/lib/utils"
 
 type props = {
   children: React.ReactNode
@@ -48,10 +49,7 @@ type bidsProps = {
 
 function List({ bids }: bidsProps) {
   const sortedBids = useMemo(
-    () =>
-      bids?.sort((a, b) => {
-        return a.amount - b.amount
-      }),
+    () => getTopBid(bids),
     [bids],
   )
   return (
@@ -101,7 +99,6 @@ function List({ bids }: bidsProps) {
 export default function BidListDialog({ listing, children }: props) {
   const [open, setOpen] = useState(false)
   const isDesktop = useMediaQuery("(min-width: 768px)")
-  if (!listing.bids?.length) return null
   if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>

@@ -1,6 +1,6 @@
 import getListing from "@/app/actions/listings/get"
 import { getCurrentUser } from "@/app/actions/user/get"
-import { cn } from "@/lib/utils"
+import { cn, getTopBid } from "@/lib/utils"
 import { CircleCheck, CircleX } from "lucide-react"
 
 type props = {
@@ -17,9 +17,7 @@ export default async function PriceTag({ id, className, myBid }: props) {
   const { data: userData } = await getCurrentUser()
   if (!success) return null
   if (!data.data.bids?.length) return null
-  const sortedBids = data.data.bids.sort((a, b) => {
-    return a.amount - b.amount
-  })
+  const sortedBids = getTopBid(data.data.bids)
   const higestBid = sortedBids[0]
   const isHighestBidder = higestBid.bidder.name === userData.data.name
   const hasBidIndex = sortedBids.findIndex(

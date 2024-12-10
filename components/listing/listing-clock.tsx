@@ -1,7 +1,7 @@
 import getListing from "@/app/actions/listings/get"
 import { Countdown } from "./countdown"
 import { Dot } from "lucide-react"
-import { calculateTimeDifference } from "@/lib/utils"
+import { calculateTimeDifference, getTopBid } from "@/lib/utils"
 
 type props = {
   id: string
@@ -34,9 +34,7 @@ export default async function ListingClock({ id, revalidate, user }: props) {
   let topBidder
 
   if (data.data?.bids?.length) {
-    topBidder = data.data.bids.sort((a, b) => {
-      return a.amount - b.amount
-    })[0].bidder.name
+    topBidder = getTopBid(data.data.bids)[0].bidder.name
   }
 
   // Calculate default time value on server instead of client to make rendering of clock smooth.

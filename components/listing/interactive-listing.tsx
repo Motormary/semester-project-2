@@ -19,6 +19,7 @@ import NewListing from "./new-listing"
 import PriceTag from "./price"
 import ListingClock from "./listing-clock"
 import { redirect } from "next/navigation"
+import { getTopBid } from "@/lib/utils"
 
 type props = {
   listing: TYPE_LISTING
@@ -30,7 +31,7 @@ export default async function InteractiveListing({ listing }: props) {
   if (!success) redirect("/login")
   const user = data.data
   if (listing.bids?.length) {
-    minBid = listing.bids?.sort((a, b) => b.amount - a.amount)[0].amount
+    minBid = getTopBid(listing.bids)[0].amount
   }
   return (
     <div className="space-y-4">
@@ -76,7 +77,6 @@ export default async function InteractiveListing({ listing }: props) {
             <div className="flex items-center">
               <BidListDialog listing={listing}>
                 <Button
-                  disabled={!listing.bids?.length}
                   variant="link"
                   className="px-0 text-muted-foreground underline hover:text-secondary-foreground"
                 >

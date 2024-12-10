@@ -51,6 +51,20 @@ const userSchema = z.object({
   banner: mediaSchema,
 })
 
+export const BidSchema = z.object({
+  id: z.string(),
+  amount: z.number(),
+  bidder: z.object({
+    name: z.string(),
+    email: z.string().email(),
+    bio: z.string(),
+    avatar: mediaSchema,
+    banner: mediaSchema,
+  }),
+  created: z.date()
+})
+
+
 const listingSchema = z.object({
   id: z.string(),
   title: z.string(),
@@ -64,20 +78,8 @@ const listingSchema = z.object({
     bids: z.number().int().nonnegative(),
   }),
   seller: userSchema,
-  bids: z.array(
-    z.object({
-      id: z.string(),
-      amount: z.number(),
-      bidder: z.object({
-        name: z.string(),
-        avatar: z.object({
-          url: z.string(),
-        }),
-      }),
-      created: z.date(),
-    }),
-  ),
-})
+  bids: z.array(BidSchema),
+  })
 
 const multipleListingSchema = z.array(listingSchema)
 
@@ -120,6 +122,7 @@ const ProfileSchema = z.object({
   }),
   accessToken: z.string().optional(),
 })
+
 
 const BidsSchema = z.array(
   z.object({
@@ -243,6 +246,8 @@ export type TYPE_USER_REGISTER = z.infer<typeof RegisterUserSchema>
 export type TYPE_USER_LOGIN = z.infer<typeof LoginUserSchema>
 
 export type TYPE_USER_EDIT = z.infer<typeof EditUserSchema>
+
+export type TYPE_USER_BID = z.infer<typeof BidSchema>
 
 export type TYPE_USER_BIDS = z.infer<typeof BidsSchema>
 // User request types

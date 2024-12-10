@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { ErrorSource } from "./definitions"
+import { ErrorSource, TYPE_USER_BID, TYPE_USER_BIDS } from "./definitions"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -55,4 +55,8 @@ export function compareValues(a: number, b: number) {
   }
 
   return 0
+}
+
+export function getTopBid(bids: TYPE_USER_BID[] | TYPE_USER_BIDS) {
+  return bids.sort((a, b) => compareValues(a.amount, b.amount))
 }
