@@ -30,8 +30,6 @@ export default function Notifications({ user }: { user: string }) {
   }, [])
 
   useEffect(() => {
-    if (!user) return
-
     pusherClient.subscribe(user)
     pusherClient.bind("incoming-notification", handleNotification)
 
