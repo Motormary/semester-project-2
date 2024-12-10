@@ -1,10 +1,10 @@
 "use client"
 
 import { getCurrentUser } from "@/app/actions/user/get"
-import { pusherClient } from "@/lib/pusher"
 import { useRouter } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
 import { toast } from "sonner"
+import useWebsocket from "./websocket"
 
 type NotificationProps = {
   title: string
@@ -15,6 +15,7 @@ type NotificationProps = {
 export default function Notifications() {
   const router = useRouter()
   const [user, setUser] = useState("")
+  const { subscribe, bind, unsubscribe, unbind } = useWebsocket(user)
 
   const handleNotification = useCallback(
     (notification: NotificationProps) => {
@@ -22,7 +23,7 @@ export default function Notifications() {
         description: <strong>{notification.description}</strong>,
         action: {
           label: "View",
-          onClick: () => router.push(`/listings/${notification.id}`),
+          onClick: () => router.push(`/listing/${notification.id}`),
         },
         duration: 10000,
       })
@@ -43,16 +44,14 @@ export default function Notifications() {
   useEffect(() => {
     if (!user) return
 
-    pusherClient.subscribe(user)
-    pusherClient.bind("incoming-notification", handleNotification)
+    subscribe()
+    bind("incoming-notification", handleNotification)
 
     return () => {
-      pusherClient.unsubscribe(user)
-      pusherClient.unbind("incoming-notification", handleNotification)
-      pusherClient.disconnect()
+      unsubscribe()
+      unbind("incoming-notification", handleNotification)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user])
+  }, [bind, handleNotification, subscribe, unbind, unsubscribe, user])
 
   return null
 }
