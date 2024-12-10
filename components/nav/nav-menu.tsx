@@ -28,7 +28,8 @@ import MobileLogoutButton from "./logout-button"
 import UserBidsCounter from "./bids-counter"
 import { getCurrentUser } from "@/app/actions/user/get"
 import { logoutUser } from "@/app/actions/user/login"
-import Notifications from "@/hooks/pusher"
+import dynamic from "next/dynamic"
+const Notifications = dynamic(() => import("@/hooks/pusher"), { ssr: false })
 
 export default async function NavMenu() {
   let user = null
