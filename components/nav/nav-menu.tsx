@@ -1,3 +1,5 @@
+import { getCurrentUser } from "@/app/actions/user/get"
+import { logoutUser } from "@/app/actions/user/login"
 import { Button, buttonVariants } from "@/components/ui/button"
 import {
   Sheet,
@@ -24,11 +26,8 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu"
 import { Separator } from "../ui/separator"
-import MobileLogoutButton from "./logout-button"
 import UserBidsCounter from "./bids-counter"
-import { getCurrentUser } from "@/app/actions/user/get"
-import { logoutUser } from "@/app/actions/user/login"
-import Notifications from "@/hooks/pusher"
+import MobileLogoutButton from "./logout-button"
 
 export default async function NavMenu() {
   let user = null
@@ -38,7 +37,7 @@ export default async function NavMenu() {
 
   return (
     <>
-      {!user ? null : <Notifications user={user.name} />}
+      {/* {!user ? null : <Notifications user={user.name} />} */}
       {user ? (
         <NewListing>
           <Button className="relative max-md:size-10 max-md:rounded-full max-md:p-0">
