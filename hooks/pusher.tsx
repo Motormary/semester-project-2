@@ -1,7 +1,9 @@
 "use client"
 
+import { buttonVariants } from "@/components/ui/button"
 import { pusherClient } from "@/lib/pusher"
-import { useRouter } from "next/navigation"
+import { cn } from "@/lib/utils"
+import Link from "next/link"
 import { useCallback, useEffect } from "react"
 import { toast } from "sonner"
 
@@ -12,21 +14,20 @@ type NotificationProps = {
 }
 
 export default function Notifications({ user }: { user: string }) {
-  const router = useRouter()
-
-  const handleNotification = useCallback(
-    (notification: NotificationProps) => {
-      toast.info(notification.title, {
-        description: <strong>{notification.description}</strong>,
-        action: {
-          label: "View",
-          onClick: () => router.push(`/listing/${notification.id}`),
-        },
-        duration: 10000,
-      })
-    },
-    [router],
-  )
+  const handleNotification = useCallback((notification: NotificationProps) => {
+    toast.info(notification.title, {
+      description: <strong>{notification.description}</strong>,
+      action: (
+        <Link
+          className={cn(buttonVariants({ variant: "default" }))}
+          href={`/listing/${notification.id}`}
+        >
+          View
+        </Link>
+      ),
+      duration: 10000,
+    })
+  }, [])
 
   useEffect(() => {
     if (!user) return
@@ -39,8 +40,7 @@ export default function Notifications({ user }: { user: string }) {
       pusherClient.unbind("incoming-notification", handleNotification)
       pusherClient.disconnect()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [handleNotification, user])
 
-  return null
+  return <div className="hidden">Notification listener</div>
 }
