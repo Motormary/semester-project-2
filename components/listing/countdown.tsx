@@ -45,9 +45,11 @@ export function Countdown({
     // todo: remove this
     console.log("useEffect is running amok!")
     async function handleRevalidate() {
+      // Revalidate relevant caches associated with listing
       RevalidateCache(CacheTags.ALL_LISTINGS)
       RevalidateCache(CacheTags.LISTING + id)
       RevalidateCache(CacheTags.USER_LISTINGS + user)
+      RevalidateCache(CacheTags.USER + user)
       if (topBidder) {
         RevalidateCache(CacheTags.USER_WINS + topBidder)
         RevalidateCache(CacheTags.USER + topBidder)
