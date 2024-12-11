@@ -1,7 +1,7 @@
 import getUserListings from "@/app/actions/user/get-listings"
 import image from "assets/svg/alt.svg"
 import Link from "next/link"
-import { Fragment } from "react"
+import { Fragment, Suspense } from "react"
 import { ScrollArea, ScrollBar } from "../ui/scroll-area"
 import Listing from "./listing"
 import PriceTag from "./price"
@@ -9,6 +9,7 @@ import { Separator } from "../ui/separator"
 import ListingClock from "./listing-clock"
 import { TYPE_LISTING } from "@/lib/definitions"
 import Image from "next/image"
+import { Skeleton } from "../ui/skeleton"
 
 const containerStyles = {
   default: "flex gap-4 w-full shrink-1 max-w-[1400px]",
@@ -61,7 +62,9 @@ export default async function OtherListings({ user, currentListingId }: props) {
                   <Link
                     className="absolute inset-0"
                     href={`/listing/${listing.id}`}
-                  ><span className="sr-only">View {listing.title}</span></Link>
+                  >
+                    <span className="sr-only">View {listing.title}</span>
+                  </Link>
                   <div className="flex aspect-square w-20 shrink-0 overflow-hidden rounded-md border bg-muted">
                     <Image
                       loading="eager"
@@ -76,11 +79,19 @@ export default async function OtherListings({ user, currentListingId }: props) {
                     <p className="max-w-[14.5rem] overflow-hidden truncate text-pretty text-sm">
                       {listing.title}
                     </p>
-                    <PriceTag className={"text-sm"} id={listing.id} />
+                    <Suspense fallback={<Skeleton className="h-5 w-14" />}>
+                      <PriceTag className={"text-sm"} id={listing.id} />
+                    </Suspense>
                     <div className="flex items-center">
                       <span className="flex items-center text-pretty text-xs text-muted-foreground">
                         {listing._count.bids} Bids
-                        <ListingClock revalidate id={listing.id} user={user} />
+                        <Suspense fallback={<Skeleton className="h-5 w-14" />}>
+                          <ListingClock
+                            revalidate
+                            id={listing.id}
+                            user={user}
+                          />
+                        </Suspense>
                       </span>
                     </div>
                   </div>
