@@ -7,7 +7,6 @@ import { redirect } from "next/navigation"
 import Avatar from "../next-avatar"
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
-import { CardTitle } from "../ui/card"
 import {
   Tooltip,
   TooltipContent,
@@ -65,9 +64,9 @@ export default async function InteractiveListing({ listing }: props) {
       <div className="gap-6 space-y-4 lg:flex">
         <ListingGallery listing={listing} />
         <div className="w-full space-y-6 lg:min-w-80">
-          <CardTitle className="overflow-hidden text-wrap break-words">
+          <h2 className="overflow-hidden text-wrap break-words">
             {listing.title}
-          </CardTitle>
+          </h2>
           {listing.tags?.[0] ? <Badge>{listing.tags[0]}</Badge> : null}
           <div>
             <PriceTag id={listing.id} />

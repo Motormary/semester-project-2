@@ -68,6 +68,7 @@ export default function BidForm({ id, minBid, seller, credits }: props) {
               <FormLabel>Amount</FormLabel>
               <FormControl>
                 <Input
+                  aria-label="Input bid value"
                   min={bidAmount}
                   type="number"
                   {...field}

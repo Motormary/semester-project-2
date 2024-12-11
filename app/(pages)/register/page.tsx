@@ -10,9 +10,9 @@ export const metadata: Metadata = {
 export default async function RegisterPage() {
 
   return (
-    <div className="w-full space-y-4">
+    <section className="w-full space-y-4">
       <Separator />
       <RegisterCard />
-    </div>
+    </section>
   )
 }

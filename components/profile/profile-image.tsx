@@ -17,20 +17,36 @@ export default function ProfileImage({ url }: props) {
   }, [isDesktop])
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger disabled={!isDesktop} asChild>
-        <div className="flex aspect-square w-full">
-          <Avatar src={url} alt="profile picture" size={240} className="h-full w-full" />
-        </div>
+      <PopoverTrigger asChild>
+        <button
+          aria-controls="dialog"
+          disabled={!isDesktop}
+          className="m-auto flex aspect-square h-full w-full grow"
+        >
+          <Avatar
+            src={url}
+            alt="profile picture"
+            size={500}
+            className="h-full w-full"
+          />
+        </button>
       </PopoverTrigger>
       <PopoverContent
+        aria-label="Profile image dialog"
         alignOffset={-21}
         sideOffset={16}
         align="start"
         side="right"
         className="size-[55vw] h-fit max-w-[600px]"
       >
-        <div className="flex aspect-square w-full rounded-lg bg-muted overflow-hidden">
-          <Image src={url} alt="Profile pic expanded" height={500} width={500} className="h-full w-full object-contain" />
+        <div className="flex aspect-square w-full overflow-hidden rounded-lg bg-muted">
+          <Image
+            src={url}
+            alt="Profile pic expanded"
+            height={500}
+            width={500}
+            className="h-full w-full object-contain"
+          />
         </div>
       </PopoverContent>
     </Popover>

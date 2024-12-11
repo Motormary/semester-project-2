@@ -32,14 +32,14 @@ export default function Listing({
   priority,
 }: props) {
   return (
-    <li
+    <div
       id={data.id}
       className={cn(
         classname ?? "shadow-sm",
         "relative flex w-full flex-col gap-4 overflow-hidden rounded-lg bg-card/70 p-4 backdrop-blur-sm",
       )}
     >
-      <Link className="absolute inset-0" href={`/listing/${data.id}`}></Link>
+      <Link className="absolute inset-0" href={`/listing/${data.id}`}><span className="sr-only">View {data.title}</span></Link>
       <div
         className={`flex aspect-[16/9] max-h-52 overflow-hidden rounded-md border bg-muted`}
       >
@@ -74,6 +74,6 @@ export default function Listing({
           />
         </div>
       </div>
-    </li>
+    </div>
   )
 }

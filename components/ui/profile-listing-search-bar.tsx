@@ -71,7 +71,7 @@ export default function ProfileListingSearch() {
           <X className="size-5" />
         </button>
       </label>
-      {(param === "bids" || param === "wins") ? <div className="text-xs text-destructive w-full text-center mt-2">Search filters current page <Info className="inline size-3"/></div> : null}
+      {(param === "bids" || param === "wins") ? <div className="text-xs text-orange-500 w-full text-center mt-2">Search filters current page <Info className="inline size-3"/></div> : null}
     </Form>
   )
 }

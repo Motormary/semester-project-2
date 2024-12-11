@@ -47,9 +47,9 @@ export default async function OtherListings({ user, currentListingId }: props) {
 
   return (
     <div className="w-full space-y-4 max-md:grid xl:max-w-[380px]">
-      <h3 className="text-sm font-semibold xl:text-center">
+      <h2 className="text-sm font-semibold xl:text-center">
         Other listings from this user
-      </h3>
+      </h2>
       <ScrollArea className="rounded-md pb-4">
         <div
           className={`${containerStyles.default} xl:${containerStyles.xl} py-1`}
@@ -61,7 +61,7 @@ export default async function OtherListings({ user, currentListingId }: props) {
                   <Link
                     className="absolute inset-0"
                     href={`/listing/${listing.id}`}
-                  ></Link>
+                  ><span className="sr-only">View {listing.title}</span></Link>
                   <div className="flex aspect-square w-20 shrink-0 overflow-hidden rounded-md border bg-muted">
                     <Image
                       loading="eager"
