@@ -117,18 +117,23 @@ export default function SearchBar() {
       <Popover open={openTagSelect} onOpenChange={setOpenTagSelect}>
         <PopoverTrigger asChild>
           <Button
+            aria-label="filter menu"
             role="combobox"
             aria-expanded={openTagSelect}
             className="xs:hidden"
             variant="outline"
             size="icon"
+            aria-controls="dropdown-menu"
           >
+            <span className="sr-only">Select category</span>
             {tag ? <Check /> : <Plus />}
           </Button>
         </PopoverTrigger>
         {isMobile ? null : (
           <PopoverTrigger asChild>
             <Button
+              aria-label="filter menu"
+              aria-controls="dropdown-menu"
               variant="outline"
               role="combobox"
               aria-expanded={openTagSelect}
