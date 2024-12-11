@@ -75,6 +75,7 @@ export default function ListingGallery({ listing }: props) {
     }
   }, [gallery])
 
+
   return (
     <div className="space-y-4">
       <Link href={image ?? "#"} target="_blank">
