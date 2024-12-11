@@ -19,6 +19,8 @@ import ListingClock from "./listing-clock"
 import ListingGallery from "./listing-gallery"
 import NewListing from "./new-listing"
 import PriceTag from "./price"
+import { Suspense } from "react"
+import { Skeleton } from "../ui/skeleton"
 
 type props = {
   listing: TYPE_LISTING
@@ -41,7 +43,7 @@ export default async function InteractiveListing({ listing }: props) {
           className="flex items-center gap-2"
         >
           <div className="size-8">
-          <Avatar src={listing.seller.avatar.url} alt="avatar" size={32} />
+            <Avatar src={listing.seller.avatar.url} alt="avatar" size={32} />
           </div>
           <span className="text-sm">{listing.seller.name}</span>
         </Link>
@@ -69,7 +71,9 @@ export default async function InteractiveListing({ listing }: props) {
           </h2>
           {listing.tags?.[0] ? <Badge>{listing.tags[0]}</Badge> : null}
           <div>
-            <PriceTag id={listing.id} />
+            <Suspense fallback={<Skeleton className="h-5 w-20" />}>
+              <PriceTag id={listing.id} />
+            </Suspense>
             <div className="flex items-center">
               <BidListDialog listing={listing}>
                 <Button
@@ -79,11 +83,13 @@ export default async function InteractiveListing({ listing }: props) {
                   {listing._count.bids} Bids
                 </Button>
               </BidListDialog>
-              <ListingClock
-                user={listing.seller.name}
-                revalidate={false}
-                id={listing.id}
-              />
+              <Suspense fallback={<Skeleton className="h-5 w-20" />}>
+                <ListingClock
+                  user={listing.seller.name}
+                  revalidate={false}
+                  id={listing.id}
+                />
+              </Suspense>
             </div>
           </div>
           {user.name !== listing.seller.name ? (
@@ -96,7 +102,11 @@ export default async function InteractiveListing({ listing }: props) {
           ) : null}
           <div className="text-pretty">
             <p className="mb-1 font-semibold">Description</p>
-            <p className="text-pretty text-sm">{listing.description?.trim()?.length ? listing.description : "No description provided"}</p>
+            <p className="text-pretty text-sm">
+              {listing.description?.trim()?.length
+                ? listing.description
+                : "No description provided"}
+            </p>
           </div>
         </div>
       </div>

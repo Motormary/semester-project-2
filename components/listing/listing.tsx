@@ -39,7 +39,9 @@ export default function Listing({
         "relative flex w-full flex-col gap-4 overflow-hidden rounded-lg bg-card/70 p-4 backdrop-blur-sm",
       )}
     >
-      <Link className="absolute inset-0" href={`/listing/${data.id}`}><span className="sr-only">View {data.title}</span></Link>
+      <Link className="absolute inset-0" href={`/listing/${data.id}`}>
+        <span className="sr-only">View {data.title}</span>
+      </Link>
       <div
         className={`flex aspect-[16/9] max-h-52 overflow-hidden rounded-md border bg-muted`}
       >
@@ -47,6 +49,8 @@ export default function Listing({
           priority={priority}
           quality={60}
           src={data?.media?.[0]?.url ?? altImg.src}
+          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNksAcAAEUAQRtOwGEAAAAASUVORK5CYII="
+          placeholder="blur"
           alt="alt image"
           width={304}
           height={170}
@@ -67,11 +71,13 @@ export default function Listing({
         </Suspense>
         <div className="flex items-center text-pretty text-sm text-muted-foreground">
           {data._count.bids} bids{" "}
-          <ListingClock
-            user={data?.seller?.name}
-            revalidate={revalidate}
-            id={data.id}
-          />
+          <Suspense fallback={<Skeleton className="h-5 w-20" />}>
+            <ListingClock
+              user={data?.seller?.name}
+              revalidate={revalidate}
+              id={data.id}
+            />
+          </Suspense>
         </div>
       </div>
     </div>
