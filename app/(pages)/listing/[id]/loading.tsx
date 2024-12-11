@@ -14,7 +14,7 @@ export default function Loading() {
           {/* Username */}
           <div className="flex w-full items-center justify-between">
             <div className="flex items-center gap-2">
-              <Skeleton className="size-7 rounded-full" />
+              <Skeleton className="size-8 rounded-full" />
               <Skeleton className="h-3.5 w-20" />
             </div>
           </div>
@@ -41,7 +41,7 @@ export function LoadingInteractive() {
       {/* Username */}
       <div className="flex w-full items-center justify-between">
         <div className="flex items-center gap-2">
-          <Skeleton className="size-7 rounded-full" />
+          <Skeleton className="size-8 rounded-full" />
           <Skeleton className="h-3.5 w-20" />
         </div>
       </div>

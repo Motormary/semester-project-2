@@ -1,7 +1,10 @@
 import { getCurrentUser } from "@/app/actions/user/get"
 import { TYPE_LISTING } from "@/lib/definitions"
+import { getTopBid } from "@/lib/utils"
 import { Edit } from "lucide-react"
 import Link from "next/link"
+import { redirect } from "next/navigation"
+import Avatar from "../next-avatar"
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
 import { CardTitle } from "../ui/card"
@@ -11,15 +14,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "../ui/tooltip"
-import BidListDialog from "./bid-list"
 import BidForm from "./bid-form"
+import BidListDialog from "./bid-list"
+import ListingClock from "./listing-clock"
 import ListingGallery from "./listing-gallery"
 import NewListing from "./new-listing"
 import PriceTag from "./price"
-import ListingClock from "./listing-clock"
-import { redirect } from "next/navigation"
-import { getTopBid } from "@/lib/utils"
-import Avatar from "../next-avatar"
 
 type props = {
   listing: TYPE_LISTING
@@ -41,7 +41,9 @@ export default async function InteractiveListing({ listing }: props) {
           href={`/vendors/${listing.seller.name}`}
           className="flex items-center gap-2"
         >
+          <div className="size-8">
           <Avatar src={listing.seller.avatar.url} alt="avatar" size={32} />
+          </div>
           <span className="text-sm">{listing.seller.name}</span>
         </Link>
         {user && user.name === listing.seller.name ? (

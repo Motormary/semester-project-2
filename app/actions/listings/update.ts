@@ -31,6 +31,7 @@ export default async function updateListing(
 
   revalidateTag(CacheTags.ALL_LISTINGS)
   revalidateTag(CacheTags.LISTING + id)
+  revalidateTag(CacheTags.USER_LISTINGS + session.user)
 
   return { ...res }
 }
