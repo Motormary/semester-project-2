@@ -2,10 +2,9 @@
 
 import { API_AH_USERS } from "@/lib/constants"
 import {
-  TYPE_GET_USER_BIDS,
-  Method,
-  CacheOptions,
   CacheTags,
+  Method,
+  TYPE_GET_USER_BIDS
 } from "@/lib/definitions"
 import { verifySession } from "@/lib/session"
 import { failedToVerify } from "@/lib/utils"
@@ -29,7 +28,7 @@ const getUserBids = cache(
       method: Method.GET,
       url: API_AH_USERS + `/${user}/bids?${query}`,
       token: session.accessToken,
-      cache: CacheOptions.ForceCache,
+      revalidate: 300,
       tags: [CacheTags.USER_BIDS + user],
     })
 

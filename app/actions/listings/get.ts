@@ -2,10 +2,9 @@
 
 import { API_AH_LISTINGS } from "@/lib/constants"
 import {
-  CacheOptions,
   CacheTags,
   Method,
-  TYPE_GET_LISTING,
+  TYPE_GET_LISTING
 } from "@/lib/definitions"
 import { verifySession } from "@/lib/session"
 import { failedToVerify } from "@/lib/utils"
@@ -19,7 +18,7 @@ const getListing = cache(
     const res = await superFetch<TYPE_GET_LISTING>({
       method: Method.GET,
       url: API_AH_LISTINGS + `/${id}?_seller=true&_bids=true`,
-      cache: CacheOptions.ForceCache,
+      revalidate: 300,
       tags: [CacheTags.LISTING + id],
     })
 

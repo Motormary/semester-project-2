@@ -1,17 +1,16 @@
 "use server"
 
 import { API_AH_USERS } from "@/lib/constants"
+import createPaginatedSearchResults from "@/lib/custom-pagination"
 import {
-  CacheOptions,
   CacheTags,
   Method,
-  TYPE_GET_LISTINGS,
+  TYPE_GET_LISTINGS
 } from "@/lib/definitions"
 import { verifySession } from "@/lib/session"
 import { failedToVerify } from "@/lib/utils"
 import { cache } from "react"
 import superFetch from "../fetch"
-import createPaginatedSearchResults from "@/lib/custom-pagination"
 
 type props = {
   params?: any
@@ -43,7 +42,7 @@ const getUserListings = cache(
       method: Method.GET,
       url: API_AH_USERS + `/${user}/listings?` + query.toString(),
       token: session.accessToken,
-      cache: CacheOptions.ForceCache,
+      revalidate: 300,
       tags: [CacheTags.USER_LISTINGS + user],
     })
 

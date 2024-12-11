@@ -2,10 +2,9 @@
 
 import { API_AH_LISTINGS } from "@/lib/constants"
 import {
-  CacheOptions,
   CacheTags,
   Method,
-  TYPE_GET_LISTINGS,
+  TYPE_GET_LISTINGS
 } from "@/lib/definitions"
 import { cache } from "react"
 import superFetch from "../fetch"
@@ -36,7 +35,7 @@ const getAllListings = cache(
       url:
         API_AH_LISTINGS +
         `${hasSearch ? `${searchQ}&` : "?"}${query.toString()}`, // ? Backend ignores tags when searching
-      cache: CacheOptions.ForceCache,
+      revalidate: 300,
       tags: [CacheTags.ALL_LISTINGS],
     })
 

@@ -1,5 +1,7 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/4a14a9b0-f87e-4f99-a3e0-555df393808e/deploy-status)](https://app.netlify.com/sites/mkm-semester-project-2/deploys)
+
 ## Getting Started
 
 First, run the development server:
