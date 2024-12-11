@@ -42,8 +42,8 @@ export function Countdown({
   const [ended, setIsEnded] = useState(false)
 
   useEffect(() => {
-    // Limit unnecessary intervals
-    if (ended || timeLeft.days > 0 || timeLeft.hours > 1 && timeLeft.minutes > 30) return
+    // Limit unnecessary intervals, anything over 1.5 hours will stop the clock from running
+    if (ended || timeLeft.days > 0 || timeLeft.hours > 1 || (timeLeft.hours === 1 && timeLeft.minutes > 30)) return
     // todo: remove this
     console.log("useEffect is running amok!")
     async function handleRevalidate() {
