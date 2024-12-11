@@ -9,9 +9,9 @@ export default function ListingWrapper({ children }: props) {
   return (
     <Card className="h-full w-full space-y-4 p-4 xs:has-[.listings]:rounded-tl-none [&>.listings]:has-[[data-pending]]:animate-pulse">
       <ProfileListingSearch />
-      <ul id="listings" className="flex flex-wrap">
+      <section id="listings" className="flex flex-wrap">
         {children}
-      </ul>
+      </section>
     </Card>
   )
 }

@@ -1,5 +1,4 @@
 /** @type {import('next').NextConfig} */
-import { withVercelToolbar } from "@vercel/toolbar/plugins/next"
 const nextConfig = {
   logging: {
     fetches: {
@@ -10,11 +9,10 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "**",
+        hostname: "**", //! Insecure, don't do this with an actual app.
       },
     ],
   },
 }
 
-// Instead of module.exports = nextConfig, do this:
-export default withVercelToolbar()(nextConfig)
+export default nextConfig
