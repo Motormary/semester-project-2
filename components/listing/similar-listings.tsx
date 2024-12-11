@@ -25,23 +25,23 @@ export default async function SimilarListing({
 
   return (
     <Card className="grid p-[5%] md:p-6">
-      <h4 className="text-sm font-semibold">You might also like</h4>
+      <h3 className="text-sm font-semibold">You might also like</h3>
       <ScrollArea className="rounded-md pb-4">
-        <div className="shrink-1 flex w-full max-w-[1400px] gap-4 py-1">
+        <ul className="shrink-1 flex w-full max-w-[1400px] gap-4 py-1">
           {data.data.map((listing, index) => {
             if (listing.id === currentListingId) return
             return (
-              <div key={listing.id} className="flex shrink-0 basis-72 px-1">
+              <li key={listing.id} className="flex shrink-0 basis-72 px-1">
                 <Listing
                   revalidate
                   data={listing}
                   classname="shadow-none hover:bg-muted"
                   id={index.toString()}
                 />
-              </div>
+              </li>
             )
           })}
-        </div>
+        </ul>
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
     </Card>

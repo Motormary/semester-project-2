@@ -32,7 +32,7 @@ export default function Listing({
   priority,
 }: props) {
   return (
-    <li
+    <div
       id={data.id}
       className={cn(
         classname ?? "shadow-sm",
@@ -74,6 +74,6 @@ export default function Listing({
           />
         </div>
       </div>
-    </li>
+    </div>
   )
 }
