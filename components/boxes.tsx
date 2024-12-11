@@ -1,3 +1,4 @@
+"use client"
 import { Box } from "lucide-react"
 
 export default function FloatingBoxes() {
@@ -9,7 +10,7 @@ export default function FloatingBoxes() {
   }))
 
   return (
-    <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden max-md:hidden">
+    <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden max-md:hidden animate-in fade-in-100">
       {boxes.map((box, index) => (
         <Box
           key={index}
