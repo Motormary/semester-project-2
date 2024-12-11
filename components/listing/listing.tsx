@@ -15,6 +15,7 @@ type props = {
   data: TYPE_LISTING
   revalidate: boolean
   useMyBid?: number
+  priority?: boolean
 }
 
 /**
@@ -28,6 +29,7 @@ export default function Listing({
   classname,
   revalidate,
   useMyBid,
+  priority,
 }: props) {
   return (
     <li
@@ -42,6 +44,7 @@ export default function Listing({
         className={`flex aspect-[16/9] max-h-52 overflow-hidden rounded-md border bg-muted`}
       >
         <Image
+          priority={priority}
           quality={60}
           src={data?.media?.[0]?.url ?? altImg.src}
           alt="alt image"

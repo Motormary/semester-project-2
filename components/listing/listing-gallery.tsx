@@ -80,6 +80,8 @@ export default function ListingGallery({ listing }: props) {
       <Link href={image ?? "#"} target="_blank">
         <div className="flex aspect-square w-full basis-[600px] lg:w-[600px]">
           <Image
+            priority
+            loading="eager"
             height={600}
             width={600}
             src={image}
