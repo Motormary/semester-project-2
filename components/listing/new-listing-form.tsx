@@ -286,10 +286,11 @@ export default function ListingForm({ closeModal, initialData }: props) {
                       <div
                         className={cn(
                           index === 0 ? "outline outline-primary" : "",
-                          "flex aspect-video max-w-20 rounded-md overflow-hidden bg-muted",
+                          "flex aspect-video max-w-20 overflow-hidden rounded-md bg-muted",
                         )}
                       >
                         <Image
+                          loading="eager"
                           height={80}
                           width={80}
                           className="object-cover"

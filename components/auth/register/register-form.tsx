@@ -78,6 +78,7 @@ export default function RegisterCard({ className, closeModal }: props) {
         <CardTitle className="flex items-center justify-center gap-4">
           <h1>Register</h1>
           <Image
+            loading="eager"
             src={logo}
             alt="Logo"
             height="50"

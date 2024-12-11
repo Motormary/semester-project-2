@@ -13,6 +13,8 @@ export default async function TopNav() {
         <nav className="flex w-full max-w-content items-center justify-between px-4">
           <Link href="/">
             <Image
+              loading="eager"
+              quality={100}
               width={40}
               height={40}
               src={logo.src}

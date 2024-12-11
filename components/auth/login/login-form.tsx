@@ -72,7 +72,13 @@ export default function LoginCard({ className, closeModal }: props) {
       <CardHeader>
         <CardTitle className="flex items-center justify-center gap-4">
           <h1>Log in</h1>{" "}
-          <Image src={logo} alt="Logo" height="50" className="dark:invert" />
+          <Image
+            loading="eager"
+            src={logo}
+            alt="Logo"
+            height="50"
+            className="dark:invert"
+          />
         </CardTitle>
       </CardHeader>
       <Form {...form}>

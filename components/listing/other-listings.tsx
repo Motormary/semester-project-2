@@ -64,6 +64,7 @@ export default async function OtherListings({ user, currentListingId }: props) {
                   ></Link>
                   <div className="flex aspect-square w-20 shrink-0 overflow-hidden rounded-md border bg-muted">
                     <Image
+                      loading="eager"
                       height={64}
                       width={64}
                       src={listing.media?.[0]?.url ?? image.src}

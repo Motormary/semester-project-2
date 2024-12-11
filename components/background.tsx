@@ -5,6 +5,7 @@ export default function BackgroundImage() {
   return (
     <div className="fixed inset-0 -z-10">
       <Image
+        loading="eager"
         alt="Background"
         src={background}
         quality={100}

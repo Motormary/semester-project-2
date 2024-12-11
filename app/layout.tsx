@@ -1,5 +1,4 @@
 import BackgroundImage from "@/components/background"
-import FloatingBoxes from "@/components/boxes"
 import Footer from "@/components/footer"
 import TopNav from "@/components/nav/top-nav"
 import { ThemeProvider } from "@/components/theme-provider"
@@ -68,7 +67,6 @@ export default function RootLayout({
           <Footer />
         </ThemeProvider>
         <div className="bg-cross pointer-events-none fixed -z-50 h-screen w-screen bg-cover bg-no-repeat" />
-        <FloatingBoxes />
         <BackgroundImage />
       </body>
     </html>

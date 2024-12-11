@@ -48,7 +48,6 @@ export default async function Home({ searchParams }: props) {
                 data={listing}
                 classname="hover:shadow-md focus-within:outline outline-2 outline-primary border"
                 id={listing.id}
-                load={index <= 6 ? "eager" : "lazy"}
               />
             )
           })

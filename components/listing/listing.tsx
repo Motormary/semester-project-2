@@ -15,7 +15,6 @@ type props = {
   data: TYPE_LISTING
   revalidate: boolean
   useMyBid?: number
-  load?: "lazy" | "eager"
 }
 
 /**
@@ -29,7 +28,6 @@ export default function Listing({
   classname,
   revalidate,
   useMyBid,
-  load,
 }: props) {
   return (
     <li
@@ -44,11 +42,12 @@ export default function Listing({
         className={`flex aspect-[16/9] max-h-52 overflow-hidden rounded-md border bg-muted`}
       >
         <Image
+          quality={60}
           src={data?.media?.[0]?.url ?? altImg.src}
           alt="alt image"
           width={304}
           height={170}
-          loading={load ?? "lazy"}
+          loading="eager"
           className={cn(
             !data.media?.[0]?.url
               ? `mx-auto object-center`
