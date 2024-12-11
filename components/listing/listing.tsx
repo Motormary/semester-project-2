@@ -1,13 +1,12 @@
 import { TYPE_LISTING } from "@/lib/definitions"
 import { cn } from "@/lib/utils"
-import Link from "next/link"
-import { Badge } from "../ui/badge"
-import PriceTag from "./price"
 import altImg from "assets/svg/alt.svg"
+import Link from "next/link"
 import { Suspense } from "react"
+import { Badge } from "../ui/badge"
 import { Skeleton } from "../ui/skeleton"
 import ListingClock from "./listing-clock"
-import Image from "next/image"
+import PriceTag from "./price"
 
 type props = {
   id?: string
@@ -40,12 +39,10 @@ export default function Listing({
       )}
     >
       <Link className="absolute inset-0" href={`/listing/${data.id}`}></Link>
-      <div
+      <picture
         className={`flex aspect-[16/9] max-h-52 overflow-hidden rounded-md border bg-muted`}
       >
-        <Image
-          priority={priority}
-          quality={60}
+        <img
           src={data?.media?.[0]?.url ?? altImg.src}
           alt="alt image"
           width={304}
@@ -58,7 +55,7 @@ export default function Listing({
             `text-transparent`,
           )}
         />
-      </div>
+      </picture>
       <div className="space-y-3 [&>p]:leading-none">
         {data.tags?.[0] ? <Badge>{data.tags?.[0]}</Badge> : null}
         <p className="text-pretty">{data.title}</p>

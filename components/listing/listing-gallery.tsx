@@ -78,17 +78,15 @@ export default function ListingGallery({ listing }: props) {
   return (
     <div className="space-y-4">
       <Link href={image ?? "#"} target="_blank">
-        <div className="flex aspect-square w-full basis-[600px] lg:w-[600px]">
-          <Image
-            priority
-            loading="eager"
+        <picture className="flex aspect-square w-full basis-[600px] lg:w-[600px]">
+          <img
             height={600}
             width={600}
             src={image}
             alt="listing img"
             className="h-full w-full rounded-md bg-muted object-contain"
           />
-        </div>
+        </picture>
       </Link>
       <ScrollArea
         ref={scrollRef}
