@@ -41,6 +41,8 @@ export default function ProfileImage({ url }: props) {
       >
         <div className="flex aspect-square w-full overflow-hidden rounded-lg bg-muted">
           <Image
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+            placeholder="blur"
             src={url}
             alt="Profile pic expanded"
             height={500}

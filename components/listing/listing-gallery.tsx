@@ -85,6 +85,8 @@ export default function ListingGallery({ listing }: props) {
             height={600}
             width={600}
             src={image}
+            blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+            placeholder="blur"
             alt="listing img"
             className="h-full w-full rounded-md bg-muted object-contain"
           />

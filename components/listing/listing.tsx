@@ -5,9 +5,9 @@ import { Badge } from "../ui/badge"
 import PriceTag from "./price"
 import altImg from "assets/svg/alt.svg"
 import { Suspense } from "react"
-import { Skeleton } from "../ui/skeleton"
 import ListingClock from "./listing-clock"
 import Image from "next/image"
+import { LoadingListingBottom } from "./listing-skeleton"
 
 type props = {
   id?: string
@@ -49,7 +49,7 @@ export default function Listing({
           priority={priority}
           quality={60}
           src={data?.media?.[0]?.url ?? altImg.src}
-          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNksAcAAEUAQRtOwGEAAAAASUVORK5CYII="
+          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
           placeholder="blur"
           alt="alt image"
           width={304}
@@ -66,19 +66,18 @@ export default function Listing({
       <div className="space-y-3 [&>p]:leading-none">
         {data.tags?.[0] ? <Badge>{data.tags?.[0]}</Badge> : null}
         <p className="text-pretty">{data.title}</p>
-        <Suspense fallback={<Skeleton className="h-5 w-20" />}>
+        <Suspense fallback={<LoadingListingBottom />}>
           <PriceTag myBid={useMyBid} id={data.id} />
-        </Suspense>
-        <div className="flex items-center text-pretty text-sm text-muted-foreground">
-          {data._count.bids} bids{" "}
-          <Suspense fallback={<Skeleton className="h-5 w-20" />}>
+
+          <div className="flex items-center text-pretty text-sm text-muted-foreground">
+            {data._count.bids} bids{" "}
             <ListingClock
               user={data?.seller?.name}
               revalidate={revalidate}
               id={data.id}
             />
-          </Suspense>
-        </div>
+          </div>
+        </Suspense>
       </div>
     </div>
   )

@@ -22,6 +22,8 @@ export default function Avatar({
         alt={alt}
         width={size}
         height={size}
+        blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
+        placeholder="blur"
         className={cn(className, "h-full w-full object-cover")}
       />
     </div>

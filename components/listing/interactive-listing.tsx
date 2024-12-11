@@ -20,7 +20,7 @@ import ListingGallery from "./listing-gallery"
 import NewListing from "./new-listing"
 import PriceTag from "./price"
 import { Suspense } from "react"
-import { Skeleton } from "../ui/skeleton"
+import { LoadingListingBottom } from "./listing-skeleton"
 
 type props = {
   listing: TYPE_LISTING
@@ -70,28 +70,26 @@ export default async function InteractiveListing({ listing }: props) {
             {listing.title}
           </h2>
           {listing.tags?.[0] ? <Badge>{listing.tags[0]}</Badge> : null}
-          <div>
-            <Suspense fallback={<Skeleton className="h-5 w-20" />}>
+          <>
+            <Suspense fallback={<LoadingListingBottom />}>
               <PriceTag id={listing.id} />
-            </Suspense>
-            <div className="flex items-center">
-              <BidListDialog listing={listing}>
-                <Button
-                  variant="link"
-                  className="px-0 text-muted-foreground underline hover:text-secondary-foreground"
-                >
-                  {listing._count.bids} Bids
-                </Button>
-              </BidListDialog>
-              <Suspense fallback={<Skeleton className="h-5 w-20" />}>
+              <div className="flex items-center">
+                <BidListDialog listing={listing}>
+                  <Button
+                    variant="link"
+                    className="px-0 text-muted-foreground underline hover:text-secondary-foreground"
+                  >
+                    {listing._count.bids} Bids
+                  </Button>
+                </BidListDialog>
                 <ListingClock
                   user={listing.seller.name}
                   revalidate={false}
                   id={listing.id}
                 />
-              </Suspense>
-            </div>
-          </div>
+              </div>
+            </Suspense>
+          </>
           {user.name !== listing.seller.name ? (
             <BidForm
               credits={user.credits}

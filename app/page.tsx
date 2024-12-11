@@ -38,7 +38,7 @@ export default async function Home({ searchParams }: props) {
           Showing results for &apos;{params.search}&apos;
         </span>
       </h1>
-      <ul className="grid grid-cols-[repeat(auto-fill,minmax(290px,1fr))] gap-4">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(290px,1fr))] gap-4">
         {data?.data?.length ? (
           data.data.map((listing, index) => {
             return (
@@ -55,7 +55,7 @@ export default async function Home({ searchParams }: props) {
         ) : (
           <p>No results</p>
         )}
-      </ul>
+      </div>
       <ListingPagination meta={data.meta} />
     </section>
   )

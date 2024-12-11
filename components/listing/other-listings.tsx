@@ -9,7 +9,7 @@ import { Separator } from "../ui/separator"
 import ListingClock from "./listing-clock"
 import { TYPE_LISTING } from "@/lib/definitions"
 import Image from "next/image"
-import { Skeleton } from "../ui/skeleton"
+import { LoadingOther } from "./listing-skeleton"
 
 const containerStyles = {
   default: "flex gap-4 w-full shrink-1 max-w-[1400px]",
@@ -79,21 +79,19 @@ export default async function OtherListings({ user, currentListingId }: props) {
                     <p className="max-w-[14.5rem] overflow-hidden truncate text-pretty text-sm">
                       {listing.title}
                     </p>
-                    <Suspense fallback={<Skeleton className="h-5 w-14" />}>
+                    <Suspense fallback={<LoadingOther />}>
                       <PriceTag className={"text-sm"} id={listing.id} />
-                    </Suspense>
-                    <div className="flex items-center">
-                      <span className="flex items-center text-pretty text-xs text-muted-foreground">
-                        {listing._count.bids} Bids
-                        <Suspense fallback={<Skeleton className="h-5 w-14" />}>
+                      <div className="flex items-center">
+                        <span className="flex items-center text-pretty text-xs text-muted-foreground">
+                          {listing._count.bids} Bids
                           <ListingClock
                             revalidate
                             id={listing.id}
                             user={user}
                           />
-                        </Suspense>
-                      </span>
-                    </div>
+                        </span>
+                      </div>
+                    </Suspense>
                   </div>
                 </div>
                 <div className="flex shrink-0 basis-72 px-1 xl:hidden">

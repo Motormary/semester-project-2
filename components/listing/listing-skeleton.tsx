@@ -7,15 +7,48 @@ export default function ListingLoading() {
     >
       <Skeleton className="aspect-[16/9] max-h-52 w-full rounded-md" />
       <div className="space-y-3">
-        <Skeleton className="h-5 w-24 rounded-full" />
+        <Skeleton className="h-5 w-20 rounded-full" />
         <Skeleton className="h-4 w-3/4" />
-        <Skeleton className="h-7 w-16" />
-        <div className="flex items-center space-x-2">
-          <Skeleton className="h-4 w-12" />
-          <Skeleton className="h-2 w-2 rounded-full" />
-          <Skeleton className="h-4 w-16" />
-        </div>
+        <>
+          <div className="pt-1.5">
+            <Skeleton className="h-5 w-10" />
+          </div>
+          <div className="flex items-center space-x-2 pb-1 pt-2">
+            <Skeleton className="h-3.5 w-10" />
+            <Skeleton className="h-2 w-2 rounded-full" />
+            <Skeleton className="h-3.5 w-14" />
+          </div>
+        </>
       </div>
     </div>
+  )
+}
+
+export function LoadingListingBottom() {
+  return (
+    <>
+      <div className="pt-1.5">
+        <Skeleton className="h-5 w-10" />
+      </div>
+      <div className="flex items-center space-x-2 pb-1 pt-2">
+        <Skeleton className="h-3.5 w-10" />
+        <Skeleton className="h-2 w-2 rounded-full" />
+        <Skeleton className="h-3.5 w-14" />
+      </div>
+    </>
+  )
+}
+export function LoadingOther() {
+  return (
+    <>
+      <div className="pt-1.5">
+        <Skeleton className="h-3.5 w-10" />
+      </div>
+      <div className="flex items-center space-x-2 pb-1 pt-1.5">
+        <Skeleton className="h-3.5 w-10" />
+        <Skeleton className="h-2 w-2 rounded-full" />
+        <Skeleton className="h-3.5 w-14" />
+      </div>
+    </>
   )
 }
