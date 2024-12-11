@@ -25,10 +25,22 @@ export default async function Home({ searchParams }: props) {
   return (
     <section className="w-full space-y-4">
       <Separator />
-      <h1>{params?._tag ? params._tag : "All listings"} <span className={cn(params?.search ? "visible" : "opacity-0 aria-hidden:true pointer-events-none", "text-xs font-normal")}>Showing results for &apos;{params.search}&apos;</span></h1>
+      <h1>
+        {params?._tag ? params._tag : "All listings"}{" "}
+        <span
+          className={cn(
+            params?.search
+              ? "visible"
+              : "aria-hidden:true pointer-events-none opacity-0",
+            "text-xs font-normal",
+          )}
+        >
+          Showing results for &apos;{params.search}&apos;
+        </span>
+      </h1>
       <ul className="grid grid-cols-[repeat(auto-fill,minmax(290px,1fr))] gap-4">
         {data?.data?.length ? (
-          data.data.map((listing) => {
+          data.data.map((listing, index) => {
             return (
               <Listing
                 revalidate
@@ -36,6 +48,7 @@ export default async function Home({ searchParams }: props) {
                 data={listing}
                 classname="hover:shadow-md focus-within:outline outline-2 outline-primary border"
                 id={listing.id}
+                load={index <= 6 ? "eager" : "lazy"}
               />
             )
           })
