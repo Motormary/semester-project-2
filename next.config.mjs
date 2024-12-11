@@ -11,6 +11,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "**", //! Insecure, don't do this with an actual app.
       },
+      {
+        protocol: "http",
+        hostname: "**", //! Insecure, don't do this with an actual app.
+      },
     ],
   },
 }

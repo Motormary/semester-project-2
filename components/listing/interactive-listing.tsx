@@ -65,8 +65,8 @@ export default async function InteractiveListing({ listing }: props) {
       </div>
       <div className="gap-6 space-y-4 lg:flex">
         <ListingGallery listing={listing} />
-        <div className="w-full space-y-6 lg:min-w-80">
-          <h2 className="overflow-hidden text-wrap break-words">
+        <div className="w-full space-y-6 lg:min-w-52 lg:max-w-80">
+          <h2 title={listing.title} className="text-pretty break-words line-clamp-3">
             {listing.title}
           </h2>
           {listing.tags?.[0] ? <Badge>{listing.tags[0]}</Badge> : null}
@@ -98,7 +98,7 @@ export default async function InteractiveListing({ listing }: props) {
               id={listing.id}
             />
           ) : null}
-          <div className="text-pretty">
+          <div className="text-pretty break-words">
             <p className="mb-1 font-semibold">Description</p>
             <p className="text-pretty text-sm">
               {listing.description?.trim()?.length

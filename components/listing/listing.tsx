@@ -65,7 +65,7 @@ export default function Listing({
       </div>
       <div className="space-y-3 [&>p]:leading-none">
         {data.tags?.[0] ? <Badge>{data.tags?.[0]}</Badge> : null}
-        <p className="text-pretty">{data.title}</p>
+        <p className="text-pretty break-all line-clamp-3 max-w-[329px]">{data.title}</p>
         <Suspense fallback={<LoadingListingBottom />}>
           <PriceTag myBid={useMyBid} id={data.id} />
 

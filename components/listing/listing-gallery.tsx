@@ -40,6 +40,7 @@ export default function ListingGallery({ listing }: props) {
     checkOverflow()
   }, [])
 
+  // Observe the first and last image, if the image gallery overflows, place a gradient color on the sides to indicate to the user that there are more images.
   useEffect(() => {
     if (!gallery.length) return
 
@@ -111,7 +112,7 @@ export default function ListingGallery({ listing }: props) {
                   onClick={() => setImage(media.url)}
                   className={cn(
                     image === media.url ? "outline outline-green-500" : "",
-                    "flex aspect-square overflow-hidden rounded-md bg-muted",
+                    "flex aspect-square w-28 overflow-hidden rounded-md bg-muted",
                   )}
                 >
                   <Image
@@ -133,7 +134,7 @@ export default function ListingGallery({ listing }: props) {
                 isLastImageInView
                   ? "opacity-0 animate-out fade-out"
                   : "animate-in fade-in",
-                "pointer-events-none absolute bottom-0 right-0 h-full w-14 bg-gradient-to-r from-transparent to-background text-muted-foreground duration-500 dark:to-muted",
+                "pointer-events-none absolute bottom-0 right-0 h-full w-14 bg-gradient-to-r from-transparent to-background text-muted-foreground duration-500 dark:to-background",
               )}
             />
             <div
@@ -141,7 +142,7 @@ export default function ListingGallery({ listing }: props) {
                 isFirstImageInView
                   ? "opacity-0 animate-out fade-out"
                   : "animate-in fade-in",
-                "pointer-events-none absolute bottom-0 left-0 h-full w-14 bg-gradient-to-l from-transparent to-background text-muted-foreground duration-500 dark:to-muted",
+                "pointer-events-none absolute bottom-0 left-0 h-full w-14 bg-gradient-to-l from-transparent to-background text-muted-foreground duration-500 dark:to-backround",
               )}
             />
           </>
