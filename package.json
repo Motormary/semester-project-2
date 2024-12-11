@@ -29,6 +29,7 @@
     "@radix-ui/react-tooltip": "^1.1.4",
     "@types/bcrypt": "^5.0.2",
     "@types/lodash.debounce": "^4.0.9",
+    "@vercel/toolbar": "^0.1.28",
     "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",

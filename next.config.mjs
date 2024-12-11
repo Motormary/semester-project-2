@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+import { withVercelToolbar } from "@vercel/toolbar/plugins/next"
 const nextConfig = {
   logging: {
     fetches: {
@@ -15,4 +16,5 @@ const nextConfig = {
   },
 }
 
-export default nextConfig
+// Instead of module.exports = nextConfig, do this:
+export default withVercelToolbar()(nextConfig)

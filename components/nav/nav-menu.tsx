@@ -60,26 +60,18 @@ export default async function NavMenu() {
       >
         Home
       </Link>
-      {/*       <Button className="hidden md:block" variant="ghost" asChild>
-        <Link href="/vendors">Vendors</Link>
-      </Button>
-      <Button className="hidden md:block" variant="ghost" asChild>
-        Vendors
-      </Button> */}
 
       {/* Desktop menu */}
       {user ? (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <div className="hidden md:flex">
               <Button
                 variant="ghost"
-                className="group px-0 hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
+                className="group hidden md:flex px-0 hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
               >
                 <span className="mb-[2px] max-w-36 truncate">{user.name}</span>
                 <Avatar src={user.avatar.url} alt="avatar" size={32} />
               </Button>
-            </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="end"

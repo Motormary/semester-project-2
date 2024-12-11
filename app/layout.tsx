@@ -8,6 +8,7 @@ import localFont from "next/font/local"
 import logo from "public/logo_filled_white.png"
 import { Toaster } from "sonner"
 import "./globals.css"
+import { VercelToolbar } from '@vercel/toolbar/next';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -47,6 +48,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const shouldInjectToolbar = process.env.NODE_ENV === 'development'
   return (
     <html lang="en" suppressHydrationWarning>
       <body
@@ -68,6 +70,7 @@ export default function RootLayout({
         </ThemeProvider>
         <div className="bg-cross pointer-events-none fixed -z-50 h-screen w-screen bg-cover bg-no-repeat" />
         <BackgroundImage />
+        {shouldInjectToolbar && <VercelToolbar />}
       </body>
     </html>
   )
