@@ -95,7 +95,7 @@ export default async function InteractiveListing({ listing }: props) {
           ) : null}
           <div className="text-pretty">
             <p className="mb-1 font-semibold">Description</p>
-            <p className="text-pretty text-sm">{listing.description}</p>
+            <p className="text-pretty text-sm">{listing.description?.trim()?.length ? listing.description : "No description provided"}</p>
           </div>
         </div>
       </div>

@@ -22,7 +22,7 @@ interface CountdownProps {
 
 /**
  * @description - Calculates time to end of auction and shows a dynamic clock.
- * - When time reaches 00:00 all post + id of post will be revalidated.
+ * - When time reaches 00:00 all the related caches of post will be revalidated (if the listing is in view).
  * ! This should not be handled on front-end like this, but we use what we got
  */
 export function Countdown({
@@ -42,7 +42,8 @@ export function Countdown({
   const [ended, setIsEnded] = useState(false)
 
   useEffect(() => {
-    if (ended) return
+    // Limit unnecessary intervals
+    if (ended || timeLeft.days > 0 || timeLeft.hours > 1 && timeLeft.minutes > 30) return
     // todo: remove this
     console.log("useEffect is running amok!")
     async function handleRevalidate() {
