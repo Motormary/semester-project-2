@@ -46,7 +46,7 @@ export default async function Home({ searchParams }: props) {
                 revalidate
                 key={listing.id}
                 data={listing}
-                classname="hover:shadow-md focus-within:outline outline-2 outline-primary border"
+                classname="hover:shadow-md dark:hover:bg-muted/20 focus-within:outline outline-2 outline-primary border"
                 id={listing.id}
                 priority={index < 4}
               />
