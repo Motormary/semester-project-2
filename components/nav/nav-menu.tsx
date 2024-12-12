@@ -70,7 +70,7 @@ export default async function NavMenu() {
                 className="group hidden md:flex px-0 hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
               >
                 <span className="mb-[2px] max-w-36 truncate">{user.name}</span>
-                <Avatar src={user.avatar.url} alt="avatar" size={32} />
+                <Avatar src={user.avatar.url} alt="avatar" size={32} className="max-w-8" />
               </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent
