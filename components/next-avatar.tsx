@@ -15,7 +15,7 @@ export default function Avatar({
   className,
 }: AvatarProps) {
   return (
-    <div className="aspect-square overflow-hidden rounded-full">
+    <div className="aspect-square overflow-hidden rounded-full group-focus-visible:outline group-hover:outline outline-1 outline-offset-2">
       <Image
         loading="eager"
         src={src}
