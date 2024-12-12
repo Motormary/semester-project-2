@@ -35,11 +35,11 @@ export default async function PriceTag({ id, className, myBid }: props) {
       <p>{higestBid?.amount} Ω</p>
       {isHighestBidder ? (
         <span className="text-sm">
-          Highest bid <CircleCheck className="inline size-5 text-primary" />
+          Highest bid <CircleCheck className="inline size-5 text-green-500 mb-[1px]" />
         </span>
       ) : hasBidButLost ? (
         <span className="text-sm">
-          Lost bid <CircleX className="inline size-5 text-destructive" />
+          Lost bid <CircleX className="inline size-5 text-destructive mb-[1px]" />
         </span>
       ) : null}
     </div>

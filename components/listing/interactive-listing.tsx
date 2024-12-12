@@ -35,7 +35,7 @@ export default async function InteractiveListing({ listing }: props) {
     minBid = getTopBid(listing.bids)[0].amount
   }
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 w-full">
       {/* Username */}
       <div className="flex w-full items-center justify-between">
         <Link
