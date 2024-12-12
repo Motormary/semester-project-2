@@ -16,11 +16,10 @@ type NotificationProps = {
 export default function Notifications({ user }: { user: string }) {
   const handleNotification = useCallback((notification: NotificationProps) => {
     toast.info(notification.title, {
-      style: { display: "flex", justifyContent: "space-between" },
       description: <strong>{notification.description}</strong>,
       action: (
         <Link
-          className={cn(buttonVariants({ variant: "default", size: "sm" }))}
+          className={cn(buttonVariants({ variant: "outline", size: "sm" }), "ml-auto")}
           href={`/listing/${notification.id}`}
         >
           View
