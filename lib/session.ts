@@ -9,7 +9,7 @@ import { cache } from "react"
 const secretKey = process.env.API_KEY
 const encodedKey = new TextEncoder().encode(secretKey)
 const cookie = {
-  name: "_ebox_session", // This cookie is used in middleware
+  name: "_ebox_session", // This cookie is used in middleware btw
   duration: 24 * 60 * 60 * 1000,
 }
 const noSession = {
@@ -69,7 +69,6 @@ export const verifySession = cache(async () => {
 
   const encryptedSession = (await cookies()).get(cookie.name)?.value
   const session = await decrypt(encryptedSession)
-  // TODO: update session based on date
 
   if (!session?.accessToken) {
     return noSession
