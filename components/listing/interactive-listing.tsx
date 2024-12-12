@@ -34,8 +34,9 @@ export default async function InteractiveListing({ listing }: props) {
   if (listing.bids?.length) {
     minBid = getTopBid(listing.bids)[0].amount
   }
+  const ended = new Date(listing.endsAt) < new Date()
   return (
-    <div className="space-y-4 w-full">
+    <div className="w-full space-y-4">
       {/* Username */}
       <div className="flex w-full items-center justify-between">
         <Link
@@ -66,7 +67,10 @@ export default async function InteractiveListing({ listing }: props) {
       <div className="gap-6 space-y-4 lg:flex">
         <ListingGallery listing={listing} />
         <div className="w-full space-y-6 lg:min-w-52 xl:max-w-80">
-          <h2 title={listing.title} className="text-pretty break-words line-clamp-3">
+          <h2
+            title={listing.title}
+            className="line-clamp-3 text-pretty break-words"
+          >
             {listing.title}
           </h2>
           {listing.tags?.[0] ? <Badge>{listing.tags[0]}</Badge> : null}
@@ -92,6 +96,7 @@ export default async function InteractiveListing({ listing }: props) {
           </>
           {user.name !== listing.seller.name ? (
             <BidForm
+              disabled={ended}
               credits={user.credits}
               seller={listing.seller.name}
               minBid={minBid}

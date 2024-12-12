@@ -30,9 +30,16 @@ type props = {
   minBid: number | undefined
   seller: string
   credits: number
+  disabled?: boolean
 }
 
-export default function BidForm({ id, minBid, seller, credits }: props) {
+export default function BidForm({
+  id,
+  minBid,
+  seller,
+  credits,
+  disabled,
+}: props) {
   const [isPending, startTransition] = useTransition()
   const bidAmount = minBid ? minBid + 1 : 1
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -68,6 +75,7 @@ export default function BidForm({ id, minBid, seller, credits }: props) {
               <FormLabel>Amount</FormLabel>
               <FormControl>
                 <Input
+                  disabled={disabled}
                   aria-label="Input bid value"
                   min={bidAmount}
                   type="number"
@@ -85,7 +93,10 @@ export default function BidForm({ id, minBid, seller, credits }: props) {
             </FormItem>
           )}
         />
-        <Button disabled={isPending} className="w-full disabled:bg-primary">
+        <Button
+          disabled={isPending || disabled}
+          className="w-full disabled:bg-primary"
+        >
           {isPending ? <RefreshCw className="animate-spin" /> : "Bid Ω"}
         </Button>
       </form>
