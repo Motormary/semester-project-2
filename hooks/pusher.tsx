@@ -40,5 +40,5 @@ export default function Notifications({ user }: { user: string }) {
     }
   }, [handleNotification, user])
 
-  return <div className="hidden">Notification listener</div>
+  return null
 }
