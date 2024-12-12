@@ -6,7 +6,6 @@ import PriceTag from "./price"
 import altImg from "assets/svg/alt.svg"
 import { Suspense } from "react"
 import ListingClock from "./listing-clock"
-import Image from "next/image"
 import { LoadingListingBottom } from "./listing-skeleton"
 
 type props = {
@@ -42,15 +41,11 @@ export default function Listing({
       <Link className="absolute inset-0" href={`/listing/${data.id}`}>
         <span className="sr-only">View {data.title}</span>
       </Link>
-      <div
+      <picture
         className={`flex aspect-[16/9] max-h-52 overflow-hidden rounded-md border bg-muted`}
       >
-        <Image
-          priority={priority}
-          quality={60}
+        <img
           src={data?.media?.[0]?.url ?? altImg.src}
-          blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="
-          placeholder="blur"
           alt="alt image"
           width={304}
           height={170}
@@ -62,7 +57,7 @@ export default function Listing({
             `text-transparent`,
           )}
         />
-      </div>
+      </picture>
       <div className="space-y-3 [&>p]:leading-none">
         {data.tags?.[0] ? <Badge>{data.tags?.[0]}</Badge> : null}
         <p className="text-pretty break-all line-clamp-3 max-w-[329px]">{data.title}</p>
