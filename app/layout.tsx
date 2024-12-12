@@ -48,6 +48,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <meta name="apple-mobile-web-app-title" content="EBOX" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} relative flex min-h-svh flex-col items-center bg-muted antialiased dark:bg-background`}
       >
