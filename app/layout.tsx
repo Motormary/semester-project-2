@@ -6,6 +6,9 @@ import { ModeToggle } from "@/components/theme-toggle-button"
 import type { Metadata } from "next"
 import localFont from "next/font/local"
 import logo from "public/logo_filled_white.png"
+import icon from "app/icon.png"
+import icon2 from "app/icon.svg"
+import favico from "app/favicon.ico"
 import { Toaster } from "sonner"
 import "./globals.css"
 
@@ -30,6 +33,7 @@ export const metadata: Metadata = {
   },
   title: "EBOX",
   description: "BOX up and sell your stuff on EBOX",
+  icons: [icon.src, icon2.src, favico.src],
   openGraph: {
     images: {
       url: logo.src,

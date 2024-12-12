@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/sheet"
 import { cn } from "@/lib/utils"
 import { DropdownMenuGroup } from "@radix-ui/react-dropdown-menu"
-import { Box, Home, Menu, User } from "lucide-react"
+import { Box, Home, Menu, RefreshCw, User } from "lucide-react"
 import Link from "next/link"
 import NewListing from "../listing/new-listing"
 import {
@@ -20,6 +20,7 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu"
 import { Separator } from "../ui/separator"
@@ -65,13 +66,18 @@ export default async function NavMenu() {
       {user ? (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                className="group hidden md:flex px-0 hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0"
-              >
-                <span className="mb-[2px] max-w-36 truncate">{user.name}</span>
-                <Avatar src={user.avatar.url} alt="avatar" size={32} className="max-w-8" />
-              </Button>
+            <Button
+              variant="ghost"
+              className="group hidden px-0 hover:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 md:flex"
+            >
+              <span className="mb-[2px] max-w-36 truncate">{user.name}</span>
+              <Avatar
+                src={user.avatar.url}
+                alt="avatar"
+                size={32}
+                className="max-w-8"
+              />
+            </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="end"
@@ -115,13 +121,18 @@ export default async function NavMenu() {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <form action={logoutUser}>
-              <DropdownMenuItem>
-                <button
-                  className="w-full text-left hover:cursor-default"
-                  type="submit"
-                >
-                  Log out
-                </button>
+              <DropdownMenuItem className="group" asChild>
+                <div>
+                  <button
+                    className="w-full text-left hover:cursor-default group-active:text-muted-foreground"
+                    type="submit"
+                  >
+                    Log out
+                  </button>
+                  <DropdownMenuShortcut>
+                    <RefreshCw className="ml-auto inline size-5 animate-spin opacity-0 group-active:opacity-100" />
+                  </DropdownMenuShortcut>
+                </div>
               </DropdownMenuItem>
             </form>
           </DropdownMenuContent>
@@ -239,7 +250,7 @@ export default async function NavMenu() {
                   </Link>
                 </SheetTrigger> */}
                   <Separator />
-                  <SheetTrigger className="h-full w-full">
+                  <SheetTrigger className="h-full w-full" asChild>
                     <MobileLogoutButton />
                   </SheetTrigger>
                 </>
