@@ -53,7 +53,7 @@ export default function ListingPagination({ meta }: Props) {
 
   return (
     <Pagination>
-      <PaginationContent className="max-xs:max-w-[320px] overflow-hidden">
+      <PaginationContent className="max-xs:max-w-[320px]">
         <PaginationItem>
           <PaginationFirst
             size="sm"
