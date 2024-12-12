@@ -19,7 +19,7 @@ export default function Notifications({ user }: { user: string }) {
       description: <strong>{notification.description}</strong>,
       action: (
         <Link
-          className={cn(buttonVariants({ variant: "outline", size: "sm" }), "ml-auto")}
+          className={cn(buttonVariants({ variant: "default", size: "sm" }), "ml-auto")}
           href={`/listing/${notification.id}`}
         >
           View
