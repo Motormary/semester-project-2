@@ -1,4 +1,4 @@
-import logo from "assets/images/logo_filled.png"
+import logo from "public/logo_filled_white.png"
 import Link from "next/link"
 import SearchBar from "./search-bar"
 import NavMenu from "./nav-menu"
@@ -19,7 +19,7 @@ export default async function TopNav() {
               height={40}
               src={logo.src}
               alt="NavLogo"
-              className="dark:invert"
+              className="invert dark:invert-0"
             />
           </Link>
           <div className="flex items-center gap-5">

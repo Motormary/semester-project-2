@@ -2,7 +2,7 @@
 import createUser from "@/app/actions/user/create"
 import { RegisterUserSchema, TYPE_USER_REGISTER } from "@/lib/definitions"
 import { zodResolver } from "@hookform/resolvers/zod"
-import logo from "assets/images/logo_filled.png"
+import logo from "public/logo_filled_white.png"
 import Image from "next/image"
 import Link from "next/link"
 import { useForm } from "react-hook-form"
@@ -82,7 +82,7 @@ export default function RegisterCard({ className, closeModal }: props) {
             src={logo}
             alt="Logo"
             height="50"
-            className="place-self-center dark:invert"
+            className="invert dark:invert-0"
           />
         </CardTitle>
       </CardHeader>

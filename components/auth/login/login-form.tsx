@@ -23,7 +23,7 @@ import { LoginUserSchema, TYPE_USER_LOGIN } from "@/lib/definitions"
 import { handleErrors } from "@/lib/handle-errors"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
-import logo from "assets/images/logo_filled.png"
+import logo from "public/logo_filled_white.png"
 import { RefreshCw } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
@@ -77,7 +77,7 @@ export default function LoginCard({ className, closeModal }: props) {
             src={logo}
             alt="Logo"
             height="50"
-            className="dark:invert"
+            className="invert dark:invert-0"
           />
         </CardTitle>
       </CardHeader>
