@@ -9,8 +9,8 @@ export default function Loading() {
     <div className="h-fit w-full space-y-4 overflow-hidden">
       <Separator />
       <h1>Listing</h1>
-      <div className="flex flex-col gap-y-6 rounded-lg border bg-card p-[5%] pb-8 text-card-foreground shadow-sm md:p-6 xl:flex-row xl:gap-6">
-        <div className="space-y-4">
+      <div className="mr-auto flex flex-col justify-between gap-y-6 rounded-lg border bg-card p-[5%] pb-8 text-card-foreground shadow-sm md:p-6 xl:flex-row xl:gap-6">
+        <div className="mr-auto space-y-4">
           {/* Username */}
           <div className="flex w-full items-center justify-between">
             <div className="flex items-center gap-2">
@@ -24,12 +24,9 @@ export default function Loading() {
               <Skeleton className="aspect-square h-full w-full rounded-lg lg:h-[600px] lg:w-[600px]" />
               <Skeleton className="size-28" />
             </div>
-            <div className="w-full space-y-6 lg:min-w-80">
-              {/* Title + tag */}
-              <Skeleton className="h-7 w-40" />
-            </div>
           </div>
         </div>
+        <LoadingOthers />
       </div>
     </div>
   )
@@ -37,7 +34,7 @@ export default function Loading() {
 
 export function LoadingInteractive() {
   return (
-    <div className="space-y-4">
+    <div className="mr-auto space-y-4">
       {/* Username */}
       <div className="flex w-full items-center justify-between">
         <div className="flex items-center gap-2">
@@ -50,10 +47,6 @@ export function LoadingInteractive() {
         <div className="space-y-4">
           <Skeleton className="aspect-square h-full w-full rounded-lg lg:h-[600px] lg:w-[600px]" />
           <Skeleton className="size-28" />
-        </div>
-        <div className="w-full space-y-6 lg:min-w-80">
-          {/* Title + tag */}
-          <Skeleton className="h-7 w-40" />
         </div>
       </div>
     </div>
@@ -77,7 +70,7 @@ export function LoadingOthers() {
               <div className="relative hidden w-full items-center gap-3.5 overflow-hidden rounded-md p-4 hover:bg-muted xl:flex">
                 {/* Image */}
                 <Skeleton className="aspect-square size-20" />
-                <div className="w-full flex flex-col h-20 justify-between space-y-3">
+                <div className="flex h-20 w-full flex-col justify-between space-y-3">
                   {/* Title + price */}
                   <Skeleton className="h-4 w-2/3" />
                   <div>
@@ -85,10 +78,7 @@ export function LoadingOthers() {
                     <div className="flex items-center">
                       <Skeleton className="h-4 w-9" />
                       <>
-                        <Dot
-                          strokeWidth="3"
-                          className="text-muted"
-                        />
+                        <Dot strokeWidth="3" className="text-muted" />
                         <Skeleton className="h-4 w-10" />
                       </>
                     </div>
