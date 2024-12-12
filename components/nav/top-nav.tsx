@@ -8,7 +8,7 @@ import Image from "next/image"
 
 export default async function TopNav() {
   return (
-    <div className="peer mb-4 flex w-full flex-col gap-4">
+    <div id="top" className="peer mb-4 flex w-full flex-col gap-4">
       <div className="flex h-[64px] justify-center bg-background/70 shadow-sm backdrop-blur-sm dark:border-b">
         <nav className="flex w-full max-w-content items-center justify-between px-4">
           <Link href="/">
