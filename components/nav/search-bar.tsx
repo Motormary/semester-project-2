@@ -85,6 +85,7 @@ export default function SearchBar() {
     >
       <label className="group flex h-10 items-center rounded-md border border-input bg-background pl-3 text-base focus-within:outline-none focus-within:ring-2 focus-within:ring-ring md:w-1/3 md:text-sm">
         <label htmlFor="search">
+          <span className="sr-only">Search All Listings</span>
           {isPending ? (
             <RefreshCw className="size-5 animate-spin text-muted-foreground" />
           ) : (

@@ -41,6 +41,7 @@ export default function ProfileListingSearch() {
     >
       <label className="group mx-auto flex h-10 items-center rounded-md border border-input bg-background px-3 text-base focus-within:outline-none md:text-sm lg:w-1/3">
         <label htmlFor="user_listings">
+        <span className="sr-only">Search All User Listings</span>
           {isPending ? (
             <RefreshCw className="size-5 animate-spin text-muted-foreground" />
           ) : (
