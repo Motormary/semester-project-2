@@ -1,12 +1,19 @@
 "use client"
 
-import { Moon, MoonIcon, PcCase, Sun, SunIcon } from "lucide-react"
+import {
+  Monitor,
+  Moon,
+  MoonIcon,
+  Sun,
+  SunIcon
+} from "lucide-react"
 import { useTheme } from "next-themes"
 
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -59,40 +66,79 @@ export function ThemeSwitch() {
   const { setTheme, theme } = useTheme()
 
   return (
-    <div className="flex items-center space-x-1.5 py-0.5 hover:cursor-pointer">
-      <button aria-label="light-theme" aria-controls="theme">
+    <DropdownMenuGroup className="flex items-center space-x-[1px] py-0.5">
+      <DropdownMenuItem
+        title="Light theme"
+        className={cn(
+          theme === "light"
+            ? "bg-primary hover:bg-primary focus:bg-primary"
+            : "hover:bg-primary/70 focus:bg-primary/70",
+          "group/light h-5 w-7 rounded-none rounded-l-full p-0 outline outline-1 transition-colors hover:cursor-pointer",
+        )}
+        onClick={(e) => {
+          e.preventDefault()
+          setTheme("light")
+        }}
+        aria-label="light-theme"
+        aria-controls="theme"
+      >
         <SunIcon
-          onClick={() => setTheme("light")}
           className={cn(
             theme === "light"
-              ? "outline-3 bg-primary stroke-secondary outline-offset-0"
-              : "text-muted-foreground outline-1 outline-offset-2 outline-muted-foreground/70",
-            "h-[16px] w-[32px] rounded-l-full outline",
+              ? "text-primary-foreground"
+              : "group-hover/light:text-primary-foreground group-focus/light:text-primary-foreground",
+            "m-auto transition-colors",
           )}
         />
-      </button>
-      <button aria-label="system-theme" aria-controls="theme">
-        <PcCase
-          onClick={() => setTheme("system")}
+      </DropdownMenuItem>
+      <DropdownMenuItem
+      title="System theme"
+        className={cn(
+          theme === "system"
+            ? "bg-primary hover:bg-primary focus:bg-primary"
+            : "hover:bg-primary/70 focus:bg-primary/70",
+          "group/system h-5 w-7 rounded-none p-0 outline outline-1 transition-colors hover:cursor-pointer",
+        )}
+        onClick={(e) => {
+          e.preventDefault()
+          setTheme("system")
+        }}
+        aria-label="system-theme"
+        aria-controls="theme"
+      >
+        <Monitor
           className={cn(
             theme === "system"
-              ? "outline-3 bg-primary stroke-secondary outline-offset-0"
-              : "text-muted-foreground outline-1 outline-offset-2 outline-muted-foreground/70",
-            "h-[16px] w-[32px] outline",
+              ? "text-primary-foreground"
+              : "group-hover/system:text-primary-foreground group-focus/system:text-primary-foreground",
+            "m-auto transition-colors",
           )}
         />
-      </button>
-      <button aria-label="dark-theme" aria-controls="theme">
+      </DropdownMenuItem>
+      <DropdownMenuItem
+      title="Dark theme"
+        className={cn(
+          theme === "dark"
+            ? "bg-primary hover:bg-primary focus:bg-primary"
+            : "hover:bg-primary/70 focus:bg-primary/70",
+          "group/dark h-5 w-7 rounded-none rounded-r-full p-0 outline outline-1 transition-colors hover:cursor-pointer",
+        )}
+        onClick={(e) => {
+          e.preventDefault()
+          setTheme("dark")
+        }}
+        aria-label="dark-theme"
+        aria-controls="theme"
+      >
         <MoonIcon
-          onClick={() => setTheme("dark")}
           className={cn(
             theme === "dark"
-              ? "outline-3 bg-primary stroke-secondary outline-offset-0"
-              : "text-muted-foreground outline-1 outline-offset-2 outline-muted-foreground/70",
-            "h-[16px] w-[32px] rounded-r-full outline",
+              ? "text-primary-foreground"
+              : "group-hover/dark:text-primary-foreground group-focus/dark:text-primary-foreground",
+            "m-auto transition-colors",
           )}
         />
-      </button>
-    </div>
+      </DropdownMenuItem>
+    </DropdownMenuGroup>
   )
 }

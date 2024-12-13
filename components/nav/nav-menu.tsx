@@ -119,11 +119,8 @@ export default async function NavMenu() {
                   Wins <span className="p-0.5 text-xs">{user._count.wins}</span>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuLabel className="flex justify-between select-none">
-                Theme{" "}
-                <div>
-                  <ThemeSwitch />
-                </div>
+              <DropdownMenuLabel className="flex select-none justify-between">
+                Theme <ThemeSwitch /> 
               </DropdownMenuLabel>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
@@ -194,7 +191,12 @@ export default async function NavMenu() {
                     href={`/vendors/${user.name}`}
                     className="flex items-center gap-4 py-2 text-left sm:self-center"
                   >
-                    <Avatar size={40} src={user.avatar.url} alt="Avatar" className="max-w-10" />
+                    <Avatar
+                      size={40}
+                      src={user.avatar.url}
+                      alt="Avatar"
+                      className="max-w-10"
+                    />
                     <div className="overflow-hidden truncate whitespace-nowrap">
                       <p className="text-sm font-semibold">{user.name}</p>
                       <p className="truncate text-sm">{user.email}</p>
@@ -250,12 +252,6 @@ export default async function NavMenu() {
                       <span className="p-0.5 text-sm">{user._count.wins}</span>
                     </Link>
                   </SheetTrigger>
-                  {/*                 <SheetTrigger asChild>
-                  <Link className="py-2" href={"/vendors/user/bids"}>
-                    <p>Vendors</p>
-                    <Users strokeWidth={1.5} className="size-5" />
-                  </Link>
-                </SheetTrigger> */}
                   <Separator />
                   <SheetTrigger className="h-full w-full" asChild>
                     <MobileLogoutButton />
