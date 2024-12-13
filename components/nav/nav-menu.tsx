@@ -194,7 +194,7 @@ export default async function NavMenu() {
                     href={`/vendors/${user.name}`}
                     className="flex items-center gap-4 py-2 text-left sm:self-center"
                   >
-                    <Avatar size={40} src={user.avatar.url} alt="Avatar" />
+                    <Avatar size={40} src={user.avatar.url} alt="Avatar" className="max-w-10" />
                     <div className="overflow-hidden truncate whitespace-nowrap">
                       <p className="text-sm font-semibold">{user.name}</p>
                       <p className="truncate text-sm">{user.email}</p>
