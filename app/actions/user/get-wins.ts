@@ -43,7 +43,7 @@ const getUserWins = cache(
       res.data.data = res.data.data.filter(
         (listing) =>
           listing.title.toLowerCase().includes(searchValue) ||
-          listing.description.toLowerCase().includes(searchValue),
+          (listing.description && listing.description.toLowerCase().includes(searchValue)),
       )
     }
 
