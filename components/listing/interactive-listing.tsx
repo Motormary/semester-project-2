@@ -1,7 +1,7 @@
 import { getCurrentUser } from "@/app/actions/user/get"
 import { TYPE_LISTING } from "@/lib/definitions"
 import { getTopBid } from "@/lib/utils"
-import { Edit } from "lucide-react"
+import { Edit, Trash2 } from "lucide-react"
 import Link from "next/link"
 import { redirect } from "next/navigation"
 import Avatar from "../next-avatar"
@@ -21,6 +21,7 @@ import NewListing from "./new-listing"
 import PriceTag from "./price"
 import { Suspense } from "react"
 import { LoadingListingBottom } from "./listing-skeleton"
+import DeleteListingDialog from "./delete-listing"
 
 type props = {
   listing: TYPE_LISTING
@@ -48,20 +49,33 @@ export default async function InteractiveListing({ listing }: props) {
           </div>
           <span className="text-sm">{listing.seller.name}</span>
         </Link>
-        {user && user.name === listing.seller.name ? (
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <NewListing initialData={listing}>
-                  <Edit
-                    strokeWidth={1.5}
-                    className="size-5 hover:cursor-pointer"
-                  />
-                </NewListing>
-              </TooltipTrigger>
-              <TooltipContent>Edit listing</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+        {user && user.name === listing.seller.name && !ended ? (
+          <div className="grid grid-flow-col gap-5">
+            <TooltipProvider>
+              <Tooltip delayDuration={100}>
+                <TooltipTrigger>
+                  <DeleteListingDialog
+                    id={listing.id}
+                    seller={listing.seller.name}
+                    bids={listing.bids}
+                  >
+                    <Trash2 className="size-4" />
+                  </DeleteListingDialog>
+                </TooltipTrigger>
+                <TooltipContent>Delete listing</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            <TooltipProvider>
+              <Tooltip delayDuration={100}>
+                <TooltipTrigger>
+                  <NewListing initialData={listing}>
+                    <Edit className="size-4 hover:cursor-pointer" />
+                  </NewListing>
+                </TooltipTrigger>
+                <TooltipContent>Edit listing</TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
         ) : null}
       </div>
       <div className="gap-6 space-y-4 lg:flex">

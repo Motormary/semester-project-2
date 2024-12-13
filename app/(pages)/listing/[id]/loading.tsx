@@ -64,7 +64,7 @@ export function LoadingOthers() {
           "shrink-1 flex w-full max-w-[1400px] gap-4 py-1 xl:mx-auto xl:w-full xl:flex-col xl:justify-center xl:border-t xl:pt-4"
         }
       >
-        {Array.from({ length: 5 }).map((_, index) => {
+        {Array.from({ length: 4 }).map((_, index) => {
           return (
             <Fragment key={index}>
               <div className="relative hidden w-full items-center gap-3.5 overflow-hidden rounded-md p-4 hover:bg-muted xl:flex">

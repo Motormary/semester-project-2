@@ -2,9 +2,9 @@
 
 import { revalidatePath, revalidateTag } from "next/cache"
 
+// Client callable revalidation
 export async function RevalidateCache(tag: string) {
   if (!tag) throw new Error("Error revalidating tag: Cache tag missing")
-  console.log("🔥 ~ Revalidating cache tag:", tag)
   revalidateTag(tag)
 }
 

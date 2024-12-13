@@ -211,7 +211,7 @@ const errorSchema = z.object({
   path: z.array(z.string()).optional(),
 })
 
-// Dynamic zod schema, takes a zod schema as params and uses it as the TYPE for "data" in the response object.
+// Generic zod schema, takes a zod schema as params and uses it as the TYPE for "data" in the response object.
 const responseSchema = <T>(dataSchema: z.ZodType<T>) =>
   z.object({
     success: z.boolean(),
@@ -230,8 +230,7 @@ const getProfileSchema = responseSchema(ProfileSchema)
 const getUserBidsSchema = responseSchema(BidsSchema)
 const getListingsSchema = responseSchema(multipleListingSchema)
 const getListingSchema = responseSchema(listingSchema)
-
-export type TYPE_FETCH<T> = z.infer<ReturnType<typeof responseSchema<T>>>
+const deleteListingSchema = responseSchema(null as any)
 
 // Misc
 export type TYPE_API_ERROR = z.infer<typeof errorSchema>
@@ -250,6 +249,7 @@ export type TYPE_USER_EDIT = z.infer<typeof EditUserSchema>
 export type TYPE_USER_BID = z.infer<typeof BidSchema>
 
 export type TYPE_USER_BIDS = z.infer<typeof BidsSchema>
+
 // User request types
 export type TYPE_GET_USER_BIDS = z.infer<typeof getUserBidsSchema>
 
@@ -264,3 +264,5 @@ export type TYPE_CREATE_LISTING = z.infer<typeof newListingSchema>
 export type TYPE_GET_LISTING = z.infer<typeof getListingSchema>
 
 export type TYPE_GET_LISTINGS = z.infer<typeof getListingsSchema>
+
+export type TYPE_DELETE_LISTING = z.infer<typeof deleteListingSchema>

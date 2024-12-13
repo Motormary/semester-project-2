@@ -13,6 +13,8 @@ import { CacheOptions, ErrorSource, Method } from "@/lib/definitions"
  * @param revalidate - Optional number of seconds to revalidate the cache
  * @param tags - Optional array of cache tags for targeted invalidation
  *
+ * ! Do not edit lightly
+ * ! This function is pseudo-typesafe as we force the return value as T, pass only the zod schemas created by the generic fetch schema in definition.ts
  */
 export default async function superFetch<T>({
   method,
@@ -34,51 +36,52 @@ export default async function superFetch<T>({
   if (!method || !url) throw new Error("Missing params")
   const headers = new Headers()
 
-  // Check for token cookie
+  //* Check for token cookie
   if (token) {
-    // Add accessToken to headers from cookies
+    //* Add accessToken to headers from cookies
     headers.append("Authorization", `Bearer ${token}`)
     headers.append("X-Noroff-API-Key", process.env.API_KEY as string)
   }
 
-  /* Initial a next request */
+  //* Initialize a next request
   const requestOptions: RequestInit = {
     method: method,
     headers,
-    cache: !revalidate ? cache : undefined, // cache can't be set with revalidate
+    cache: !revalidate ? cache : undefined, //* cache can't be set with revalidate
     next: {
-      revalidate: revalidate, // Time to revalidate fetch request - SECONDS (3600 = 1 hour)
-      tags: tags, // Add tags to the fetch request for targeted invalidation
+      revalidate: revalidate, //* Time to revalidate fetch request - SECONDS (3600 = 1 hour)
+      tags: tags, //* Add tags to the fetch request for targeted invalidation
     },
   }
 
-  /* If there is a body, add it to the request */
+  //* If there is a body, add it to the request
   if (body) {
     headers.append("Content-Type", "application/json")
     requestOptions.body = JSON.stringify(body)
   }
 
-  // Here we avoid the try/catch pit of despair
+  //* Here we avoid the try/catch pit of despair
   const response = await fetch(url, requestOptions)
     .then((res) => ({ data: res, success: true }))
     .catch((error) => ({ data: error, success: false }))
 
   /**
-   * Pass a source we can check
-   * if ErrorSource.CAUGHT return a string to the error field. Console.error this and show the user a generic error message instead
+   ** Pass a source we can check
+   ** if ErrorSource.CAUGHT return a string to the error field. Console.error this and show the user a generic error message instead
    */
   if (!response.success) {
     return {
       success: false,
       source: ErrorSource.CAUGHT,
-      data: null as null,
+      data: null,
       error: response.data.message,
     } as T
   }
 
-  const data = response.data.status !== 204 ? await response.data.json() : null // 204 = no content
+  const data = response.data.status !== 204 ? await response.data.json() : null //* 204 = no content
 
   //* If ErrorSource.API set error as errors[] from backend
+  //* Errors will also exist in data, but we use the error prop for the sake of consistency
   if (response.success && !response.data.ok) {
     return {
       success: false,

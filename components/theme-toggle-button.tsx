@@ -66,7 +66,7 @@ export function ThemeSwitch() {
           className={cn(
             theme === "light"
               ? "outline-3 bg-primary stroke-secondary outline-offset-0"
-              : "text-muted-foreground outline-1 outline-offset-2 outline-muted",
+              : "text-muted-foreground outline-1 outline-offset-2 outline-muted-foreground/70",
             "h-[16px] w-[32px] rounded-l-full outline",
           )}
         />
@@ -77,7 +77,7 @@ export function ThemeSwitch() {
           className={cn(
             theme === "system"
               ? "outline-3 bg-primary stroke-secondary outline-offset-0"
-              : "text-muted-foreground outline-1 outline-offset-2 outline-muted",
+              : "text-muted-foreground outline-1 outline-offset-2 outline-muted-foreground/70",
             "h-[16px] w-[32px] outline",
           )}
         />
@@ -88,7 +88,7 @@ export function ThemeSwitch() {
           className={cn(
             theme === "dark"
               ? "outline-3 bg-primary stroke-secondary outline-offset-0"
-              : "text-muted-foreground outline-1 outline-offset-2 outline-muted",
+              : "text-muted-foreground outline-1 outline-offset-2 outline-muted-foreground/70",
             "h-[16px] w-[32px] rounded-r-full outline",
           )}
         />
