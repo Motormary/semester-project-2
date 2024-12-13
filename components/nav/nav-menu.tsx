@@ -30,6 +30,7 @@ import { getCurrentUser } from "@/app/actions/user/get"
 import { logoutUser } from "@/app/actions/user/login"
 import Notifications from "@/hooks/pusher"
 import Avatar from "../next-avatar"
+import { ThemeSwitch } from "../theme-toggle-button"
 
 export default async function NavMenu() {
   let user = null
@@ -118,6 +119,12 @@ export default async function NavMenu() {
                   Wins <span className="p-0.5 text-xs">{user._count.wins}</span>
                 </Link>
               </DropdownMenuItem>
+              <DropdownMenuLabel className="flex justify-between select-none">
+                Theme{" "}
+                <div>
+                  <ThemeSwitch />
+                </div>
+              </DropdownMenuLabel>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <form action={logoutUser}>
