@@ -35,7 +35,7 @@ export default async function SimilarListing({
                 <Listing
                   revalidate
                   data={listing}
-                  classname="shadow-none hover:bg-muted"
+                  classname="shadow-none hover:bg-muted focus-within:bg-muted"
                   id={index.toString()}
                 />
               </li>

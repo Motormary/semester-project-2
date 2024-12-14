@@ -58,7 +58,7 @@ export default async function OtherListings({ user, currentListingId }: props) {
           {otherActiveListings.map((listing, index) => {
             return (
               <Fragment key={listing.id}>
-                <div className="relative hidden w-full items-center gap-4 overflow-hidden rounded-md p-4 hover:bg-muted xl:flex">
+                <div className="relative hidden w-full items-center gap-4 overflow-hidden rounded-md p-4 hover:bg-muted focus-within:bg-muted xl:flex">
                   <Link
                     className="absolute inset-0"
                     href={`/listing/${listing.id}`}
@@ -95,7 +95,7 @@ export default async function OtherListings({ user, currentListingId }: props) {
                   </div>
                 </div>
                 <div className="flex shrink-0 basis-72 px-1 xl:hidden">
-                  <Listing revalidate data={listing} />
+                  <Listing revalidate data={listing} classname="hover:bg-muted focus:bg-muted" />
                 </div>
                 {index !== otherActiveListings.length - 1 ? (
                   <Separator className="hidden xl:block" />

@@ -52,7 +52,7 @@ export default function ListingPagination({ meta }: Props) {
   if (meta.pageCount === 1) return null
 
   return (
-    <Pagination>
+    <Pagination className="my-1">
       <PaginationContent className="max-xs:max-w-[320px]">
         <PaginationItem>
           <PaginationFirst
