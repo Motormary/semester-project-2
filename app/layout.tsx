@@ -24,7 +24,7 @@ const geistMono = localFont({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://mkm-semester-project-2.netlify.app/"),
+  metadataBase: new URL("https://semester-project-2-one.vercel.app/"),
   alternates: {
     canonical: "/",
     languages: {
