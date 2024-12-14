@@ -76,7 +76,7 @@ export function ThemeSwitch() {
         title="Light theme"
         className={cn(
           theme === "light"
-            ? "bg-primary hover:bg-primary focus:bg-primary"
+            ? "bg-primary hover:bg-primary/80 focus:bg-primary/80"
             : "hover:bg-primary/70 focus:bg-primary/70",
           "group/light h-5 w-7 rounded-none rounded-l-full p-0 outline outline-1 transition-colors hover:cursor-pointer",
         )}
@@ -104,7 +104,7 @@ export function ThemeSwitch() {
       title="System theme"
         className={cn(
           theme === "system"
-            ? "bg-primary hover:bg-primary focus:bg-primary"
+            ? "bg-primary hover:bg-primary/80 focus:bg-primary/80"
             : "hover:bg-primary/70 focus:bg-primary/70",
           "group/system h-5 w-7 rounded-none p-0 outline outline-1 transition-colors hover:cursor-pointer",
         )}
@@ -133,7 +133,7 @@ export function ThemeSwitch() {
       title="Dark theme"
         className={cn(
           theme === "dark"
-            ? "bg-primary hover:bg-primary focus:bg-primary"
+            ? "bg-primary hover:bg-primary/80 focus:bg-primary/80"
             : "hover:bg-primary/70 focus:bg-primary/70",
           "group/dark h-5 w-7 rounded-none rounded-r-full p-0 outline outline-1 transition-colors hover:cursor-pointer",
         )}
