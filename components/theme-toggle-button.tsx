@@ -19,6 +19,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { cn } from "@/lib/utils"
+import { useRef } from "react"
 
 export function ModeToggle() {
   const { setTheme } = useTheme()
@@ -64,10 +65,14 @@ export function ModeToggle() {
 
 export function ThemeSwitch() {
   const { setTheme, theme } = useTheme()
+  const lightRef = useRef<HTMLDivElement>(null)
+  const systemRef = useRef<HTMLDivElement>(null)
+  const darkRef = useRef<HTMLDivElement>(null)
 
   return (
     <DropdownMenuGroup className="flex items-center space-x-[1px] py-0.5">
       <DropdownMenuItem
+      ref={lightRef}
         title="Light theme"
         className={cn(
           theme === "light"
@@ -78,6 +83,9 @@ export function ThemeSwitch() {
         onClick={(e) => {
           e.preventDefault()
           setTheme("light")
+        }}
+        onKeyDown={({key}) => {
+          if (key === 'ArrowRight' && systemRef.current) systemRef.current.focus()
         }}
         aria-label="light-theme"
         aria-controls="theme"
@@ -92,6 +100,7 @@ export function ThemeSwitch() {
         />
       </DropdownMenuItem>
       <DropdownMenuItem
+      ref={systemRef}
       title="System theme"
         className={cn(
           theme === "system"
@@ -102,6 +111,10 @@ export function ThemeSwitch() {
         onClick={(e) => {
           e.preventDefault()
           setTheme("system")
+        }}
+        onKeyDown={({key}) => {
+          if (key === 'ArrowRight' && darkRef.current) darkRef.current.focus()
+          if (key === 'ArrowLeft' && lightRef.current) lightRef.current.focus()
         }}
         aria-label="system-theme"
         aria-controls="theme"
@@ -116,6 +129,7 @@ export function ThemeSwitch() {
         />
       </DropdownMenuItem>
       <DropdownMenuItem
+      ref={darkRef}
       title="Dark theme"
         className={cn(
           theme === "dark"
@@ -126,6 +140,9 @@ export function ThemeSwitch() {
         onClick={(e) => {
           e.preventDefault()
           setTheme("dark")
+        }}
+        onKeyDown={({key}) => {
+          if (key === 'ArrowLeft' && systemRef.current) systemRef.current.focus()
         }}
         aria-label="dark-theme"
         aria-controls="theme"
