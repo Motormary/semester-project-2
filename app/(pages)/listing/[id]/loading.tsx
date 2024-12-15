@@ -10,22 +10,7 @@ export default function Loading() {
       <Separator />
       <h1>Listing</h1>
       <div className="mr-auto flex flex-col justify-between gap-y-6 rounded-lg border bg-card p-[5%] pb-8 text-card-foreground shadow-sm md:p-6 xl:flex-row xl:gap-6">
-        <div className="mr-auto space-y-4">
-          {/* Username */}
-          <div className="flex w-full items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Skeleton className="size-8 rounded-full" />
-              <Skeleton className="h-3.5 w-20" />
-            </div>
-          </div>
-          <div className="gap-6 space-y-4 lg:flex">
-            {/* Image */}
-            <div className="space-y-4">
-              <Skeleton className="aspect-square h-full w-full rounded-lg lg:h-[600px] lg:w-[600px]" />
-              <Skeleton className="size-28" />
-            </div>
-          </div>
-        </div>
+        <LoadingInteractive />
         <LoadingOthers />
       </div>
     </div>
@@ -34,7 +19,7 @@ export default function Loading() {
 
 export function LoadingInteractive() {
   return (
-    <div className="mr-auto space-y-4">
+    <div className="mr-auto w-full space-y-4">
       {/* Username */}
       <div className="flex w-full items-center justify-between">
         <div className="flex items-center gap-2">
@@ -42,11 +27,10 @@ export function LoadingInteractive() {
           <Skeleton className="h-3.5 w-20" />
         </div>
       </div>
-      <div className="gap-6 space-y-4 lg:flex">
+      <div className="grid grid-flow-row gap-6 space-y-4 lg:grid-flow-col pb-9">
         {/* Image */}
-        <div className="space-y-4">
-          <Skeleton className="aspect-square h-full w-full rounded-lg lg:h-[600px] lg:w-[600px]" />
-          <Skeleton className="size-28" />
+        <div className="aspect-square w-full space-y-4 overflow-hidden lg:max-h-[600px] lg:max-w-[600px]">
+          <Skeleton className="col-span-1 h-full w-full rounded-lg" />
         </div>
       </div>
     </div>
