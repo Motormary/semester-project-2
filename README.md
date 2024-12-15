@@ -8,13 +8,7 @@
 
 
 ## Features
-### Blog Feed Page
-
-### Blog Post Public Page
-
-### Blog Post Edit Page
-
-### Account Management Pages
+### Feed
     
 ## Built With
 
