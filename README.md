@@ -2,51 +2,120 @@
 ![image](https://github.com/user-attachments/assets/96338151-cd5a-4b68-a586-8a806b243d0f)
 
 ## Overview
+EBOX is a modern auction platform designed to connect buyers and sellers in a seamless bidding experience. Users can create listings, bid on items, and manage their credits, all through a clean and intuitive interface.  
 
+This project represents the front-end application for an auction site using the Noroff API.
 
 ## Description
+EBOX allows users to register with a `stud.noroff.no` email, log in, and participate in auctions by listing items for bidding or placing bids on available listings. Non-registered users can browse and search listings but require an account to engage fully.  
 
+The platform provides the following features:
+- Initial credits for new users to kickstart their auction journey.
+- Ability to create detailed item listings with titles, descriptions, images, and bid deadlines.
+- A streamlined interface for tracking bids and credits.
+
+EBOX emphasizes accessibility and responsiveness, making it user-friendly across devices.
 
 ## Features
-### Feed
-    
-## Built With
+### User Authentication
+- Register using a `stud.noroff.no` email.
+- Secure login and logout functionality.
+- Encrypted user session placed inside cookies.
+- Optimistic auth check in middleware.
+- Automatically updates user session in middleware.
 
+### Data Access Layer (DAL)
+- Auth check before running server actions.
+- Automatic redirects to '/login' for unauthorized users.
+- Prevents sensitive data from leaking to client
+
+### Profile Management
+- Update profile avatars.
+- Update profile bio.
+- View and track total credits.
+- View and search through active-/inactive-listings/wins/bids
+
+### Listings
+- Create detailed item listings with:
+  - Title
+  - Description
+  - Media gallery
+  - Deadline date
+- Search functionality for listings (available to all users).
+
+### Cache
+- All fetches are cached with their own pre-defined cache-tag.
+- Automatic revalidation for all relevant cache-tags when a user action is called or when a listing ends.
+
+### Bidding
+- Registered users can bid on available listings.
+- Track bids and view bid history for each item.
+
+### Feed
+- Real-time display of active listings and bidding updates.
+
+## Built With
+- **Framework**: [Next.js 15.0.3](https://nextjs.org/)
+- **UI Components**: [Shadcn ui](https://ui.shadcn.com/)
+- **CSS Framework**: [Tailwind CSS 3.4.1](https://tailwindcss.com/)
+- **Hosting Service**: [Vercel](https://vercel.com/)
+- **Design Tools**: Photoshop, Figma
+- **Planning Tool**: Notion
 
 ## Getting Started
 ### Installing
-
 To get started with the project, follow these steps:
 
-   1. Clone the repository:
+1. Clone the repository:
 
-```bash
+   ```bash
+   git clone https://github.com/Motormary/semester-project-2
+   ```
 
-git clone https://github.com/Motormary/semester-project-2
-```
-   1. Navigate to the project directory:
+2. Navigate to the project directory:
 
-```bash
+   ```bash
+   cd semester-project-2
+   ```
 
-cd semester-project-2
-```
-### Running
+3. Install dependencies
 
-To run the project, simply 
+   ```bash
+    pnpm install
+   ```
 
-## Contributing
+4. Rename the '.env.example' file inside the root oflder to '.env'
 
-We welcome contributions to the project! If you would like to contribute, please follow these steps:
+5. Create an API key and replace the API_KEY value inside .env:
 
-   - Fork the repository.
-   - Create a new branch for your feature or bug fix.
-   - Commit your changes and push the branch to your fork.
-   - Open a pull request to the main repository with a description of your changes.
+    Follow the Noroff docs: [Noroff docs](https://docs.noroff.dev/docs/v2/auth/api-key)
 
-## Contact
+6. Pusher notifications:
+    1. Create a Pusher account:
+    - [Pusher.com](https://pusher.com/)
+    - Choose a 'channels' sandbox plan (free tier)
+    - Navigate to the 'app keys' tab in the sidebar
+    - Replace the id/key/secret placeholders inside the .env with your own
 
-For any inquiries or feedback, you can reach out to us through the following channels:
+    2. If notifications are not desired:
+       - Delete pusher-.ts/tsx from the lib folder
+       - Delete the 'pusher-auth' route handler inside '/app/api'
+       - Remove the Pusher component from the navbar 'nav-menu.tsx'
+       - Remove the pusherServer function inside 'bid.ts' under '/app/actions/listings'
 
-  - [My Github Page](https://www.github.com/motormary)
-  - [matmoe00100@stud.noroff.no](mailto:matmoe00100@stud.noroff.no)
+## Running
+To run the project locally:
+1. Start the development server:
+    ```bash
+    pnpm dev
+    ```
 
+2. Open your browser and visit [http://localhost:3000](http://localhost:3000).
+
+## Additional Resources
+
+Here are the project links requested by the Product Owner:
+    - Gantt Chart for Project Timing: [Gantt Chart](https://spectacular-globe-df5.notion.site/13d43f36b82a8086ba25ea5d04d814d6?v=13d43f36b82a81bc8909000c5e2cc8cd)
+    - Kanban Project Board: [Notion Board](https://spectacular-globe-df5.notion.site/13d43f36b82a8086ba25ea5d04d814d6?v=13d43f36b82a818daa3d000c9c2410f6)
+    - Design Prototype & Style Guide: [Figma Prototype]()
+    - Hosted Application Demo: [EBOX Demo](https://semester-project-2-one.vercel.app/)
