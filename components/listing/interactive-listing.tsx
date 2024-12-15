@@ -80,7 +80,7 @@ export default async function InteractiveListing({ listing }: props) {
       </div>
       <div className="gap-6 space-y-4 lg:flex">
         <ListingGallery listing={listing} />
-        <div className="w-full space-y-6 lg:min-w-52 xl:max-w-80">
+        <div className="w-full space-y-6 lg:min-w-52 xl:max-w-80  animate-fade-up fade-in-100">
           <h2
             title={listing.title}
             className="line-clamp-3 text-pretty break-words"

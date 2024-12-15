@@ -24,7 +24,7 @@ const config: Config = {
       },
       keyframes: {
         "up": {
-          "0%": { transform: "translateY(10%)", opacity: '0' },
+          "0%": { transform: "translateY(5%)", opacity: '0' },
           "100%": { transformn: "translateY(0%)", opacity: '1' },
         },
       },
