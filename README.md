@@ -56,6 +56,8 @@ EBOX emphasizes accessibility and responsiveness, making it user-friendly across
 
 ## Built With
 - **Framework**: [Next.js 15.0.3](https://nextjs.org/)
+- **Typescript**: [Typescript^5](https://www.typescriptlang.org/)
+- **Zod**: [Zod^3.23.8](https://zod.dev/)
 - **UI Components**: [Shadcn ui](https://ui.shadcn.com/)
 - **CSS Framework**: [Tailwind CSS 3.4.1](https://tailwindcss.com/)
 - **Hosting Service**: [Vercel](https://vercel.com/)
@@ -117,5 +119,5 @@ To run the project locally:
 Here are the project links requested by the Product Owner:
     - Gantt Chart for Project Timing: [Gantt Chart](https://spectacular-globe-df5.notion.site/13d43f36b82a8086ba25ea5d04d814d6?v=13d43f36b82a81bc8909000c5e2cc8cd)
     - Kanban Project Board: [Notion Board](https://spectacular-globe-df5.notion.site/13d43f36b82a8086ba25ea5d04d814d6?v=13d43f36b82a818daa3d000c9c2410f6)
-    - Design Prototype & Style Guide: [Figma Prototype]()
+    - Design Prototype & Style Guide: [Figma Prototype](https://www.figma.com/design/NttInHcuHz0lf4nvrCjjsk/Semester-Project-2?node-id=102-323&t=LIAxDqt7ecHS7LBP-1)
     - Hosted Application Demo: [EBOX Demo](https://semester-project-2-one.vercel.app/)
