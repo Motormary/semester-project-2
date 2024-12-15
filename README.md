@@ -1,8 +1,8 @@
 # EBOX
-![image](https://github.com/user-attachments/assets/96338151-cd5a-4b68-a586-8a806b243d0f)
+![image](https://github.com/user-attachments/assets/959943cb-3159-45ba-addf-8d39a9aa9999)
 
 ## Overview
-EBOX is a modern auction platform designed to connect buyers and sellers in a seamless bidding experience. Users can create listings, bid on items, and manage their credits, all through a clean and intuitive interface.  
+EBOX is a modern auction platform designed to connect buyers and sellers in a seamless and accessible bidding experience. Users can create listings, bid on items, and manage their credits, all through a clean and intuitive interface.  
 
 This project represents the front-end application for an auction site using the Noroff API.
 
