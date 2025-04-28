@@ -55,7 +55,7 @@ export async function createSession(data: {
   const cookieStore = await cookies()
 
   cookieStore.set(cookie.name, session, {
-    httpOnly: false,
+    httpOnly: true,
     secure: true,
     sameSite: "lax",
     path: "/",
@@ -92,7 +92,7 @@ export async function updateSession() {
 
   const expires = new Date(Date.now() + cookie.duration)
   cookieStore.set(cookie.name, session, {
-    httpOnly: false,
+    httpOnly: true,
     secure: true,
     expires: expires,
     sameSite: "lax",
